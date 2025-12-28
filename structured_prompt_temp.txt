@@ -1,0 +1,126 @@
+20 BLOCKS (structured units):
+
+1. homepage.hero
+KEYS: title, subtitle
+title: "De beste {$niche} van {{ maand }} {$currentYear} – [voordeel]" (60-70 chars)
+subtitle: USP (80-120 chars)
+
+2. homepage.info
+KEYS: title, text, cta
+title: "Waarom {$siteName}?"
+text: 3 USP's (150-200w)
+cta: "Start met vergelijken op onze productpagina."
+FORBIDDEN: Geen lifestyle, geen techniek
+
+3. homepage.seo1
+KEYS: title, intro, section1_title, section1_text, section2_title, section2_text, section3_title, section3_text, cta
+title: "Waarom kiezen voor {$niche}?"
+intro: (100w)
+section1_title + section1_text: Probleem/type 1 (150w)
+section2_title + section2_text: Type 2 (150w)
+section3_title + section3_text: 5 voordelen (200w)
+cta: "Klaar om te vergelijken? Start op onze productpagina."
+FORBIDDEN: Geen techniek, budget
+
+4. homepage.seo2
+KEYS: title, intro, section1_title, section1_text, section2_title, section2_text, section3_title, section3_text, cta
+title: "Hoe kies je de juiste {$niche}?"
+intro: (100w)
+section1_title + section1_text: 7 specs (200w)
+section2_title + section2_text: 4 profielen (150w)
+section3_title + section3_text: 3 fouten (150w)
+cta: "Start je vergelijking op onze productpagina."
+FORBIDDEN: Geen lifestyle
+
+5-7. homepage.faq_1, faq_2, faq_3
+KEYS: question, answer, cta
+question: Ruimte/gebruik/onderhoud
+answer: (150-200w)
+cta: "Vergelijk/Ontdek/Bekijk alle opties op onze productpagina."
+
+8. producten_index_hero_titel
+KEYS: title
+title: "Vergelijk alle {$niche} – [voordeel]" (50-70 chars)
+
+9. producten_index_info_blok_1
+KEYS: title, text, cta
+title: "Waarom vergelijken belangrijk is"
+text: Prijzen, specs, besparen (250-300w)
+cta: "Gebruik de filters hierboven om jouw ideale {$niche} te vinden."
+
+10. producten_index_info_blok_2
+KEYS: title, text, cta
+title: "Slim zoeken met filters"
+text: Budget, merken, ratings (250-300w)
+cta: "Begin met filteren en vind jouw match in ons volledige overzicht."
+FORBIDDEN: GEEN "Lees reviews/Top 5"
+
+11. producten_top_hero_titel
+KEYS: title
+title: "Top 5 beste {$niche} van {{ maand }} {$currentYear}"
+
+12. producten_top_seo_blok
+KEYS: title, intro, section1_title, section1_text, section2_title, section2_text, section3_title, section3_text, cta
+title: "Hoe selecteren we de Top 5?"
+intro: (100w)
+section1_title + section1_text: Criteria (200w)
+section2_title + section2_text: Voor wie (150w)
+section3_title + section3_text: Vergelijken (150w)
+cta: "Wil je meer opties? Bekijk alle {$niche} voor volledige vergelijking."
+
+13. merken_index_hero_titel
+KEYS: title
+title: "De beste merken {$niche} vergeleken"
+
+14. merken_index_info_blok
+KEYS: title, intro, section1_title, section1_text, section2_title, section2_text, section3_title, section3_text, cta
+title: "Waarom merk belangrijk is"
+intro: (100w)
+section1_title + section1_text: ECHTE merken Philips/Tefal (200w)
+section2_title + section2_text: A-merk vs budget (150w)
+section3_title + section3_text: Garantie (150w)
+cta: "Filter op jouw favoriete merk op onze productpagina."
+
+15. reviews.hero
+KEYS: title, subtitle
+title: "Onafhankelijke {$niche} reviews"
+subtitle: "Grondig beoordeeld"
+CLAIM: NOOIT "testen"
+
+16. reviews_index_intro
+KEYS: title, text, cta
+title: "Waarom reviews de moeite waard zijn"
+text: (150-200w)
+cta: "Klaar om te kiezen? Vergelijk alle modellen op onze productpagina."
+CLAIM: NOOIT "testen"
+
+17. reviews_index_seo_blok
+KEYS: title, intro, section1_title, section1_text, section2_title, section2_text, section3_title, section3_text, cta
+title: "Ons review proces"
+intro: (100w)
+section1_title + section1_text: Stappen (200w)
+section2_title + section2_text: Criteria (150w)
+section3_title + section3_text: Objectiviteit (100w)
+cta: "Klaar om te vergelijken? Ga naar onze productpagina."
+CLAIM: NOOIT "testen"
+
+18. blogs.hero
+KEYS: title, subtitle
+title: "Alles over {$niche}"
+subtitle: "Praktische gidsen"
+
+19. blogs.intro
+KEYS: title, text, cta
+title: "Welkom bij onze gidsen"
+text: (100-150w)
+cta: "Klaar om te kiezen? Vergelijk alle modellen op onze productpagina."
+
+20. blogs.seo
+KEYS: title, text, cta
+title: "Waarom onze gidsen je helpen"
+text: (250-300w)
+cta: "Begin met vergelijken op onze productpagina."
+FORBIDDEN: GEEN links /beste-merken, /reviews, /top-5
+
+OUTPUT: Flat JSON. Format: "homepage.seo1.title", "homepage.seo1.intro", "homepage.seo1.section1_title", etc.
+Minified. Plain text. NO HTML.

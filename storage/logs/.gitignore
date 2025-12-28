@@ -1,0 +1,35 @@
+/vendor
+/node_modules
+/public/storage
+/storage/*.key
+/.env
+/.env.backup
+/.env.testing
+Homestead.yaml
+Homestead.json
+/.vagrant
+.phpunit.result.cache
+
+# Laravel runtime bestanden (logs, cache, sessies, views)
+# Alles negeren, behalve .gitignore om mappen te behouden
+/storage/logs/*
+!/storage/logs/.gitignore
+
+/storage/framework/cache/*
+!/storage/framework/cache/.gitignore
+
+/storage/framework/sessions/*
+!/storage/framework/sessions/.gitignore
+
+/storage/framework/views/*
+!/storage/framework/views/.gitignore
+
+/storage/framework/testing/*
+!/storage/framework/testing/.gitignore
+
+/composer.phar
+.DS_Store
+.idea
+.vscode
+npm-debug.log
+yarn-error.log

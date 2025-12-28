@@ -1,0 +1,326 @@
+@extends('layouts.app')
+
+{{-- Meta tags worden automatisch gegenereerd via layouts/app.blade.php --}}
+
+@section('breadcrumbs')
+    <x-breadcrumbs :items="['Top 5' => route('producten.top')]" />
+@endsection
+
+@section('content')
+@php
+    \Carbon\Carbon::setLocale('nl');
+    $huidigeMaand = \Carbon\Carbon::now('Europe/Amsterdam')->translatedFormat('F');
+    $primaryColor = getSetting('primary_color', '#7c3aed');
+@endphp
+
+<style>
+    :root {
+        --primary-color: {{ $primaryColor }};
+    }
+
+    .cta-button {
+        background-color: var(--primary-color);
+    }
+
+    .cta-button:hover {
+        opacity: 0.9;
+    }
+
+    .product-card:hover {
+        border-color: var(--primary-color);
+    }
+
+    .hero-gradient {
+        background: linear-gradient(135deg, var(--primary-color) 0%, color-mix(in srgb, var(--primary-color) 80%, #000) 50%, color-mix(in srgb, var(--primary-color) 60%, #000) 100%);
+    }
+
+    .line-clamp-2 {
+        display: -webkit-box;
+        -webkit-line-clamp: 2;
+        -webkit-box-orient: vertical;
+        overflow: hidden;
+    }
+
+    .ranking-bronze {
+        background: linear-gradient(135deg, #cd7f32 0%, #8b4513 50%, #a0522d 100%);
+    }
+</style>
+
+<section class="w-full text-white relative overflow-hidden hero-gradient">
+    <!-- Clean geometric background -->
+    <div class="absolute inset-0 opacity-10">
+        <div class="absolute top-0 left-0 w-full h-full"
+             style="background-image: radial-gradient(circle at 25% 25%, white 1px, transparent 1px), radial-gradient(circle at 75% 75%, white 1px, transparent 1px);
+                    background-size: 50px 50px;">
+        </div>
+    </div>
+
+    <div class="relative z-10 py-24 sm:py-32 px-4 sm:px-10 lg:px-12">
+        <div class="max-w-4xl mx-auto text-center">
+            <h1 class="text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-black leading-tight mb-8 text-white">
+                {!! getContent('producten_top_hero_titel', ['maand' => $huidigeMaand, 'fallback' => 'Top 5 Selectie']) !!}
+            </h1>
+            
+            <p class="text-lg sm:text-xl md:text-2xl max-w-3xl mx-auto mb-12 text-white/90 leading-relaxed">
+                Door experts geselecteerd op basis van prijs-kwaliteit, prestaties en gebruikerservaringen
+            </p>
+
+            <a href="#top5-products"
+               class="inline-block px-10 py-4 bg-white text-gray-900 font-bold text-lg rounded-lg shadow-xl hover:shadow-2xl transform hover:scale-105 transition-all duration-300 scroll-link">
+                Bekijk de Top 5
+            </a>
+        </div>
+    </div>
+</section>
+
+@if($producten->count())
+<!-- TOP 5 LIST -->
+<section id="top5-products" class="w-full py-10 sm:py-14 lg:py-16 bg-gradient-to-b from-white via-gray-50 to-white">
+    <div class="max-w-6xl mx-auto px-4">
+        <div class="text-center mb-8 sm:mb-12">
+            <div class="inline-block px-4 py-1 bg-purple-100 rounded-full text-purple-700 text-xs font-bold uppercase tracking-wide mb-4">
+                Dagelijks bijgewerkt
+            </div>
+            <h2 class="text-3xl sm:text-4xl lg:text-5xl font-extrabold tracking-tight text-gray-900 mb-3">
+                Top 5 Beste Producten
+            </h2>
+            <p class="text-gray-600 text-base sm:text-lg max-w-2xl mx-auto">
+                Op basis van klantwaarderingen en populariteit
+            </p>
+        </div>
+
+        <div class="space-y-4">
+            @foreach($producten as $index => $product)
+                @php
+                    $affiliateLink = getBolAffiliateLink($product->url, $product->title);
+                    $savings = ($product->strikethrough_price && $product->price)
+                        ? $product->strikethrough_price - $product->price
+                        : 0;
+                    $rating = $product->rating_average ?? 0;
+                    $fullStars = floor($rating);
+                    $position = $index + 1;
+
+                    // All rankings use primary color
+                    $primaryColor = getSetting('primary_color', '#7c3aed');
+                    $rankingColor = '';
+                @endphp
+
+                <div class="bg-white rounded-xl shadow-md hover:shadow-xl transition-all duration-300 overflow-hidden border-2 border-gray-100 hover:border-[color:var(--primary-color)]">
+                    <!-- Mobile Layout (< 768px) -->
+                    <div class="md:hidden p-4">
+                        <div class="flex items-center gap-3 mb-3">
+                            <div class="flex-shrink-0 w-12 h-12 rounded-full flex items-center justify-center text-white font-black text-lg shadow-lg" style="background: {{ $primaryColor }};">
+                                {{ $position }}
+                            </div>
+                            <div class="flex-1 min-w-0">
+                                <h3 class="font-bold text-sm text-gray-900 line-clamp-2 leading-tight mb-1">
+                                    {{ $product->title }}
+                                </h3>
+                                @if($product->brand)
+                                    <p class="text-xs text-gray-500 font-medium">{{ $product->brand }}</p>
+                                @endif
+                            </div>
+                        </div>
+
+                        <div class="flex items-center gap-4 mb-3">
+                            <div class="w-28 h-28 flex items-center justify-center p-2">
+                                <img src="{{ $product->image_url ?? 'https://via.placeholder.com/100x100?text=Geen+Afbeelding' }}"
+                                     alt="{{ $product->title }}"
+                                     class="max-w-full max-h-full object-contain">
+                            </div>
+                            <div class="flex-1">
+                                @if($rating > 0)
+                                    <div class="flex items-center gap-1 mb-2">
+                                        <div class="flex items-center">
+                                            @for($i = 1; $i <= 5; $i++)
+                                                <svg class="w-3.5 h-3.5 {{ $i <= $fullStars ? 'text-yellow-400' : 'text-gray-300' }} fill-current" viewBox="0 0 20 20">
+                                                    <path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z"/>
+                                                </svg>
+                                            @endfor
+                                        </div>
+                                        <span class="text-xs text-gray-600 ml-1 font-medium">{{ number_format($rating, 1) }}</span>
+                                        @if($product->rating_count)
+                                            <span class="text-xs text-gray-400">({{ $product->rating_count }})</span>
+                                        @endif
+                                    </div>
+                                @endif
+
+                                @if($product->review || $product->blogPosts->isNotEmpty())
+                                    <div class="flex gap-1.5 text-xs mb-2">
+                                        @if($product->review)
+                                            <span class="bg-emerald-100 text-emerald-700 px-2 py-0.5 rounded-full font-semibold">Review</span>
+                                        @endif
+                                        @if($product->blogPosts->isNotEmpty())
+                                            <span class="bg-blue-100 text-blue-700 px-2 py-0.5 rounded-full font-semibold">Blog</span>
+                                        @endif
+                                    </div>
+                                @endif
+
+                                <div class="mb-2">
+                                    @if($savings > 0)
+                                        <p class="text-gray-400 text-xs line-through">€{{ number_format($product->strikethrough_price, 2, ',', '.') }}</p>
+                                    @endif
+                                    <p class="text-gray-900 font-black text-lg">€{{ number_format($product->price ?? 0, 2, ',', '.') }}</p>
+                                    @if($savings > 0)
+                                        <p class="text-green-600 font-bold text-xs">Bespaar €{{ number_format($savings, 2, ',', '.') }}</p>
+                                    @endif
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="flex gap-2">
+                            <a href="{{ route('producten.show', $product->slug) }}"
+                               class="flex-1 bg-gray-100 hover:bg-gray-200 text-gray-900 text-sm font-semibold py-2.5 px-3 rounded-lg text-center transition border border-gray-200">
+                                Bekijk details
+                            </a>
+                            <a href="{{ $affiliateLink }}" target="_blank" rel="nofollow sponsored"
+                               class="flex-1 bg-blue-600 hover:bg-blue-700 text-white text-sm font-bold py-2.5 px-3 rounded-lg text-center transition shadow-md hover:shadow-lg">
+                                Koop op bol.com
+                            </a>
+                        </div>
+                    </div>
+
+                    <!-- Desktop Layout (>= 768px) -->
+                    <div class="hidden md:grid md:grid-cols-12 gap-6 p-8 items-center">
+                        <!-- Position -->
+                        <div class="col-span-1 flex justify-center">
+                            <div class="w-16 h-16 rounded-full flex items-center justify-center text-white font-black text-2xl shadow-lg" style="background: {{ $primaryColor }};">
+                                {{ $position }}
+                            </div>
+                        </div>
+
+                        <!-- Image -->
+                        <div class="col-span-2 flex items-center justify-center">
+                            <div class="w-32 h-32 flex items-center justify-center p-2">
+                                <img src="{{ $product->image_url ?? 'https://via.placeholder.com/100x100?text=Geen+Afbeelding' }}"
+                                     alt="{{ $product->title }}"
+                                     class="max-w-full max-h-full object-contain">
+                            </div>
+                        </div>
+
+                        <!-- Product Info -->
+                        <div class="col-span-4">
+                            @if($product->brand)
+                                <p class="text-sm text-gray-500 font-medium mb-2 uppercase tracking-wide">{{ $product->brand }}</p>
+                            @endif
+                            <h3 class="font-bold text-lg text-gray-900 line-clamp-2 leading-tight mb-3">
+                                {{ $product->title }}
+                            </h3>
+                            @if($rating > 0)
+                                <div class="flex items-center gap-1 mb-3">
+                                    <div class="flex items-center">
+                                        @for($i = 1; $i <= 5; $i++)
+                                            <svg class="w-4 h-4 {{ $i <= $fullStars ? 'text-yellow-400' : 'text-gray-300' }} fill-current" viewBox="0 0 20 20">
+                                                <path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z"/>
+                                            </svg>
+                                        @endfor
+                                    </div>
+                                    <span class="text-sm text-gray-600 ml-1 font-medium">{{ number_format($rating, 1) }}</span>
+                                    @if($product->rating_count)
+                                        <span class="text-sm text-gray-400">({{ $product->rating_count }})</span>
+                                    @endif
+                                </div>
+                            @endif
+
+                            @if($product->review || $product->blogPosts->isNotEmpty())
+                                <div class="flex gap-2 text-xs">
+                                    @if($product->review)
+                                        <span class="bg-emerald-100 text-emerald-700 px-3 py-1.5 rounded-full font-semibold border border-emerald-200">Review</span>
+                                    @endif
+                                    @if($product->blogPosts->isNotEmpty())
+                                        <span class="bg-blue-100 text-blue-700 px-3 py-1.5 rounded-full font-semibold border border-blue-200">Blog</span>
+                                    @endif
+                                </div>
+                            @endif
+                        </div>
+
+                        <!-- Price -->
+                        <div class="col-span-2 text-center">
+                            @if($savings > 0)
+                                <p class="text-gray-400 text-base line-through mb-2">€{{ number_format($product->strikethrough_price, 2, ',', '.') }}</p>
+                            @endif
+                            <p class="text-gray-900 font-black text-3xl">€{{ number_format($product->price ?? 0, 2, ',', '.') }}</p>
+                            @if($savings > 0)
+                                <p class="text-green-600 font-bold text-base mt-2">Bespaar €{{ number_format($savings, 2, ',', '.') }}</p>
+                            @endif
+                        </div>
+
+                        <!-- Actions -->
+                        <div class="col-span-3 flex gap-3">
+                            <a href="{{ route('producten.show', $product->slug) }}"
+                               class="flex-1 bg-gray-100 hover:bg-gray-200 text-gray-900 text-base font-semibold py-4 px-5 rounded-lg text-center transition border border-gray-200 hover:border-gray-300">
+                                Bekijk details
+                            </a>
+                            <a href="{{ $affiliateLink }}" target="_blank" rel="nofollow sponsored"
+                               class="flex-1 bg-blue-600 hover:bg-blue-700 text-white text-base font-bold py-4 px-5 rounded-lg text-center transition shadow-md hover:shadow-lg">
+                                Koop op bol.com
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            @endforeach
+        </div>
+
+        <!-- Link to all products -->
+        <div class="text-center mt-10">
+            <p class="text-gray-600 mb-4">Bekijk alle producten in onze volledige collectie</p>
+            <a href="{{ route('producten.index') }}"
+               class="inline-flex items-center text-[color:var(--primary-color)] hover:underline font-semibold text-lg">
+                Bekijk alle producten
+                <svg class="w-5 h-5 ml-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"/>
+                </svg>
+            </a>
+        </div>
+    </div>
+</section>
+@else
+    <section class="w-full py-20 text-center text-gray-500 bg-white">
+        <p>Er zijn momenteel geen producten in de Top 5.</p>
+    </section>
+@endif
+
+<!-- CTA NAAR PRODUCTEN -->
+<section class="w-full py-10 sm:py-16 lg:py-16 px-4 sm:px-10 lg:px-12 text-white relative overflow-hidden" style="background: linear-gradient(135deg, {{ $primaryColor }}, color-mix(in srgb, {{ $primaryColor }} 80%, #000) 50%, color-mix(in srgb, {{ $primaryColor }} 60%, #000) 100%)">
+    <div class="absolute top-[-100px] left-[-100px] w-[400px] h-[400px] bg-white opacity-10 rounded-full blur-3xl z-0"></div>
+    <div class="absolute bottom-[-120px] right-[-80px] w-[500px] h-[500px] bg-white opacity-5 rounded-full blur-3xl z-0"></div>
+
+    <div class="relative z-10 max-w-4xl mx-auto text-center space-y-6 sm:space-y-8">
+        <div class="text-center">
+            <h2 class="text-2xl sm:text-3xl font-bold mb-4">
+                Bekijk alle {{ $niche ?? 'producten' }}
+            </h2>
+            <p class="text-purple-100 mb-6">
+                Ontdek onze volledige collectie en vind het perfect bij jou passende product.
+            </p>
+            <a href="{{ route('producten.index') }}"
+               class="inline-block bg-white px-8 py-3 rounded-lg font-semibold transition-all duration-300 transform hover:scale-105 shadow-lg hover:shadow-xl hover:bg-gray-50"
+               style="color: {{ $primaryColor }};">
+                Alle {{ $niche ?? 'producten' }} bekijken
+            </a>
+    </div>
+</section>
+
+<!-- SEO BLOK -->
+<section class="w-full py-10 sm:py-16 lg:py-20 px-4 sm:px-10 lg:px-12 bg-white border-t border-b border-gray-200">
+    <div class="max-w-5xl mx-auto prose prose-gray prose-lg max-w-none text-left">
+        {!! getContent('producten_top_seo_blok', ['fallback' => '<p>Hier komt tekst te staan.</p>']) !!}
+    </div>
+</section>
+@endsection
+
+@section('scripts')
+<script>
+    document.addEventListener('DOMContentLoaded', function () {
+        document.querySelectorAll('.scroll-link').forEach(link => {
+            link.addEventListener('click', function(e) {
+                e.preventDefault();
+                const target = document.querySelector(this.getAttribute('href'));
+                if (target) {
+                    target.scrollIntoView({ behavior: 'smooth' });
+                }
+            });
+        });
+    });
+</script>
+@endsection

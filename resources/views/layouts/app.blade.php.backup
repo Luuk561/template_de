@@ -1,0 +1,794 @@
+<!DOCTYPE html>
+<html lang="nl">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="csrf-token" content="{{ csrf_token() }}">
+    @yield('head')
+
+    @php
+        // Basis site settings (nodig voor styles, fonts, favicon en in body)
+        $primaryColor = getSetting('primary_color', '#7c3aed');
+        $font         = getSetting('font_family', 'Urbanist');
+        $googleFont   = str_replace(' ', '+', $font);
+        $siteName     = getSetting('site_name', config('app.name'));
+        $favicon      = getSetting('favicon_url', asset('favicon.png'));
+    @endphp
+
+    @php
+        // Input uit settings die je al bovenin head hebt gezet
+        \Carbon\Carbon::setLocale('nl');
+        $site   = $siteName ?? getSetting('site_name', config('app.name'));
+        $niche  = getSetting('site_niche', 'producten');
+        $month  = \Carbon\Carbon::now('Europe/Amsterdam')->translatedFormat('F');
+        $year   = \Carbon\Carbon::now('Europe/Amsterdam')->format('Y');
+        $routeName = optional(request()->route())->getName();
+
+        // Black Friday: config, datumbereik of preview via ?bf=on
+        $bfFlag    = (bool) config('blackfriday.active', false);
+        $bfStart   = config('blackfriday.start');
+        $bfUntil   = config('blackfriday.until');
+        
+        $previewOn = in_array(strtolower((string) request('bf')), ['1','on','true'], true);
+        $today     = \Carbon\Carbon::today('Europe/Amsterdam');
+        $inWindow  = ($bfStart && $bfUntil)
+            ? $today->between(\Carbon\Carbon::parse($bfStart, 'Europe/Amsterdam'),
+                            \Carbon\Carbon::parse($bfUntil, 'Europe/Amsterdam'))
+            : false;
+        $bfActiveHead = $previewOn || $bfFlag || $inWindow;
+
+        // Optioneel: modeldata voor detailpagina's
+        $modelTitle = isset($product) ? strip_tags($product->seo_title)
+                    : (isset($post) ? strip_tags($post->title)
+                    : (isset($review) ? strip_tags($review->seo_title)
+                    : (isset($teamMember) ? strip_tags($teamMember->name) : null)));
+        $modelExcerpt = isset($product) ? \Illuminate\Support\Str::limit(strip_tags($product->description ?? ''), 155)
+                    : (isset($post) ? \Illuminate\Support\Str::limit(strip_tags($post->excerpt ?? $post->content ?? ''), 155)
+                    : (isset($review) ? \Illuminate\Support\Str::limit(strip_tags($review->excerpt ?? $review->content ?? ''), 155) : null));
+
+        // Templates per route (code-only)
+        $titleMap = [
+            'home'            => "Beste {$niche} in {$month} {$year} | {$site}",
+            'producten.index' => "Beste {$niche} vergelijken & kopen | {$site}",
+            'producten.top'   => "Top 5 {$niche} — Aanbevolen keuzes | {$site}",
+            'producten.show'  => ":title | {$site}",
+            'producten.merken'=> "Beste merken {$niche} | {$site}",
+            'reviews.index'   => "Eerlijke reviews over {$niche} | {$site}",
+            'reviews.show'    => ":title — Review | {$site}",
+            'blogs.index'     => "Tips & gidsen over {$niche} | {$site}",
+            'blogs.show'      => ":title | {$site}",
+            'team.index'      => "Ons team | {$site}",
+            'team.show'       => ":title | {$site}",
+            '*'               => "{$site} — Vergelijken & kopen",
+        ];
+        $descMap = [
+            'home'            => "Ontdek de beste {$niche} van {$year}. Vergelijk modellen, bekijk actuele deals en vind snel wat perfect bij jouw wensen past via {$site}.",
+            'producten.index' => "Bekijk en vergelijk alle {$niche}. Filter eenvoudig op merk, prijs, specificaties en aanbiedingen. Vind direct jouw ideale product via {$site}.",
+            'producten.top'   => "Onze expertteam selecteerde de Top 5 beste {$niche} met duidelijke voor- en nadelen. Maak snel de juiste keuze met {$site}.",
+            'producten.show'  => ":excerpt",
+            'reviews.index'   => "Lees eerlijke productreviews en beoordelingen over {$niche}. Gebaseerd op grondig onderzoek en specificatievergelijkingen via {$site}.",
+            'reviews.show'    => ":excerpt",
+            'blogs.index'     => "Praktische koopgidsen, tips en inspiratie over {$niche}. Alles wat je moet weten om een slimme keuze te maken met {$site}.",
+            'blogs.show'      => ":excerpt",
+            '*'               => "Vergelijk en vind de beste {$niche} voor jouw situatie. Filter snel op specificaties, prijs en reviews. Kies slim met {$site}.",
+        ];
+
+        // Vullen + placeholders vervangen
+        $tplTitle = $titleMap[$routeName] ?? $titleMap['*'];
+        $tplDesc  = $descMap[$routeName]  ?? $descMap['*'];
+        if ($modelTitle)   $tplTitle = str_replace(':title', $modelTitle, $tplTitle);
+        if ($modelExcerpt) $tplDesc  = str_replace(':excerpt', $modelExcerpt, $tplDesc);
+
+        // Black Friday-variant in meta
+        if ($bfActiveHead) {
+            $tplTitle = "Black Friday Deals {$year} — {$tplTitle}";
+            $tplDesc  = "Black Friday aanbiedingen: {$tplDesc}";
+        }
+
+        // Paginatie-suffix + opschonen + lengte-normalisatie
+        $page = (int) request()->get('page');
+        if ($page > 1) $tplTitle .= " | Pagina {$page}";
+
+        // Only apply limit if using fallback template (no model title)
+        // Model titles (products, reviews, blogs) are already optimized
+        $metaTitle = $modelTitle
+            ? trim(preg_replace('/\s+/', ' ', $tplTitle))
+            : Str::limit(trim(preg_replace('/\s+/', ' ', $tplTitle)), 60);
+        $metaDesc  = Str::limit(trim(preg_replace('/\s+/', ' ', $tplDesc)), 155);
+    @endphp
+
+    <title>@yield('title', $metaTitle)</title>
+    <meta name="description" content="@yield('meta_description', $metaDesc)">
+    <meta name="robots" content="@yield('meta_robots', app()->environment('production') ? 'index, follow' : 'noindex, nofollow')">
+
+    @php
+        // For product filter pages, canonical should point to base URL without filter params
+        $canonicalUrl = url()->current();
+        if (request()->routeIs('producten.index') && (request()->has('sort') || request()->has('brand') || request()->has('min_price') || request()->has('max_price') || request()->has('min_rating') || request()->has('discount'))) {
+            $canonicalUrl = route('producten.index');
+        }
+    @endphp
+    <link rel="canonical" href="{{ $canonicalUrl }}" />
+    
+    @stack('pagination-meta')
+
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+
+    {{-- Favicon: probeer PNG formaten eerst, dan SVG fallback --}}
+    @php
+        $faviconBase = str_replace(['/favicon.png', '/favicon.svg', '/favicon.ico'], '', $favicon);
+        $faviconDir = dirname($favicon);
+    @endphp
+    <link rel="icon" type="image/png" sizes="32x32" href="{{ $faviconDir }}/favicon-32x32.png">
+    <link rel="icon" type="image/png" sizes="16x16" href="{{ $faviconDir }}/favicon-16x16.png">
+    <link rel="apple-touch-icon" sizes="180x180" href="{{ $faviconDir }}/apple-touch-icon.png">
+    <link rel="icon" type="image/svg+xml" href="{{ $faviconDir }}/favicon.svg">
+    <link rel="icon" type="image/x-icon" href="{{ asset('favicon.ico') }}">
+    <meta name="theme-color" content="{{ $primaryColor }}">
+
+
+    <!-- OG/Twitter gebruiken dezelfde content -->
+    <meta property="og:title" content="{{ $metaTitle }}" />
+    <meta property="og:description" content="{{ $metaDesc }}" />
+    <meta property="og:type" content="website" />
+    <meta property="og:url" content="{{ url()->current() }}" />
+    <meta property="og:image" content="{{ asset('images/social-preview.jpg') }}">
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:title" content="{{ $metaTitle }}" />
+    <meta name="twitter:description" content="{{ $metaDesc }}" />
+    <meta name="twitter:image" content="{{ asset('images/social-preview.jpg') }}">
+
+    <link rel="preload" href="https://fonts.googleapis.com/css2?family={{ $googleFont }}:wght@400;600;800&display=swap" as="style" onload="this.onload=null;this.rel='stylesheet'">
+    <noscript><link href="https://fonts.googleapis.com/css2?family={{ $googleFont }}:wght@400;600;800&display=swap" rel="stylesheet"></noscript>
+
+    @vite(['resources/css/app.css', 'resources/js/app.js'])
+
+    <style>
+        html, body {
+            overflow-x: hidden;
+            font-family: '{{ $font }}', sans-serif;
+            background-color: #f5f9fc;
+        }
+
+        ::selection {
+            background: {{ $primaryColor }};
+            color: white;
+        }
+
+        .nav-links a {
+            position: relative;
+            font-weight: 600;
+            text-transform: uppercase;
+            font-size: 0.875rem;
+            color: #0f172a;
+            transition: all 0.3s ease;
+        }
+
+        .nav-links a::after {
+            content: '';
+            position: absolute;
+            bottom: -3px;
+            left: 0;
+            width: 0%;
+            height: 2px;
+            background-color: {{ $primaryColor }};
+            transition: width 0.3s ease;
+        }
+
+        .nav-links a:hover::after,
+        .nav-links a.active::after {
+            width: 100%;
+        }
+
+        .neon-button {
+            background: linear-gradient(to right, {{ $primaryColor }}, #6946ff);
+            color: #fff;
+            font-weight: 700;
+            border-radius: 9999px;
+            padding: 0.75rem 2rem;
+            box-shadow: 0 0 12px #00d2ff99;
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+        }
+
+        .neon-button:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 0 22px #00d2ff;
+        }
+
+        .hamburger-button {
+            display: none;
+            position: relative;
+            z-index: 101;
+            cursor: pointer;
+            padding: 8px;
+            border-radius: 4px;
+            transition: background-color 0.3s ease;
+            background-color: rgba(255,255,255,0.9);
+            backdrop-filter: blur(10px);
+        }
+
+        .hamburger-button:hover {
+            background-color: rgba(255,255,255,1);
+        }
+
+        .hamburger-button.open {
+            background-color: rgba(255,255,255,0.95) !important;
+            border: 2px solid rgba(255,255,255,0.5) !important;
+            box-shadow: 0 0 20px rgba(0,0,0,0.3) !important;
+        }
+
+        .hamburger-button.open:hover {
+            background-color: rgba(255,255,255,1);
+        }
+
+        .close-button {
+            position: fixed;
+            top: max(20px, env(safe-area-inset-top, 20px));
+            right: max(20px, env(safe-area-inset-right, 20px));
+            z-index: 200;
+            cursor: pointer;
+            padding: 12px;
+            border-radius: 8px;
+            transition: all 0.3s ease;
+            background-color: rgba(255,255,255,0.95);
+            backdrop-filter: blur(15px);
+            border: 2px solid rgba(255,255,255,0.7);
+            box-shadow: 0 4px 25px rgba(0,0,0,0.4);
+            color: #0f172a;
+            transform: scale(1);
+        }
+
+        .close-button:hover {
+            background-color: rgba(255,255,255,1);
+            transform: scale(1.1);
+            box-shadow: 0 6px 30px rgba(0,0,0,0.5);
+        }
+
+        .hamburger-button div {
+            width: 25px;
+            height: 3px;
+            margin: 5px;
+            background-color: #0f172a;
+            transition: all 0.3s ease-in-out;
+        }
+
+        .hamburger-button.open div:first-child {
+            transform: rotate(45deg) translate(7px, 7px) !important;
+            background-color: #0f172a !important;
+        }
+
+        .hamburger-button.open div:nth-child(2) {
+            opacity: 0 !important;
+            transform: scale(0) !important;
+        }
+
+        .hamburger-button.open div:last-child {
+            transform: rotate(-45deg) translate(7px, -7px) !important;
+            background-color: #0f172a !important;
+        }
+
+        @media (max-width: 1280px) {
+            .nav-links { display: none; }
+            .hamburger-button { display: block; }
+        }
+        
+        @media (max-width: 768px) {
+            h1 { font-size: 1.75rem; }
+            h2 { font-size: 1.25rem; }
+        }
+
+        .hamburger-menu {
+            position: fixed;
+            top: 0; right: 0; bottom: 0; left: 0;
+            background: linear-gradient(135deg, {{ $primaryColor }} 0%, color-mix(in srgb, {{ $primaryColor }} 80%, #000) 50%, color-mix(in srgb, {{ $primaryColor }} 60%, #000) 100%);
+            backdrop-filter: blur(20px);
+            z-index: 100;
+            transform: translateX(100%);
+            transition: transform 0.5s cubic-bezier(0.4, 0, 0.2, 1);
+            font-family: '{{ $font }}', sans-serif;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            padding: 100px 30px 50px;
+            overflow-y: auto;
+        }
+
+        .hamburger-menu.open { 
+            transform: translateX(0); 
+        }
+
+        /* Search Section */
+        .menu-search {
+            width: 100%;
+            max-width: 320px;
+            margin-bottom: 50px;
+            opacity: 0;
+            transform: translateY(30px);
+            transition: all 0.6s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        .hamburger-menu.open .menu-search {
+            opacity: 1;
+            transform: translateY(0);
+            transition-delay: 0.1s;
+        }
+
+        .menu-search input {
+            width: 100%;
+            padding: 16px 20px;
+            border: 2px solid rgba(255,255,255,0.2);
+            border-radius: 16px;
+            background: rgba(255,255,255,0.15);
+            color: white;
+            font-size: 16px;
+            font-weight: 500;
+            backdrop-filter: blur(10px);
+            transition: all 0.3s ease;
+            font-family: '{{ $font }}', sans-serif;
+        }
+
+        .menu-search input::placeholder {
+            color: rgba(255,255,255,0.7);
+        }
+
+        .menu-search input:focus {
+            outline: none;
+            border-color: rgba(255,255,255,0.5);
+            background: rgba(255,255,255,0.2);
+            box-shadow: 0 0 20px rgba(255,255,255,0.1);
+        }
+
+        /* Navigation Section */
+        .menu-nav {
+            width: 100%;
+            max-width: 320px;
+        }
+
+        .menu-nav ul {
+            display: flex;
+            flex-direction: column;
+            gap: 16px;
+            list-style: none;
+            padding: 0;
+            margin: 0;
+        }
+
+        .menu-nav li {
+            opacity: 0;
+            transform: translateY(30px);
+            transition: all 0.6s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        .hamburger-menu.open .menu-nav li:nth-child(1) { transition-delay: 0.2s; }
+        .hamburger-menu.open .menu-nav li:nth-child(2) { transition-delay: 0.3s; }
+        .hamburger-menu.open .menu-nav li:nth-child(3) { transition-delay: 0.4s; }
+        .hamburger-menu.open .menu-nav li:nth-child(4) { transition-delay: 0.5s; }
+        .hamburger-menu.open .menu-nav li:nth-child(5) { transition-delay: 0.6s; }
+        .hamburger-menu.open .menu-nav li:nth-child(6) { transition-delay: 0.7s; }
+        .hamburger-menu.open .menu-nav li:nth-child(7) { transition-delay: 0.8s; }
+
+        .hamburger-menu.open .menu-nav li {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        .menu-nav a {
+            display: flex;
+            align-items: center;
+            gap: 16px;
+            padding: 18px 20px;
+            background: rgba(255,255,255,0.1);
+            border: 1px solid rgba(255,255,255,0.15);
+            border-radius: 16px;
+            color: white;
+            font-size: 18px;
+            font-weight: 600;
+            text-decoration: none;
+            backdrop-filter: blur(10px);
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        .menu-nav a:hover {
+            background: rgba(255,255,255,0.2);
+            border-color: rgba(255,255,255,0.3);
+            transform: translateY(-2px);
+            box-shadow: 0 8px 25px rgba(0,0,0,0.2);
+        }
+
+        .menu-nav .nav-icon {
+            width: 24px;
+            height: 24px;
+            opacity: 0.9;
+        }
+
+        .menu-nav .nav-text {
+            flex: 1;
+        }
+
+        #scrollLine {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 4px;
+            background: linear-gradient(to right, {{ $primaryColor }}, color-mix(in srgb, {{ $primaryColor }} 70%, #fff));
+            z-index: 9999;
+            transform-origin: left;
+            transform: scaleX(0);
+        }
+
+        header {
+            transition: transform 0.3s ease-in-out;
+            will-change: transform;
+            background-color: #ecf5ff;
+            backdrop-filter: blur(6px);
+        }
+
+        .perspective {
+            perspective: 1000px;
+        }
+
+        .backface-hidden {
+            backface-visibility: hidden;
+        }
+    </style>
+    <script defer src="https://cloud.umami.is/script.js" data-website-id="7bdfdaff-1dbd-4886-829f-35b64db5b82c"></script>
+    <script defer src="https://cloud.umami.is/script.js" data-website-id="f2e992da-8852-4a62-9676-3fc73362855c"></script>
+    <script defer src="https://cloud.umami.is/script.js" data-website-id="f340e33f-8664-4783-b335-29374091e4a6"></script>
+
+    <!-- Google tag (gtag.js) -->
+    <script async src="https://www.googletagmanager.com/gtag/js?id=G-949QSHZMC1"></script>
+    <script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag(){dataLayer.push(arguments);}
+    gtag('js', new Date());
+
+    gtag('config', 'G-949QSHZMC1');
+    </script>
+
+    @if(getSetting('fathom_site_id'))
+        <!-- Fathom - simple website analytics -->
+        <script src="https://cdn.usefathom.com/script.js"
+                data-site="{{ getSetting('fathom_site_id') }}"
+                defer></script>
+        <!-- / Fathom -->
+    @endif
+
+    @stack('head')
+</head>
+
+<body class="text-gray-800 text-base">
+    @php
+        \Carbon\Carbon::setLocale('nl');
+        $huidigeMaand = \Carbon\Carbon::now()->translatedFormat('F'); // bv. 'juli'
+    @endphp
+
+    <div id="scrollLine"></div>
+
+    <header class="shadow-md fixed top-0 z-50 w-full">
+        </div>
+        <div class="w-full flex items-center justify-between px-6 sm:px-12 lg:px-32 py-4 sm:py-10" style="padding-left: max(1.5rem, env(safe-area-inset-left, 1.5rem)); padding-right: max(1.5rem, env(safe-area-inset-right, 1.5rem));">
+            <a href="/" class="text-lg sm:text-xl md:text-2xl font-extrabold tracking-wide mr-4" style="color: {{ $primaryColor }}">{{ $siteName }}</a>
+
+            <nav class="nav-links hidden xl:flex space-x-8 items-center">
+                <a href="/" class="{{ Request::is('/') ? 'active' : '' }}">Home</a>
+                <a href="/producten" class="{{ Request::is('producten*') ? 'active' : '' }}">Producten</a>
+                <a href="/vergelijken" class="{{ Request::is('vergelijken*') ? 'active' : '' }}">Vergelijk</a>
+                <a href="/top-5" class="{{ Request::is('top-5') ? 'active' : '' }}">Top 5</a>
+                <a href="/beste-merken" class="{{ Request::is('beste-merken') ? 'active' : '' }}">Beste Merken</a>
+                <a href="/blogs" class="{{ Request::is('blogs*') ? 'active' : '' }}">Blogs</a>
+                <a href="/reviews" class="{{ Request::is('reviews*') ? 'active' : '' }}">Reviews</a>
+
+                <form action="{{ route('producten.index') }}" method="GET" class="ml-4">
+                    <input type="text" name="search" placeholder="Zoeken..."
+                        value="{{ request('search') }}"
+                        class="px-4 py-2 border border-gray-300 rounded-full text-sm shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500 transition-all duration-300"
+                    >
+                </form>
+            </nav>
+
+            <!-- Hamburger Button inside header -->
+            <div class="hamburger-button xl:hidden" id="hamburgerIcon">
+                <div></div>
+                <div></div>
+                <div></div>
+            </div>
+
+
+        </div>
+    </header>
+
+    <!-- Close Button (floating, only visible when menu is open) -->
+    <div class="close-button xl:hidden" id="closeIcon" style="display: none;">
+        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3">
+            <line x1="18" y1="6" x2="6" y2="18"></line>
+            <line x1="6" y1="6" x2="18" y2="18"></line>
+        </svg>
+    </div>
+
+    <div class="hamburger-menu" id="hamburgerMenu">
+        <!-- Search Section -->
+        <div class="menu-search">
+            <form action="{{ route('producten.index') }}" method="GET">
+                <input type="text" name="search" placeholder="Zoek producten..." value="{{ request('search') }}">
+            </form>
+        </div>
+
+        <!-- Navigation Section -->
+        <nav class="menu-nav">
+            <ul>
+                <li>
+                    <a href="/">
+                        <svg class="nav-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-6 0a1 1 0 001-1v-4a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 001 1m-6 0h6"/>
+                        </svg>
+                        <span class="nav-text">Home</span>
+                    </a>
+                </li>
+                <li>
+                    <a href="/producten">
+                        <svg class="nav-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 11H5m14 0a2 2 0 012 2v6a2 2 0 01-2 2H5a2 2 0 01-2-2v-6a2 2 0 012-2m14 0V9a2 2 0 00-2-2M5 11V9a2 2 0 012-2m0 0V5a2 2 0 012-2h6a2 2 0 012 2v2M7 7h10"/>
+                        </svg>
+                        <span class="nav-text">Producten</span>
+                    </a>
+                </li>
+                <li>
+                    <a href="/vergelijken">
+                        <svg class="nav-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z"/>
+                        </svg>
+                        <span class="nav-text">Vergelijk</span>
+                    </a>
+                </li>
+                <li>
+                    <a href="/top-5">
+                        <svg class="nav-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11.049 2.927c.3-.921 1.603-.921 1.902 0l1.519 4.674a1 1 0 00.95.69h4.915c.969 0 1.371 1.24.588 1.81l-3.976 2.888a1 1 0 00-.363 1.118l1.518 4.674c.3.922-.755 1.688-1.538 1.118l-3.976-2.888a1 1 0 00-1.176 0l-3.976 2.888c-.783.57-1.838-.197-1.538-1.118l1.518-4.674a1 1 0 00-.363-1.118l-3.976-2.888c-.784-.57-.38-1.81.588-1.81h4.914a1 1 0 00.951-.69l1.519-4.674z"/>
+                        </svg>
+                        <span class="nav-text">Top 5</span>
+                    </a>
+                </li>
+                <li>
+                    <a href="/beste-merken">
+                        <svg class="nav-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4M7.835 4.697a3.42 3.42 0 001.946-.806 3.42 3.42 0 014.438 0 3.42 3.42 0 001.946.806 3.42 3.42 0 013.138 3.138 3.42 3.42 0 00.806 1.946 3.42 3.42 0 010 4.438 3.42 3.42 0 00-.806 1.946 3.42 3.42 0 01-3.138 3.138 3.42 3.42 0 00-1.946.806 3.42 3.42 0 01-4.438 0 3.42 3.42 0 00-1.946-.806 3.42 3.42 0 01-3.138-3.138 3.42 3.42 0 00-.806-1.946 3.42 3.42 0 010-4.438 3.42 3.42 0 00.806-1.946 3.42 3.42 0 013.138-3.138z"/>
+                        </svg>
+                        <span class="nav-text">Beste Merken</span>
+                    </a>
+                </li>
+                <li>
+                    <a href="/blogs">
+                        <svg class="nav-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6.253v13m0-13C10.832 5.477 9.246 5 7.5 5S4.168 5.477 3 6.253v13C4.168 18.477 5.754 18 7.5 18s3.332.477 4.5 1.253m0-13C13.168 5.477 14.754 5 16.5 5c1.747 0 3.332.477 4.5 1.253v13C19.832 18.477 18.246 18 16.5 18c-1.746 0-3.332.477-4.5 1.253"/>
+                        </svg>
+                        <span class="nav-text">Blogs</span>
+                    </a>
+                </li>
+                <li>
+                    <a href="/reviews">
+                        <svg class="nav-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M7 8h10M7 12h4m1 8l-4-4H5a2 2 0 01-2-2V6a2 2 0 012-2h14a2 2 0 012 2v8a2 2 0 01-2 2h-3l-4 4z"/>
+                        </svg>
+                        <span class="nav-text">Reviews</span>
+                    </a>
+                </li>
+            </ul>
+        </nav>
+    </div>
+
+    <main class="w-full pb-10" style="padding-top: max(6rem, calc(8rem + env(safe-area-inset-top, 0px))); padding-left: env(safe-area-inset-left, 0px); padding-right: env(safe-area-inset-right, 0px);">
+        @hasSection('breadcrumbs')
+            <div class="mb-6">
+                @yield('breadcrumbs')
+            </div>
+        @endif
+
+        @yield('content')
+    </main>
+
+    <footer class="bg-white border-t text-sm text-gray-600">
+        <div class="max-w-screen-xl mx-auto px-6 py-16 grid grid-cols-1 md:grid-cols-3 gap-12">
+            <div>
+                <div class="font-bold text-gray-900 mb-4 text-base">Over {{ $siteName }}</div>
+                <p class="text-gray-600 leading-relaxed">
+                    {{ $siteName }} helpt je bij het kiezen van de beste producten op basis van onafhankelijke tests, reviews en vergelijkingen.
+                </p>
+            </div>
+
+            <div>
+                <div class="font-bold text-gray-900 mb-4 text-base">Navigatie</div>
+                <ul class="space-y-2">
+                    <li><a href="/" class="hover:underline">Home</a></li>
+                    <li><a href="/producten" class="hover:underline">Producten</a></li>
+                    <li><a href="/top-5" class="hover:underline">Top 5</a></li>
+                    <li><a href="/beste-merken" class="hover:underline">Beste Merken</a></li>
+                    <li><a href="/blogs" class="hover:underline">Blogs</a></li>
+                    <li><a href="/reviews" class="hover:underline">Reviews</a></li>
+                    <li><a href="/meer-ontdekken" class="hover:underline">Meer ontdekken</a></li>
+                </ul>
+            </div>
+
+            <div>
+                <div class="font-bold text-gray-900 mb-4 text-base">Informatie</div>
+                <ul class="space-y-2">
+                    <li><a href="/team" class="hover:underline">Ons Team</a></li>
+                    <li><a href="/privacy" class="hover:underline">Privacybeleid</a></li>
+                    <li><a href="/disclaimer" class="hover:underline">Disclaimer</a></li>
+                    <li><a href="/contact" class="hover:underline">Contact</a></li>
+                    <li><a href="/sitemap.xml" class="hover:underline">Sitemap</a></li>
+                </ul>
+            </div>
+        </div>
+
+        <div class="border-t px-6 py-6 text-center text-xs text-gray-500">
+            &copy; {{ date('Y') }} {{ $siteName }}. Alle rechten voorbehouden.
+        </div>
+    </footer>
+
+    <script>
+        const hamburger = document.querySelector('#hamburgerIcon');
+        const closeIcon = document.querySelector('#closeIcon');
+        const menu = document.querySelector('#hamburgerMenu');
+        const header = document.querySelector('header');
+        let lastScrollTop = window.scrollY;
+
+        let savedScrollPosition = 0;
+
+        function openMenu() {
+            // Save current scroll position
+            savedScrollPosition = window.scrollY;
+            
+            // Get current scrollbar width
+            const scrollbarWidth = window.innerWidth - document.documentElement.clientWidth;
+            
+            menu.classList.add('open');
+            hamburger.style.display = 'none';
+            closeIcon.style.display = 'block';
+            
+            // Prevent body scroll and maintain position
+            document.body.style.position = 'fixed';
+            document.body.style.top = `-${savedScrollPosition}px`;
+            document.body.style.width = '100%';
+            document.body.style.paddingRight = scrollbarWidth + 'px';
+            
+            // Keep header visible
+            header.style.transform = 'translateY(0)';
+            
+            console.log('Menu opened');
+        }
+
+        function closeMenu() {
+            menu.classList.remove('open');
+            hamburger.style.display = 'block';
+            closeIcon.style.display = 'none';
+            
+            // Restore body scroll and position
+            document.body.style.position = '';
+            document.body.style.top = '';
+            document.body.style.width = '';
+            document.body.style.paddingRight = '';
+            
+            // Restore scroll position
+            window.scrollTo(0, savedScrollPosition);
+            
+            console.log('Menu closed');
+        }
+
+        hamburger.addEventListener('click', (e) => {
+            e.stopPropagation();
+            openMenu();
+        });
+
+        closeIcon.addEventListener('click', (e) => {
+            e.stopPropagation();
+            closeMenu();
+        });
+
+        document.addEventListener('click', (event) => {
+            const isClickInsideMenu = menu.contains(event.target);
+            const isClickOnHamburger = hamburger.contains(event.target);
+            const isClickOnClose = closeIcon.contains(event.target);
+            if (!isClickInsideMenu && !isClickOnHamburger && !isClickOnClose && menu.classList.contains('open')) {
+                closeMenu();
+            }
+        });
+
+        window.addEventListener('scroll', () => {
+            const scrollTop = window.scrollY || document.documentElement.scrollTop;
+            const docHeight = document.body.scrollHeight - window.innerHeight;
+            const scrollPercent = scrollTop / docHeight;
+            const scrollLine = document.getElementById('scrollLine');
+            const isNearTop = scrollTop < 30;
+
+            if (scrollLine) {
+                scrollLine.style.transform = `scaleX(${scrollPercent})`;
+            }
+
+            // Check if menu is open
+            const menuIsOpen = menu.classList.contains('open');
+            
+            if (scrollTop < lastScrollTop || isNearTop || menuIsOpen) {
+                header.style.transform = 'translateY(0)';
+            } else {
+                header.style.transform = 'translateY(-100%)';
+            }
+
+            lastScrollTop = scrollTop <= 0 ? 0 : scrollTop;
+        });
+
+        window.addEventListener('load', () => {
+            const lastUrl = sessionStorage.getItem('scrollUrl');
+            const currentUrl = window.location.pathname + window.location.search;
+            const scrollY = sessionStorage.getItem('scrollPosition');
+
+            if (lastUrl === currentUrl && scrollY !== null) {
+                window.scrollTo(0, parseInt(scrollY));
+            }
+
+            sessionStorage.removeItem('scrollPosition');
+            sessionStorage.removeItem('scrollUrl');
+        });
+    </script>
+        @yield('scripts')
+
+    <style>
+        html {
+            scroll-behavior: smooth;
+        }
+    </style>
+
+@include('partials.black-friday-banner', [
+    'bfActive' => $bfActiveHead,
+    'bfUntil' => $bfUntil
+])
+
+@yield('structured-data')
+@stack('modals')
+
+    @if(getSetting('fathom_site_id'))
+        <!-- Fathom Affiliate Click Tracking -->
+        <script>
+        window.addEventListener('load', () => {
+            // Track alle affiliate links (externe links naar partner.bol.com)
+            document.querySelectorAll('a[rel*="nofollow sponsored"]').forEach(item => {
+                item.addEventListener('click', event => {
+                    try {
+                        let url = new URL(item.getAttribute('href'), window.location.href);
+
+                        // Check of het een externe link is
+                        if (url.hostname !== window.location.hostname) {
+                            // Extract product naam uit link text of data-attribuut
+                            let productName = item.getAttribute('data-product') || item.textContent.trim();
+
+                            // Extract domain voor tracking (bijv. 'bol', 'coolblue')
+                            let domainParts = url.hostname.split('.');
+                            let domainName = domainParts.length > 1 ? domainParts[domainParts.length - 2] : domainParts[0];
+
+                            // Shorten product name (max 50 chars voor clean dashboard)
+                            let shortProductName = productName.length > 50
+                                ? productName.substring(0, 50) + '...'
+                                : productName;
+
+                            // Track event: "Affiliate click: bol - Philips Airfryer XXL"
+                            if (typeof fathom !== 'undefined' && fathom.trackEvent) {
+                                fathom.trackEvent(`Affiliate click: ${domainName} - ${shortProductName}`);
+                            }
+                        }
+                    } catch (e) {
+                        // Silently fail - don't break user experience
+                        console.debug('Fathom tracking error:', e);
+                    }
+                });
+            });
+        });
+        </script>
+        <!-- / Fathom Affiliate Click Tracking -->
+    @endif
+
+    @stack('scripts')
+
+</body>
+</html>

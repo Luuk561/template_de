@@ -1,0 +1,444 @@
+@extends('layouts.app')
+
+@section('title', strip_tags($product->seo_title))
+@section('meta_description', strip_tags($product->seo_description) ?: 'Bekijk dit product en ontdek of het past bij jouw situatie.')
+
+@section('breadcrumbs')
+    <x-breadcrumbs :items="[
+        'Producten' => route('producten.index'),
+        (string) \Illuminate\Support\Str::of(str_replace('-', ' ', $product->title))->words(6, '...') => null
+    ]" />
+@endsection
+
+@section('content')
+@php
+    $affiliateLink = getBolAffiliateLink($product->url, $product->title);
+
+    $defaultImage = '/images/fallback.jpg';
+    $activeImage = $product->images->first()->image_url ?? $defaultImage;
+
+    /**
+     * --- Beschrijving opschonen & robuust renderen ---
+     * 1) Kies bron: ai_description_html > source_description > description
+     * 2) Als het plain text is -> zet om naar nette HTML (paragraphs + simpele lijstjes)
+     * 3) Strip <section> wrappers en demote <h1> naar <h2> (voorkomt dubbele grote headings)
+     */
+    $descRaw = $product->ai_description_html
+        ?? $product->source_description
+        ?? $product->description
+        ?? '';
+
+    $renderHtml = (string) $descRaw;
+
+    // 2) Plain text → HTML (zonder externe helper)
+    if ($renderHtml !== '' && $renderHtml === strip_tags($renderHtml)) {
+        $text = trim($renderHtml);
+
+        // simpele bullets naar <ul><li>
+        $lines = preg_split("/\R+/", $text) ?: [];
+        $inList = false;
+        $buf = [];
+
+        $pushPara = function($t) use (&$buf) {
+            $t = trim($t);
+            if ($t !== '') $buf[] = '<p>'.e($t).'</p>';
+        };
+
+        foreach ($lines as $line) {
+            $line = trim($line);
+            if ($line === '') { continue; }
+
+            // herkent -, •, – als bullet
+            if (preg_match('/^(\-|\•|\–)\s+(.+)$/u', $line, $m)) {
+                if (!$inList) { $buf[] = '<ul>'; $inList = true; }
+                $buf[] = '<li>'.e($m[2]).'</li>';
+            } else {
+                if ($inList) { $buf[] = '</ul>'; $inList = false; }
+                $pushPara($line);
+            }
+        }
+        if ($inList) { $buf[] = '</ul>'; }
+
+        $renderHtml = implode("\n", $buf);
+    }
+
+    // 3) HTML opschonen: unwrap <section>, demote h1 -> h2
+    if (stripos($renderHtml, '<section') !== false) {
+        $renderHtml = preg_replace('#</?section[^>]*>#i', '', $renderHtml) ?? $renderHtml;
+    }
+    // Demote H1
+    $renderHtml = preg_replace('#<\s*h1([^>]*)>#i', '<h2$1>', $renderHtml) ?? $renderHtml;
+    $renderHtml = preg_replace('#</\s*h1\s*>#i', '</h2>', $renderHtml) ?? $renderHtml;
+
+    // (optioneel) mini‑sanitization
+    $renderHtml = preg_replace('#<script\b[^<]*(?:(?!<\/script>)<[^<]*)*<\/script>#i', '', $renderHtml) ?? $renderHtml;
+
+@endphp
+
+<div class="max-w-7xl mx-auto px-4 py-12">
+    <article class="bg-white rounded-2xl shadow-xl overflow-hidden border border-gray-100" itemscope itemtype="https://schema.org/Product">
+
+        <!-- HEADER -->
+        <header class="p-6 sm:p-8 border-b">
+            <h1 itemprop="name" class="text-xl sm:text-3xl font-extrabold text-gray-900 leading-tight mb-4 line-clamp-3">
+                {{ $product->title }}
+            </h1>
+
+            @if($product->rating_average)
+                <div class="flex items-center gap-1 mb-4" aria-label="Gemiddelde beoordeling {{ number_format($product->rating_average, 1) }} uit 5">
+                    @for ($i = 1; $i <= 5; $i++)
+                        <span class="{{ $i <= round($product->rating_average) ? 'text-yellow-500' : 'text-gray-300' }} text-xl">★</span>
+                    @endfor
+                    <span class="text-sm text-gray-600 ml-2 font-medium">{{ number_format($product->rating_average, 1) }}</span>
+                    @if($product->rating_count)
+                        <span class="text-sm text-gray-500">({{ $product->rating_count }})</span>
+                    @endif
+                </div>
+            @endif
+
+            <div class="bg-gradient-to-r from-green-50 to-blue-50 rounded-xl p-4 sm:p-6 border border-green-200">
+                <div class="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
+                    <div>
+                        <p class="text-green-700 text-2xl sm:text-3xl font-black" itemprop="offers" itemscope itemtype="https://schema.org/Offer">
+                            €{{ number_format($product->price, 2, ',', '.') }}
+                            <meta itemprop="price" content="{{ number_format($product->price, 2, '.', '') }}" />
+                            @if($product->strikethrough_price)
+                                <span class="text-red-500 text-lg sm:text-xl line-through ml-3">
+                                    €{{ number_format($product->strikethrough_price, 2, ',', '.') }}
+                                </span>
+                            @endif
+                            <meta itemprop="priceCurrency" content="EUR" />
+                        </p>
+                        @if($product->strikethrough_price)
+                            @php $savings = $product->strikethrough_price - $product->price; @endphp
+                            <p class="text-green-600 font-bold text-sm">Je bespaart €{{ number_format($savings, 2, ',', '.') }}!</p>
+                        @endif
+                    </div>
+                    <div class="text-right">
+                        <p class="text-sm text-gray-600 font-medium">{{ $product->delivery_time ?? 'Levertijd onbekend' }}</p>
+                        <p class="text-xs text-gray-500">Gratis verzending vanaf €20</p>
+                    </div>
+                </div>
+            </div>
+        </header>
+
+        <!-- CONTENT -->
+        <section class="grid grid-cols-1 lg:grid-cols-3 gap-8 p-6 sm:p-8">
+
+            <!-- AFBEELDINGEN -->
+            <aside class="lg:col-span-1 flex flex-col gap-6">
+                <div
+                    x-data="{
+                        selectedIndex: 0,
+                        updateImage(index, url) {
+                            this.selectedIndex = index;
+                            this.$refs.mainImage.src = url;
+                        }
+                    }"
+                    class="flex flex-col gap-4"
+                >
+                    <!-- Grote afbeelding -->
+                    <div class="w-full h-[300px] sm:h-[400px] bg-white border rounded-xl flex items-center justify-center overflow-hidden p-4 sm:p-6">
+                        <img x-ref="mainImage"
+                             src="{{ $activeImage }}"
+                             alt="{{ $product->title }}"
+                             itemprop="image"
+                             class="max-h-full max-w-full object-contain transition duration-300" />
+                    </div>
+
+                    <!-- Thumbnails -->
+                    <div class="flex gap-2 justify-start flex-wrap">
+                        @foreach ($product->images->take(6)->values() as $index => $image)
+                            @php $img = $image->image_url; @endphp
+                            <img
+                                src="{{ $img }}"
+                                @click="updateImage({{ $index }}, '{{ $img }}')"
+                                :class="selectedIndex === {{ $index }} ? 'ring-2 sm:ring-4 ring-blue-500' : 'ring-0'"
+                                class="w-20 sm:w-24 h-20 sm:h-24 object-cover border rounded cursor-pointer hover:ring-2 hover:ring-blue-400 transition"
+                                alt="Afbeelding {{ $loop->iteration }} van {{ $product->title }}"
+                            >
+                        @endforeach
+                    </div>
+                </div>
+
+                <!-- CTA's -->
+                <div class="flex flex-col gap-3 sm:gap-4">
+                    <a href="{{ $affiliateLink }}" target="_blank" rel="nofollow sponsored"
+                       class="bg-gradient-to-r from-blue-600 to-blue-700 hover:from-blue-700 hover:to-blue-800 text-white text-base font-bold px-6 py-4 rounded-xl shadow-lg text-center transition duration-300 min-h-[48px] flex items-center justify-center transform hover:scale-105">
+                        Koop op bol.com
+                    </a>
+
+                    @if($product->review)
+                        <a href="{{ route('reviews.show', $product->review->slug) }}"
+                           class="bg-gray-100 hover:bg-gray-200 text-gray-800 text-base px-6 py-4 rounded-xl shadow text-center transition min-h-[48px] flex items-center justify-center">
+                            Lees review
+                        </a>
+                    @endif
+
+                    @if($product->blogPosts->isNotEmpty())
+                        <a href="{{ route('blogs.show', $product->blogPosts->first()->slug) }}"
+                           class="bg-gray-100 hover:bg-gray-200 text-gray-800 text-base px-6 py-4 rounded-xl shadow text-center transition min-h-[48px] flex items-center justify-center">
+                            📖 Bekijk blog
+                        </a>
+                    @endif
+                </div>
+            </aside>
+
+            <!-- DETAILS -->
+            <section class="lg:col-span-2 flex flex-col justify-between">
+                <div class="mb-6">
+                    <h2 class="text-xl sm:text-2xl font-bold text-gray-900 mb-4 pb-2 border-b-2 border-blue-100">Waarom dit model opvalt</h2>
+                </div>
+
+                <!-- AI-beschrijving (robust render) -->
+                <div class="product-copy mb-6 text-gray-800" itemprop="description">
+                    @if($renderHtml !== '')
+                        {!! $renderHtml !!}
+                    @else
+                        <p>Beschrijving volgt binnenkort.</p>
+                    @endif
+                </div>
+
+                @if($product->specifications->isNotEmpty())
+                    <div class="mb-8">
+                        <h2 class="text-xl sm:text-2xl font-bold text-gray-900 mb-4 pb-2 border-b-2 border-blue-100">Productspecificaties</h2>
+                        
+                        @php
+                            $groupedSpecs = $product->specifications->groupBy('group');
+                        @endphp
+                        
+                        <div class="space-y-4">
+                            @foreach($groupedSpecs as $groupName => $specs)
+                                <div x-data="{ open: {{ $loop->first ? 'true' : 'false' }} }" class="bg-gray-50 rounded-xl overflow-hidden border border-gray-200">
+                                    <!-- Group Header -->
+                                    <button @click="open = !open" 
+                                            class="w-full flex items-center justify-between p-4 text-left hover:bg-gray-100 transition-colors">
+                                        <h3 class="font-bold text-gray-900 text-sm sm:text-base">
+                                            {{ $groupName ?: 'Algemeen' }}
+                                        </h3>
+                                        <svg :class="{'rotate-180': open}" 
+                                             class="w-5 h-5 text-gray-600 transform transition-transform duration-200" 
+                                             fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"/>
+                                        </svg>
+                                    </button>
+                                    
+                                    <!-- Group Content -->
+                                    <div x-show="open" 
+                                         x-transition:enter="transition ease-out duration-300"
+                                         x-transition:enter-start="opacity-0 transform scale-y-0"
+                                         x-transition:enter-end="opacity-100 transform scale-y-100"
+                                         x-transition:leave="transition ease-in duration-200"
+                                         x-transition:leave-start="opacity-100 transform scale-y-100"
+                                         x-transition:leave-end="opacity-0 transform scale-y-0"
+                                         class="transform origin-top">
+                                        <div class="px-4 pb-4 space-y-3 text-sm sm:text-base text-gray-700 border-t border-gray-200">
+                                            @foreach($specs as $spec)
+                                                <div class="flex flex-col sm:flex-row sm:justify-between py-2 border-b border-gray-200 last:border-b-0 gap-1 sm:gap-4">
+                                                    <span class="font-semibold text-gray-800 flex-shrink-0 break-words">{{ $spec->name }}</span>
+                                                    <span class="font-medium text-gray-600 break-words text-left sm:text-right">{{ $spec->value }}</span>
+                                                </div>
+                                            @endforeach
+                                        </div>
+                                    </div>
+                                </div>
+                            @endforeach
+                        </div>
+                    </div>
+                @endif
+
+
+                <div class="grid grid-cols-1 sm:grid-cols-2 gap-4 text-sm text-gray-700 mb-8">
+                    @if($product->category_segment)
+                        <div><strong>Categorie:</strong> {{ $product->category_segment }}</div>
+                    @endif
+                    @if($product->category_chunk)
+                        <div><strong>Subcategorie:</strong> {{ $product->category_chunk }}</div>
+                    @endif
+                </div>
+            </section>
+        </section>
+
+        <!-- Footer info -->
+        <footer class="px-6 sm:px-8 pb-8 border-t pt-6 text-sm text-gray-500 italic">
+            <p class="mt-2">EAN: {{ $product->ean ?? 'Onbekend' }}</p>
+        </footer>
+    </article>
+</div>
+
+<!-- CTA naar Top 5 -->
+<div class="max-w-7xl mx-auto px-4">
+    <section class="bg-gradient-to-r from-indigo-600 to-purple-600 text-white rounded-2xl shadow-lg p-6 sm:p-8 mt-12 mb-8 flex flex-col sm:flex-row items-center justify-between gap-4">
+        <div class="flex-1">
+            <h2 class="text-xl sm:text-2xl font-bold mb-2">Ontdek de Top 5 best beoordeelde modellen</h2>
+            <p class="text-sm sm:text-base">
+                Bekijk onze zorgvuldig geselecteerde top 5 en maak een keuze waar je 100% tevreden over bent.
+            </p>
+        </div>
+        <a href="{{ route('producten.top') }}"
+           class="inline-block bg-yellow-400 hover:bg-yellow-500 text-gray-900 font-semibold py-2 sm:py-3 px-6 sm:px-8 rounded-lg transition shadow-md whitespace-nowrap">
+            Bekijk de Top 5
+        </a>
+    </section>
+</div>
+
+@php
+    use Spatie\SchemaOrg\Schema;
+
+    $siteName = getSetting('site_name', config('app.name'));
+    $favicon = getSetting('favicon_url', asset('favicon.png'));
+
+    // Gebruik de opgeschoonde HTML van hierboven voor schema
+    $descForSchema = strip_tags($renderHtml);
+    if (empty($descForSchema)) {
+        $descForSchema = 'Productbeschrijving wordt binnenkort toegevoegd.';
+    }
+
+    // Determine availability based on delivery_time or assume in stock
+    $availabilityUrl = 'https://schema.org/InStock';
+    if ($product->delivery_time && stripos($product->delivery_time, 'niet beschikbaar') !== false) {
+        $availabilityUrl = 'https://schema.org/OutOfStock';
+    }
+
+    // Ensure we have at least one image
+    $productImages = $product->images->pluck('image_url')->filter()->values()->toArray();
+    if (empty($productImages)) {
+        $productImages = [$product->image_url ?? asset('images/fallback.jpg')];
+    }
+
+    $offers = Schema::offer()
+        ->price(number_format($product->price ?? 0, 2, '.', ''))
+        ->priceCurrency('EUR')
+        ->url($product->url)
+        ->availability(Schema::itemAvailability()->setProperty('@id', $availabilityUrl))
+        ->priceValidUntil(now()->addDays(30));
+
+    $structuredProduct = Schema::product()
+        ->name($product->title)
+        ->description($descForSchema)
+        ->image($productImages)
+        ->sku($product->ean ?? 'product-' . $product->id)
+        ->offers($offers);
+
+    // Add brand if available
+    if ($product->brand) {
+        $structuredProduct->brand(Schema::brand()->name($product->brand));
+    }
+
+    // Add rating if available with minimum 1 review
+    if ($product->rating_average && $product->rating_count && $product->rating_count >= 1) {
+        $structuredProduct->aggregateRating(
+            Schema::aggregateRating()
+                ->ratingValue($product->rating_average)
+                ->reviewCount($product->rating_count)
+        );
+    }
+@endphp
+
+<script type="application/ld+json">
+{!! $structuredProduct->toScript() !!}
+</script>
+
+{{-- Minimale, zelfstandige opmaak voor de beschrijving (geen Tailwind Typography vereist) --}}
+<style>
+.product-copy h2{font-weight:700;font-size:1.25rem;margin:1rem 0 .5rem}
+.product-copy h3{font-weight:600;margin:.75rem 0 .25rem}
+.product-copy p{margin:.5rem 0 1rem;line-height:1.7}
+.product-copy ul{list-style:disc;margin:.5rem 0 1rem 1.25rem;padding-left:1rem}
+.product-copy li{margin:.25rem 0}
+</style>
+
+<!-- Sticky Mobile CTA -->
+<div class="md:hidden fixed bottom-0 left-0 right-0 z-50 bg-white border-t border-gray-200 p-4 shadow-lg">
+    <div class="flex items-center gap-4">
+        <div class="flex-1">
+            <p class="text-lg font-bold text-green-600">€{{ number_format($product->price, 2, ',', '.') }}</p>
+            @if($product->strikethrough_price)
+                <p class="text-sm text-gray-500 line-through">€{{ number_format($product->strikethrough_price, 2, ',', '.') }}</p>
+            @endif
+        </div>
+        <a href="{{ $affiliateLink }}" target="_blank" rel="nofollow sponsored"
+           class="bg-blue-600 hover:bg-blue-700 text-white font-bold py-3 px-6 rounded-xl shadow-lg transition flex-shrink-0">
+            Bestellen
+        </a>
+    </div>
+</div>
+
+<!-- Extra bottom padding for sticky CTA -->
+<div class="md:hidden h-20"></div>
+
+<!-- RELATED PRODUCTS -->
+@if($relatedProducts->count() > 0)
+<section class="w-full py-16 px-4 bg-gradient-to-b from-gray-50 to-white">
+    <div class="max-w-7xl mx-auto">
+        <div class="text-center mb-10">
+            <h2 class="text-2xl sm:text-3xl font-bold text-gray-900 mb-2">Vergelijkbare producten</h2>
+            <p class="text-gray-600">Andere producten die je interessant kunt vinden</p>
+        </div>
+
+        <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
+            @foreach($relatedProducts as $relatedProduct)
+                @php
+                    $relatedAffiliateLink = getBolAffiliateLink($relatedProduct->url, $relatedProduct->title);
+                    $relatedRating = $relatedProduct->rating_average ?? 0;
+                @endphp
+
+                <div class="bg-white rounded-xl shadow-md hover:shadow-2xl p-5 flex flex-col h-full transition-all duration-300 hover:-translate-y-2 border border-gray-100">
+                    <!-- Image -->
+                    <div class="h-36 flex items-center justify-center mb-4">
+                        <img src="{{ $relatedProduct->image_url ?? 'https://via.placeholder.com/300x300?text=Geen+Afbeelding' }}"
+                             alt="{{ $relatedProduct->title }}"
+                             class="max-h-full max-w-full object-contain hover:scale-105 transition-transform duration-300" loading="lazy">
+                    </div>
+
+                    <!-- Brand -->
+                    @if($relatedProduct->brand)
+                        <p class="text-xs text-gray-500 font-medium mb-1 text-center">{{ $relatedProduct->brand }}</p>
+                    @endif
+
+                    <!-- Title -->
+                    <h3 class="text-sm font-bold text-center text-gray-900 leading-tight line-clamp-2 mb-3 min-h-[2.5rem]">
+                        {{ Str::limit($relatedProduct->title, 60) }}
+                    </h3>
+
+                    <!-- Rating -->
+                    @if($relatedRating > 0)
+                        <div class="flex items-center justify-center gap-1 mb-3">
+                            <div class="flex items-center">
+                                @for($i = 1; $i <= 5; $i++)
+                                    <svg class="w-3.5 h-3.5 {{ $i <= round($relatedRating) ? 'text-yellow-400' : 'text-gray-300' }} fill-current" viewBox="0 0 20 20">
+                                        <path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z"/>
+                                    </svg>
+                                @endfor
+                            </div>
+                            <span class="text-xs text-gray-600 ml-1 font-medium">{{ number_format($relatedRating, 1) }}</span>
+                            @if($relatedProduct->rating_count)
+                                <span class="text-xs text-gray-400">({{ $relatedProduct->rating_count }})</span>
+                            @endif
+                        </div>
+                    @endif
+
+                    <!-- Price -->
+                    <div class="text-center mb-4">
+                        <p class="text-gray-900 font-black text-lg">€{{ number_format($relatedProduct->price ?? 0, 2, ',', '.') }}</p>
+                    </div>
+
+                    <!-- Buttons -->
+                    <div class="mt-auto flex flex-col gap-2">
+                        <a href="{{ route('producten.show', $relatedProduct->slug) }}"
+                           class="bg-purple-600 hover:bg-purple-700 text-white text-sm font-bold py-2.5 px-4 rounded-lg text-center transition duration-200 shadow-md hover:shadow-lg">
+                            Bekijk product
+                        </a>
+                        <a href="{{ $relatedAffiliateLink }}" target="_blank" rel="nofollow noopener"
+                           class="bg-white hover:bg-gray-50 text-gray-900 text-sm font-semibold py-2.5 px-4 rounded-lg text-center transition duration-200 border-2 border-gray-200 hover:border-gray-300">
+                            Koop op bol.com
+                        </a>
+                    </div>
+                </div>
+            @endforeach
+        </div>
+    </div>
+</section>
+@endif
+
+@endsection
