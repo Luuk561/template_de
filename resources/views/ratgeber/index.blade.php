@@ -8,7 +8,7 @@ use App\Support\ContentJson;
 
 @section('breadcrumbs')
     <x-breadcrumbs :items="[
-        'Blogs' => route('blogs.index'),
+        'Blogs' => route('ratgeber.index'),
     ]" />
 @endsection
 
@@ -111,7 +111,7 @@ use App\Support\ContentJson;
                     <p class="text-gray-600 mb-4 flex-grow text-sm leading-relaxed">
                         {{ \Illuminate\Support\Str::limit(strip_tags($post->meta_description ?? $post->excerpt ?? $post->content), 140) }}
                     </p>
-                    <a href="{{ route('blogs.show', $post->slug) }}" class="mt-auto cta-button inline-block text-white font-semibold py-3 px-6 rounded-xl transition text-center shadow-sm">
+                    <a href="{{ route('ratgeber.show', $post->slug) }}" class="mt-auto cta-button inline-block text-white font-semibold py-3 px-6 rounded-xl transition text-center shadow-sm">
                         Lees artikel
                     </a>
                 </article>
@@ -138,8 +138,8 @@ use App\Support\ContentJson;
             <div class="grid lg:grid-cols-2 gap-12 items-center">
                 {{-- Button links --}}
                 <div class="order-2 lg:order-1 flex justify-center lg:justify-start">
-                    <a href="{{ route('producten.index') }}" class="cta-button inline-block px-8 py-4 text-white font-semibold rounded-xl shadow-lg transition hover:scale-105">
-                        Ontdek de nieuwste modellen
+                    <a href="{{ route('produkte.index') }}" class="cta-button inline-block px-8 py-4 text-white font-semibold rounded-xl shadow-lg transition hover:scale-105">
+                        Entdecken de nieuwste modellen
                     </a>
                 </div>
                 {{-- Tekst rechts --}}

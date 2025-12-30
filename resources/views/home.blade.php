@@ -5,15 +5,15 @@
 @section('content')
 
 @php
-    \Carbon\Carbon::setLocale('nl');
-    $huidigeMaand = \Carbon\Carbon::now('Europe/Amsterdam')->translatedFormat('F');
-    $huidigJaar = \Carbon\Carbon::now('Europe/Amsterdam')->year;
+    \Carbon\Carbon::setLocale('de');
+    $huidigeMaand = \Carbon\Carbon::now('Europe/Berlin')->translatedFormat('F');
+    $huidigJaar = \Carbon\Carbon::now('Europe/Berlin')->year;
 
     // Homepage.hero: structured (title+subtitle) or HTML fallback
     if (hasStructuredContent('homepage.hero')) {
-        $heroContent = getContent('homepage.hero.title', ['maand' => $huidigeMaand, 'jaar' => $huidigJaar]);
+        $heroContent = getContent('homepage.hero.title', ['Monat' => $huidigeMaand, 'jaar' => $huidigJaar]);
     } else {
-        $heroContent = getContent('homepage.hero', ['maand' => $huidigeMaand, 'jaar' => $huidigJaar]);
+        $heroContent = getContent('homepage.hero', ['Monat' => $huidigeMaand, 'jaar' => $huidigJaar]);
     }
 
     $heroImage    = getImage('homepage.hero');
@@ -22,8 +22,8 @@
 
     // Generate meta description for schema (same logic as layout)
     $siteName = getSetting('site_name', config('app.name'));
-    $niche = getSetting('site_niche', 'producten');
-    $metaDesc = "Alles over {$niche}: vergelijken, uitleg en actuele deals. Vind snel wat bij jou past op {$siteName}.";
+    $niche = getSetting('site_niche', 'Produkte');
+    $metaDesc = "Alles über {$niche}: vergleichen, Erklärungen und aktuelle Angebote. Finden Sie schnell, was zu Ihnen passt auf {$siteName}.";
 
     // Black Friday is handled by the layout, no need to include here
 @endphp
@@ -121,7 +121,7 @@
                         @php
                             $layout = $layouts[$index] ?? $layouts[0];
                         @endphp
-                        <a href="{{ route('producten.show', $product->slug) }}"
+                        <a href="{{ route('produkte.show', $product->slug) }}"
                            class="group relative bg-white rounded-2xl overflow-hidden shadow-sm hover:shadow-xl transition-all duration-300 p-4 sm:p-6 border border-gray-100 hover:border-gray-200 {{ $layout['col'] }} {{ $layout['row'] }} {{ $layout['start-col'] }} {{ $layout['start-row'] }}">
                             <div class="w-full h-full flex items-center justify-center">
                                 <img src="{{ $product->image_url ?? 'https://via.placeholder.com/300x300?text=Geen+Afbeelding' }}"
@@ -140,7 +140,7 @@
                     <div class="inline-flex items-center gap-2 px-3 py-1.5 bg-white rounded-full shadow-sm border border-gray-200">
                         <div class="w-1.5 h-1.5 bg-green-500 rounded-full animate-pulse"></div>
                         <span class="text-xs font-medium text-gray-600">
-                            Bijgewerkt {{ \Carbon\Carbon::now()->locale('nl')->translatedFormat('F Y') }}
+                            Aktualisiert {{ \Carbon\Carbon::now()->locale('de')->translatedFormat('F Y') }}
                         </span>
                     </div>
 
@@ -155,28 +155,28 @@
                         <svg class="w-4 h-4 text-green-600" fill="currentColor" viewBox="0 0 20 20">
                             <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clip-rule="evenodd"/>
                         </svg>
-                        <span class="font-medium">{{ \App\Models\Product::count() }}+ producten</span>
+                        <span class="font-medium">{{ \App\Models\Product::count() }}+ Produkte</span>
                     </div>
                     <div class="flex items-center gap-1.5 text-gray-700">
                         <svg class="w-4 h-4 text-blue-600" fill="currentColor" viewBox="0 0 20 20">
                             <path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.519 4.674a1 1 0 00.95.69h4.915c.969 0 1.371 1.24.588 1.81l-3.976 2.888a1 1 0 00-.363 1.118l1.518 4.674c.3.922-.755 1.688-1.538 1.118l-3.976-2.888a1 1 0 00-1.176 0l-3.976 2.888c-.783.57-1.838-.197-1.538-1.118l1.518-4.674a1 1 0 00-.363-1.118l-3.976-2.888c-.784-.57-.38-1.81.588-1.81h4.914a1 1 0 00.951-.69l1.519-4.674z"/>
                         </svg>
-                        <span class="font-medium">Onafhankelijk</span>
+                        <span class="font-medium">Unabhängig</span>
                     </div>
                     <div class="flex items-center gap-1.5 text-gray-700">
                         <svg class="w-4 h-4 text-purple-600" fill="currentColor" viewBox="0 0 20 20">
                             <path fill-rule="evenodd" d="M11.3 1.046A1 1 0 0112 2v5h4a1 1 0 01.82 1.573l-7 10A1 1 0 018 18v-5H4a1 1 0 01-.82-1.573l7-10a1 1 0 011.12-.38z" clip-rule="evenodd"/>
                         </svg>
-                        <span class="font-medium">Direct vergelijken</span>
+                        <span class="font-medium">Direkt vergleichen</span>
                     </div>
                 </div>
 
                 <div class="flex flex-col sm:flex-row items-stretch sm:items-center gap-3">
-                    <a href="{{ route('producten.top') }}" class="cta-button inline-block px-6 py-3.5 text-white font-semibold rounded-xl shadow-sm w-full sm:w-auto text-center text-sm sm:text-base">
-                        Bekijk de Top 5
+                    <a href="{{ route('produkte.top') }}" class="cta-button inline-block px-6 py-3.5 text-white font-semibold rounded-xl shadow-sm w-full sm:w-auto text-center text-sm sm:text-base">
+                        Ansehen Sie die Top 5
                     </a>
-                    <a href="{{ route('producten.index') }}" class="cta-button-secondary inline-block px-6 py-3.5 font-semibold rounded-xl w-full sm:w-auto text-center text-sm sm:text-base">
-                        Alle producten
+                    <a href="{{ route('produkte.index') }}" class="cta-button-secondary inline-block px-6 py-3.5 font-semibold rounded-xl w-full sm:w-auto text-center text-sm sm:text-base">
+                        Alle Produkte
                     </a>
                 </div>
             </div>
@@ -190,16 +190,16 @@
     <div class="max-w-7xl mx-auto px-6 sm:px-8">
         <div class="text-center mb-10 sm:mb-14 space-y-4">
             <h2 class="text-3xl sm:text-4xl lg:text-5xl font-black tracking-tight text-gray-900">
-                Top 10 Beste Producten
+                Top 10 Beste Produkte
             </h2>
             <p class="text-gray-600 text-lg max-w-2xl mx-auto">
-                De populairste keuzes op een rij. Vergelijk direct en vind wat bij jou past.
+                Die beliebtesten Optionen auf einen Blick. Vergleichen Sie direkt und finden Sie, was zu Ihnen passt.
             </p>
             <div class="inline-flex items-center gap-2 px-4 py-2 bg-gray-100 rounded-full border border-gray-200">
                 <svg class="w-3.5 h-3.5 text-gray-600" fill="currentColor" viewBox="0 0 20 20">
                     <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm1-12a1 1 0 10-2 0v4a1 1 0 00.293.707l2.828 2.829a1 1 0 101.415-1.415L11 9.586V6z" clip-rule="evenodd"/>
                 </svg>
-                <span class="text-sm font-medium text-gray-700">Dagelijks bijgewerkt</span>
+                <span class="text-sm font-medium text-gray-700">Täglich aktualisiert</span>
             </div>
         </div>
 
@@ -218,7 +218,7 @@
 
                 <div class="bg-white hover:bg-gray-50 transition-all duration-200 {{ !$isLast ? 'border-b border-gray-100' : '' }} relative group cursor-pointer">
                     <!-- Mobile Layout (< 768px) -->
-                    <a href="{{ route('producten.show', $product->slug) }}" class="absolute inset-0 z-0"></a>
+                    <a href="{{ route('produkte.show', $product->slug) }}" class="absolute inset-0 z-0"></a>
                     <div class="md:hidden p-4 relative pointer-events-none">
                         <div class="flex items-center gap-3 mb-3">
                             <div class="flex-shrink-0 w-10 h-10 rounded-xl flex items-center justify-center text-gray-900 font-black text-lg bg-gray-100 border-2 border-gray-200">
@@ -259,32 +259,32 @@
                                     @endif
                                     <p class="text-gray-900 font-black text-lg">€{{ number_format($product->price ?? 0, 2, ',', '.') }}</p>
                                     @if($savings > 0)
-                                        <p class="text-green-600 font-bold text-xs">Bespaar €{{ number_format($savings, 2, ',', '.') }}</p>
+                                        <p class="text-green-600 font-bold text-xs">Sparen €{{ number_format($savings, 2, ',', '.') }}</p>
                                     @endif
                                 </div>
                             </div>
                         </div>
 
                         <div class="flex gap-2 items-center pointer-events-auto">
-                            <label class="flex items-center gap-1 cursor-pointer group" title="Vergelijk dit product">
+                            <label class="flex items-center gap-1 cursor-pointer group" title="Dieses Produkt vergleichen">
                                 <input
                                     type="checkbox"
                                     class="compare-checkbox hidden"
                                     data-ean="{{ $product->ean }}"
-                                    aria-label="Vink aan om {{ $product->title }} te vergelijken" />
+                                    aria-label="Wählen Sie aus, um {{ $product->title }} zu vergleichen" />
                                 <div class="compare-icon w-10 h-10 flex items-center justify-center border-2 border-gray-200 rounded-xl hover:border-gray-300 transition bg-white">
                                     <svg xmlns="http://www.w3.org/2000/svg" class="w-4 h-4 text-gray-500" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M7 16l-4-4m0 0l4-4m-4 4h18m-4 4l4-4m0 0l-4-4"/>
                                     </svg>
                                 </div>
                             </label>
-                            <a href="{{ route('producten.show', $product->slug) }}"
+                            <a href="{{ route('produkte.show', $product->slug) }}"
                                class="flex-1 bg-white hover:bg-gray-50 text-gray-900 text-sm font-semibold py-3 px-4 rounded-xl text-center transition border-2 border-gray-200">
-                                Bekijk
+                                Ansehen
                             </a>
                             <a href="{{ $affiliateLink }}" target="_blank" rel="nofollow sponsored"
                                class="flex-1 cta-button text-white text-sm font-semibold py-3 px-4 rounded-xl text-center transition shadow-sm leading-tight">
-                                Bekijk op bol.com
+                                Bei Bol.com ansehen
                             </a>
                         </div>
                     </div>
@@ -335,31 +335,31 @@
                             @endif
                             <p class="text-gray-900 font-black text-lg">€{{ number_format($product->price ?? 0, 2, ',', '.') }}</p>
                             @if($savings > 0)
-                                <p class="text-green-600 font-bold text-xs mt-0.5">Bespaar €{{ number_format($savings, 2, ',', '.') }}</p>
+                                <p class="text-green-600 font-bold text-xs mt-0.5">Sparen €{{ number_format($savings, 2, ',', '.') }}</p>
                             @endif
                         </div>
 
                         <!-- Actions -->
                         <div class="col-span-3 flex gap-2 items-center pointer-events-auto">
-                            <label class="flex items-center gap-1 cursor-pointer group" title="Vergelijk dit product">
+                            <label class="flex items-center gap-1 cursor-pointer group" title="Dieses Produkt vergleichen">
                                 <input
                                     type="checkbox"
                                     class="compare-checkbox hidden"
                                     data-ean="{{ $product->ean }}"
-                                    aria-label="Vink aan om {{ $product->title }} te vergelijken" />
+                                    aria-label="Wählen Sie aus, um {{ $product->title }} zu vergleichen" />
                                 <div class="compare-icon w-10 h-10 flex items-center justify-center border-2 border-gray-200 rounded-xl hover:border-gray-300 transition flex-shrink-0 bg-white">
                                     <svg xmlns="http://www.w3.org/2000/svg" class="w-4 h-4 text-gray-500" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M7 16l-4-4m0 0l4-4m-4 4h18m-4 4l4-4m0 0l-4-4"/>
                                     </svg>
                                 </div>
                             </label>
-                            <a href="{{ route('producten.show', $product->slug) }}"
+                            <a href="{{ route('produkte.show', $product->slug) }}"
                                class="flex-1 bg-white hover:bg-gray-50 text-gray-900 text-sm font-semibold py-2.5 px-3 rounded-xl text-center transition border-2 border-gray-200">
-                                Bekijk
+                                Ansehen
                             </a>
                             <a href="{{ $affiliateLink }}" target="_blank" rel="nofollow sponsored"
                                class="flex-1 cta-button text-white text-sm font-semibold py-2.5 px-3 rounded-xl text-center transition shadow-sm leading-tight">
-                                Koop nu
+                                Jetzt kaufen
                             </a>
                         </div>
                     </div>
@@ -369,9 +369,9 @@
 
         <!-- Link to all products -->
         <div class="text-center mt-10">
-            <a href="{{ route('producten.index') }}"
+            <a href="{{ route('produkte.index') }}"
                class="inline-flex items-center gap-2 text-gray-900 hover:text-gray-600 font-semibold text-base transition group">
-                Bekijk alle producten
+                Alle Produkte ansehen
                 <svg class="w-5 h-5 transition-transform group-hover:translate-x-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 8l4 4m0 0l-4 4m4-4H3"/>
                 </svg>
@@ -392,16 +392,16 @@
                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
                         d="M7 16l-4-4m0 0l4-4m-4 4h18m-4 4l4-4m0 0l-4-4"/>
             </svg>
-            Vergelijken <span id="compare-count" class="font-bold">0/3</span>
+            Vergleichen <span id="compare-count" class="font-bold">0/3</span>
         </button>
 
         <button
             id="clear-selection"
             class="bg-gray-100 hover:bg-gray-200 text-gray-700 text-sm font-semibold py-3 px-5 rounded-xl transition focus:outline-none"
             type="button"
-            title="Wis alle geselecteerde producten"
+            title="Alle ausgewählten Produkte löschen"
         >
-            Wissen
+            Löschen
         </button>
     </div>
 </div>
@@ -421,8 +421,8 @@
                 </div>
                 {{-- Button rechts --}}
                 <div class="flex justify-center lg:justify-end">
-                    <a href="{{ route('producten.index') }}" class="cta-button inline-block px-8 py-4 text-white font-semibold rounded-xl shadow-lg transition hover:scale-105">
-                        Bekijk alle {{ $niche }}
+                    <a href="{{ route('produkte.index') }}" class="cta-button inline-block px-8 py-4 text-white font-semibold rounded-xl shadow-lg transition hover:scale-105">
+                        Alle ansehen {{ $niche }}
                     </a>
                 </div>
             </div>
@@ -443,8 +443,8 @@
             <div class="grid lg:grid-cols-2 gap-12 items-center">
                 {{-- Button links --}}
                 <div class="order-2 lg:order-1 flex justify-center lg:justify-start">
-                    <a href="{{ route('producten.index') }}" class="cta-button inline-block px-8 py-4 text-white font-semibold rounded-xl shadow-lg transition hover:scale-105">
-                        Ontdek alle {{ $niche }}
+                    <a href="{{ route('produkte.index') }}" class="cta-button inline-block px-8 py-4 text-white font-semibold rounded-xl shadow-lg transition hover:scale-105">
+                        Entdecken Sie alle {{ $niche }}
                     </a>
                 </div>
                 {{-- Tekst rechts --}}
@@ -506,7 +506,7 @@
 <section class="w-full py-16 sm:py-20 lg:py-24 px-6 sm:px-8 bg-white text-gray-900">
     <div class="max-w-7xl mx-auto space-y-12">
         <h2 class="text-3xl sm:text-4xl lg:text-5xl font-black text-center tracking-tight text-gray-900">
-            Veelgestelde vragen
+            Häufig gestellte Fragen
         </h2>
         <div class="space-y-4">
             @foreach($faqs as $faq)
@@ -544,7 +544,7 @@
             <div class="grid lg:grid-cols-2 gap-12 items-center">
                 {{-- Tekst links --}}
                 <div>
-                    <h2 class="text-3xl sm:text-4xl font-bold mb-6">{!! getContent('homepage.seo2.title', ['maand' => $huidigeMaand]) !!}</h2>
+                    <h2 class="text-3xl sm:text-4xl font-bold mb-6">{!! getContent('homepage.seo2.title', ['Monat' => $huidigeMaand]) !!}</h2>
                     <p class="text-lg mb-6 text-gray-700">{!! getContent('homepage.seo2.intro') !!}</p>
 
                     <div class="space-y-6">
@@ -564,8 +564,8 @@
                 </div>
                 {{-- Button rechts --}}
                 <div class="flex justify-center lg:justify-end">
-                    <a href="{{ route('producten.index') }}" class="cta-button inline-block px-8 py-4 text-white font-semibold rounded-xl shadow-lg transition hover:scale-105">
-                        Start met filteren
+                    <a href="{{ route('produkte.index') }}" class="cta-button inline-block px-8 py-4 text-white font-semibold rounded-xl shadow-lg transition hover:scale-105">
+                        Mit dem Filtern beginnen
                     </a>
                 </div>
             </div>
@@ -573,7 +573,7 @@
     @else
         {{-- FALLBACK: HTML MODE --}}
         <div class="max-w-4xl mx-auto prose prose-lg">
-            {!! getContent('homepage.seo2', ['maand' => $huidigeMaand]) !!}
+            {!! getContent('homepage.seo2', ['Monat' => $huidigeMaand]) !!}
         </div>
     @endif
 </section>
@@ -597,10 +597,10 @@
             "url": "{{ $siteUrl }}",
             "name": "{{ $siteName }}",
             "description": "{{ $metaDesc }}",
-            "inLanguage": "nl-NL",
+            "inLanguage": "de-DE",
             "potentialAction": {
                 "@type": "SearchAction",
-                "target": "{{ $siteUrl }}/zoeken?q={search_term_string}",
+                "target": "{{ $siteUrl }}/suchen?q={search_term_string}",
                 "query-input": "required name=search_term_string"
             }
         },
@@ -676,7 +676,7 @@
                 const selected = [...checkboxes].filter(cb => cb.checked);
                 if (selected.length > 3) {
                     cb.checked = false;
-                    alert('Je kunt maximaal 3 producten vergelijken.');
+                    alert('Sie können maximal 3 Produkte vergleichen.');
                     return;
                 }
 
@@ -702,9 +702,9 @@
                 .map(cb => cb.dataset.ean);
 
             if (selectedEans.length >= 2) {
-                window.location.href = `/vergelijken?eans=${selectedEans.join(',')}`;
+                window.location.href = `/vergleichen?eans=${selectedEans.join(',')}`;
             } else {
-                alert('Selecteer minimaal twee producten om te vergelijken.');
+                alert('Wählen Sie mindestens zwei Produkte zum Vergleichen aus.');
             }
         });
 

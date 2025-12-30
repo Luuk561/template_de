@@ -70,7 +70,7 @@ class ProductController extends Controller
             ->orderBy('brand')
             ->pluck('brand');
 
-        return view('producten.index', compact('products', 'merken'));
+        return view('produkte.index', compact('products', 'merken'));
     }
 
     public function show($slug)
@@ -103,18 +103,18 @@ class ProductController extends Controller
             ->limit($product->is_available ? 4 : 6) // More alternatives if product unavailable
             ->get();
 
-        return view('producten.show', compact('product', 'relatedProducts'));
+        return view('produkte.show', compact('product', 'relatedProducts'));
     }
 
     public function top()
     {
-        $producten = Cache::remember('top5_products', 3600, function () {
+        $products = Cache::remember('top5_products', 3600, function () {
             return $this->getTop5Products();
         });
 
         $niche = getSetting('niche', 'producten');
 
-        return view('top-5', compact('producten', 'niche'));
+        return view('top-5', compact('products', 'niche'));
     }
 
     private function getTop5Products()
@@ -189,7 +189,7 @@ class ProductController extends Controller
             ->orderByDesc('gemiddelde_rating')
             ->get();
 
-        return view('producten.merken', compact('merken'));
+        return view('produkte.merken', compact('merken'));
     }
 
     private function getSmartPickIds(): array
@@ -247,5 +247,39 @@ class ProductController extends Controller
         }
 
         return $picks->pluck('id')->toArray();
+    }
+
+    /**
+     * Search API for autocomplete suggestions
+     */
+    public function searchApi(Request $request)
+    {
+        $query = $request->get('q', '');
+
+        if (strlen($query) < 2) {
+            return response()->json([]);
+        }
+
+        $products = Product::where('is_available', true)
+            ->where(function($q) use ($query) {
+                $q->where('title', 'LIKE', "%{$query}%")
+                  ->orWhere('brand', 'LIKE', "%{$query}%");
+            })
+            ->orderBy('rating_average', 'desc')
+            ->limit(5)
+            ->get(['id', 'slug', 'title', 'brand', 'price', 'image_url', 'rating_average']);
+
+        return response()->json($products->map(function($product) {
+            return [
+                'id' => $product->id,
+                'slug' => $product->slug,
+                'title' => $product->title,
+                'brand' => $product->brand,
+                'price' => $product->price,
+                'image_url' => $product->image_url,
+                'rating' => $product->rating_average,
+                'url' => route('produkte.show', $product->slug),
+            ];
+        }));
     }
 }

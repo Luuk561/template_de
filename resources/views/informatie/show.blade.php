@@ -133,11 +133,11 @@
 @if($relatedPages->count() > 0)
 <div class="bg-gray-50 py-16">
     <div class="max-w-7xl mx-auto px-6 lg:px-8">
-        <h2 class="text-2xl font-bold text-gray-900 mb-8">Meer informatie over dit onderwerp</h2>
+        <h2 class="text-2xl font-bold text-gray-900 mb-8">Mehr Informationen over dit onderwerp</h2>
 
         <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
             @foreach($relatedPages as $related)
-                <a href="{{ route('informatie.show', $related->slug) }}"
+                <a href="{{ route('information.show', $related->slug) }}"
                    class="group bg-white rounded-2xl p-6 border border-gray-200 hover:shadow-lg transition-all duration-200">
                     <h3 class="font-bold text-gray-900 mb-2 group-hover:text-blue-600 transition-colors">
                         {{ $related->menu_title ?? $related->title }}
@@ -148,7 +148,7 @@
                         </p>
                     @endif
                     <div class="mt-4 inline-flex items-center text-sm text-blue-600 font-medium">
-                        Lees meer
+                        Mehr lesen
                         <svg class="w-4 h-4 ml-1 group-hover:translate-x-1 transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"/>
                         </svg>
@@ -167,22 +167,22 @@
             Op zoek naar {{ strtolower(getSetting('site_niche', 'het beste product')) }}?
         </h2>
         <p class="text-xl text-gray-600 mb-10 max-w-2xl mx-auto">
-            Vergelijk alle modellen en vind het perfecte product dat bij jouw wensen en budget past.
+            Vergleichen alle modellen en vind het perfecte product dat bij jouw wensen en budget past.
         </p>
         <div class="flex flex-col sm:flex-row items-center justify-center gap-4">
-            <a href="{{ route('producten.index') }}"
+            <a href="{{ route('produkte.index') }}"
                class="inline-flex items-center justify-center px-8 py-4 bg-blue-600 hover:bg-blue-700 text-white font-semibold rounded-xl transition-all duration-200 shadow-md hover:shadow-lg min-w-[200px]">
-                Bekijk alle producten
+                Alle ansehen Produkte
                 <svg class="w-5 h-5 ml-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"/>
                 </svg>
             </a>
-            <a href="{{ route('producten.top') }}"
+            <a href="{{ route('produkte.top') }}"
                class="inline-flex items-center justify-center px-8 py-4 bg-white hover:bg-gray-50 text-gray-900 font-semibold rounded-xl border-2 border-gray-300 transition-all duration-200 min-w-[200px]">
                 <svg class="w-5 h-5 mr-2 text-yellow-500" fill="currentColor" viewBox="0 0 20 20">
                     <path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z"/>
                 </svg>
-                Bekijk onze Top 5
+                Ansehen onze Top 5
             </a>
         </div>
     </div>

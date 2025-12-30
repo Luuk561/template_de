@@ -1,12 +1,12 @@
-@props(['text' => 'Bekijk alle producten', 'url' => null, 'classes' => ''])
+@props(['text' => 'Alle ansehen Produkte', 'url' => null, 'classes' => ''])
 
 @php
-  $finalUrl = $url ?? route('producten.index');
+  $finalUrl = $url ?? route('produkte.index');
 @endphp
 
 <div class="border border-gray-200 rounded-3xl p-8 text-center {{ $classes }}">
-  <h3 class="text-2xl font-light text-gray-900 mb-4">Ontdek alle opties</h3>
-  <p class="text-lg text-gray-600 font-light mb-8 leading-relaxed">Vergelijk alle modellen en vind de perfecte keuze voor jouw situatie.</p>
+  <h3 class="text-2xl font-light text-gray-900 mb-4">Entdecken alle opties</h3>
+  <p class="text-lg text-gray-600 font-light mb-8 leading-relaxed">Vergleichen alle modellen en vind de perfecte keuze voor jouw situatie.</p>
   
   <a href="{{ $finalUrl }}" 
      class="inline-flex items-center bg-gray-900 hover:bg-gray-800 text-white font-light px-8 py-4 rounded-full transition duration-200 text-lg">

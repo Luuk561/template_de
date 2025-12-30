@@ -11,7 +11,7 @@
 @section('content')
 
 @php
-    $heroImage = getImage('producten.merken');
+    $heroImage = getImage('Produkte.merken');
     $hasPageImage = !empty($heroImage);
     $primaryColor = getSetting('primary_color', '#7c3aed');
 @endphp
@@ -92,11 +92,11 @@
                         {{ number_format($merk->gemiddelde_rating, 1) }}/5
                     </div>
                     <p class="text-gray-600 text-sm mb-6 text-center">
-                        {{ $merk->aantal }} {{ $merk->aantal == 1 ? 'product' : 'producten' }}
+                        {{ $merk->aantal }} {{ $merk->aantal == 1 ? 'product' : 'Produkte' }}
                     </p>
-                    <a href="{{ route('producten.index', ['brand' => $merk->brand]) }}"
+                    <a href="{{ route('produkte.index', ['brand' => $merk->brand]) }}"
                        class="w-full text-center cta-button text-white font-semibold py-3 px-6 rounded-xl transition duration-200 shadow-sm">
-                        Bekijk assortiment
+                        Ansehen assortiment
                     </a>
                 </div>
             @endforeach
@@ -112,8 +112,8 @@
             <div class="grid lg:grid-cols-2 gap-12 items-center">
                 {{-- Button links --}}
                 <div class="order-2 lg:order-1 flex justify-center lg:justify-start">
-                    <a href="{{ route('producten.index') }}" class="cta-button inline-block px-8 py-4 text-white font-semibold rounded-xl shadow-lg transition hover:scale-105">
-                        Bekijk alle merken
+                    <a href="{{ route('produkte.index') }}" class="cta-button inline-block px-8 py-4 text-white font-semibold rounded-xl shadow-lg transition hover:scale-105">
+                        Alle ansehen merken
                     </a>
                 </div>
                 {{-- Tekst rechts --}}
@@ -143,7 +143,7 @@
     @else
         {{-- FALLBACK: HTML MODE --}}
         <div class="max-w-4xl mx-auto prose prose-gray prose-lg">
-            {!! getContent('merken_index_info_blok', ['fallback' => '<p>Vergelijk merken en maak een bewuste keuze voor kwaliteit, betrouwbaarheid en innovatie.</p>']) !!}
+            {!! getContent('merken_index_info_blok', ['fallback' => '<p>Vergleichen merken en maak een bewuste keuze voor kwaliteit, betrouwbaarheid en innovatie.</p>']) !!}
         </div>
     @endif
 </section>

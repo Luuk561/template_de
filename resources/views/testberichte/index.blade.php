@@ -8,14 +8,14 @@
 
 @section('breadcrumbs')
     <x-breadcrumbs :items="[
-        'Reviews' => route('reviews.index'),
+        'Testberichte' => route('testberichte.index'),
     ]" />
 @endsection
 
 @section('content')
 
 @php
-    $heroImage = getImage('reviews.index');
+    $heroImage = getImage('Testberichte.index');
     $hasPageImage = !empty($heroImage);
     $primaryColor = getSetting('primary_color', '#7c3aed');
 @endphp
@@ -62,20 +62,20 @@
 <section class="w-full bg-gradient-to-b from-white via-gray-50 to-white pt-24 pb-12">
     <div class="max-w-7xl mx-auto px-6 sm:px-8">
         <div class="text-center max-w-4xl mx-auto space-y-4">
-            @if(hasStructuredContent('reviews.hero'))
+            @if(hasStructuredContent('Testberichte.hero'))
                 {{-- STRUCTURED MODE --}}
                 <h1 class="text-4xl sm:text-5xl lg:text-6xl font-black leading-tight text-gray-900">
-                    {!! getContent('reviews.hero.title') !!}
+                    {!! getContent('Testberichte.hero.title') !!}
                 </h1>
                 <p class="text-lg sm:text-xl text-gray-600">
-                    {!! getContent('reviews.hero.subtitle') !!}
+                    {!! getContent('Testberichte.hero.subtitle') !!}
                 </p>
             @else
                 {{-- FALLBACK: HTML MODE --}}
-                {!! getContent('reviews.hero', [
+                {!! getContent('Testberichte.hero', [
                     'fallback' => '
-                        <h1 class="text-4xl sm:text-5xl lg:text-6xl font-black leading-tight">Onze Reviews</h1>
-                        <p class="text-lg sm:text-xl text-gray-600">Eerlijke reviews van echte producten</p>
+                        <h1 class="text-4xl sm:text-5xl lg:text-6xl font-black leading-tight">Onze Testberichte</h1>
+                        <p class="text-lg sm:text-xl text-gray-600">Eerlijke Testberichte van echte Produkte</p>
                     '
                 ]) !!}
             @endif
@@ -120,7 +120,7 @@
                         {{ $review->excerpt ?? \Illuminate\Support\Str::limit(strip_tags($review->content), 140) }}
                     </p>
 
-                    <a href="{{ route('reviews.show', $review->slug) }}"
+                    <a href="{{ route('testberichte.show', $review->slug) }}"
                        class="mt-auto inline-block text-center cta-button text-white font-semibold py-3 px-6 rounded-xl transition shadow-sm">
                         Lees review
                     </a>
@@ -136,41 +136,41 @@
     </div>
 </section>
 @else
-    <p class="text-center text-gray-500 py-16">Er zijn momenteel nog geen reviews beschikbaar. Kom later terug!</p>
+    <p class="text-center text-gray-500 py-16">Er zijn momenteel nog geen Testberichte beschikbaar. Kom later terug!</p>
 @endif
 
 <!-- SEO BLOK -->
 <section class="w-full py-16 px-6 sm:px-8 bg-white">
-    @if(hasStructuredContent('reviews_index_seo_blok'))
+    @if(hasStructuredContent('Testberichte_index_seo_blok'))
         {{-- STRUCTURED MODE: Two-column layout (text left, button right) --}}
         <div class="max-w-7xl mx-auto">
             <div class="grid lg:grid-cols-2 gap-12 items-center">
                 {{-- Tekst links --}}
                 <div>
-                    <h2 class="text-3xl sm:text-4xl font-bold mb-6 text-gray-900">{!! getContent('reviews_index_seo_blok.title') !!}</h2>
-                    <p class="text-lg text-gray-700 mb-8">{!! getContent('reviews_index_seo_blok.intro') !!}</p>
+                    <h2 class="text-3xl sm:text-4xl font-bold mb-6 text-gray-900">{!! getContent('Testberichte_index_seo_blok.title') !!}</h2>
+                    <p class="text-lg text-gray-700 mb-8">{!! getContent('Testberichte_index_seo_blok.intro') !!}</p>
 
                     <div class="space-y-6">
                         <div>
-                            <h3 class="text-xl font-bold mb-2 text-gray-900">{!! getContent('reviews_index_seo_blok.section1_title') !!}</h3>
-                            <p class="text-gray-700">{!! getContent('reviews_index_seo_blok.section1_text') !!}</p>
+                            <h3 class="text-xl font-bold mb-2 text-gray-900">{!! getContent('Testberichte_index_seo_blok.section1_title') !!}</h3>
+                            <p class="text-gray-700">{!! getContent('Testberichte_index_seo_blok.section1_text') !!}</p>
                         </div>
 
                         <div>
-                            <h3 class="text-xl font-bold mb-2 text-gray-900">{!! getContent('reviews_index_seo_blok.section2_title') !!}</h3>
-                            <p class="text-gray-700">{!! getContent('reviews_index_seo_blok.section2_text') !!}</p>
+                            <h3 class="text-xl font-bold mb-2 text-gray-900">{!! getContent('Testberichte_index_seo_blok.section2_title') !!}</h3>
+                            <p class="text-gray-700">{!! getContent('Testberichte_index_seo_blok.section2_text') !!}</p>
                         </div>
 
                         <div>
-                            <h3 class="text-xl font-bold mb-2 text-gray-900">{!! getContent('reviews_index_seo_blok.section3_title') !!}</h3>
-                            <p class="text-gray-700">{!! getContent('reviews_index_seo_blok.section3_text') !!}</p>
+                            <h3 class="text-xl font-bold mb-2 text-gray-900">{!! getContent('Testberichte_index_seo_blok.section3_title') !!}</h3>
+                            <p class="text-gray-700">{!! getContent('Testberichte_index_seo_blok.section3_text') !!}</p>
                         </div>
                     </div>
                 </div>
                 {{-- Button rechts --}}
                 <div class="flex justify-center lg:justify-end">
-                    <a href="{{ route('producten.index') }}" class="cta-button inline-block px-8 py-4 text-white font-semibold rounded-xl shadow-lg transition hover:scale-105">
-                        Vergelijk alle modellen
+                    <a href="{{ route('produkte.index') }}" class="cta-button inline-block px-8 py-4 text-white font-semibold rounded-xl shadow-lg transition hover:scale-105">
+                        Vergleichen alle modellen
                     </a>
                 </div>
             </div>
@@ -178,7 +178,7 @@
     @else
         {{-- FALLBACK: HTML MODE --}}
         <div class="max-w-4xl mx-auto prose prose-gray prose-lg">
-            {!! getContent('reviews_index_seo_blok', ['fallback' => '<p>Hier komt tekst te staan.</p>']) !!}
+            {!! getContent('Testberichte_index_seo_blok', ['fallback' => '<p>Hier komt tekst te staan.</p>']) !!}
         </div>
     @endif
 </section>

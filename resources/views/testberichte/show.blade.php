@@ -9,7 +9,7 @@
 
 @section('breadcrumbs')
     <x-breadcrumbs :items="[
-        'Reviews' => route('reviews.index'),
+        'Testberichte' => route('testberichte.index'),
         \Illuminate\Support\Str::limit($review->title, 60) => ''
     ]" />
 @endsection
@@ -45,11 +45,11 @@
         <div class="w-full bg-white">
             {{-- Back Button --}}
             <div class="max-w-6xl mx-auto px-6 pt-8 pb-4">
-                <a href="{{ route('reviews.index') }}" class="inline-flex items-center text-gray-600 hover:text-gray-900 transition-colors duration-200">
+                <a href="{{ route('testberichte.index') }}" class="inline-flex items-center text-gray-600 hover:text-gray-900 transition-colors duration-200">
                     <svg class="w-4 h-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7" />
                     </svg>
-                    Terug naar reviews
+                    Terug naar Testberichte
                 </a>
             </div>
             
@@ -167,7 +167,7 @@
                 @if(!empty($json['verdict']))
                     <section class="my-16 bg-white rounded-3xl p-8 md:p-12 shadow-lg">
                         <h2 class="text-2xl md:text-3xl font-bold text-center text-gray-900 mb-8 tracking-tight">
-                            {{ ContentJson::getString($json['verdict'], 'headline', 'Onze eindconclusie') }}
+                            {{ ContentJson::getString($json['verdict'], 'headline', 'Onze eindFazit') }}
                         </h2>
                             
                             <div class="grid md:grid-cols-2 gap-12 mb-12">
@@ -243,7 +243,7 @@
                                    target="_blank"
                                    rel="nofollow sponsored"
                                    class="inline-flex items-center bg-gray-900 hover:bg-gray-800 text-white font-medium px-12 py-6 rounded-full transition-all duration-300 text-xl shadow-lg hover:shadow-xl transform hover:-translate-y-1">
-                                    Bekijk {{ $customAffiliate['product_name'] ?? 'product' }}
+                                    Ansehen {{ $customAffiliate['product_name'] ?? 'product' }}
                                     <svg class="w-5 h-5 ml-3" fill="currentColor" viewBox="0 0 20 20">
                                         <path fill-rule="evenodd" d="M10.293 3.293a1 1 0 011.414 0l6 6a1 1 0 010 1.414l-6 6a1 1 0 01-1.414-1.414L14.586 11H3a1 1 0 110-2h11.586l-4.293-4.293a1 1 0 010-1.414z" clip-rule="evenodd" />
                                     </svg>
@@ -251,7 +251,7 @@
                             </div>
                         </section>
                     @else
-                        <x-cta.hero-bottom :product="$review->product" text="Bekijk actuele prijs" />
+                        <x-cta.hero-bottom :product="$review->product" text="Ansehen actuele Preis" />
                     @endif
                 </div>
             </div>
@@ -262,7 +262,7 @@
             <div class="bg-white rounded-2xl shadow-xl p-6 sm:p-8 md:p-12">
                 <!-- Terugknop -->
                 <div class="mb-6">
-                    <a href="{{ route('reviews.index') }}" class="inline-block bg-blue-600 hover:bg-blue-700 text-white text-sm font-medium px-5 py-2 rounded-full shadow transition">
+                    <a href="{{ route('testberichte.index') }}" class="inline-block bg-blue-600 hover:bg-blue-700 text-white text-sm font-medium px-5 py-2 rounded-full shadow transition">
                         &larr; Terug naar overzicht
                     </a>
                 </div>
@@ -286,7 +286,7 @@
 
                         <a href="{{ $affiliateLink }}" target="_blank" rel="nofollow sponsored"
                            class="inline-block bg-yellow-400 hover:bg-yellow-500 text-black font-semibold py-2 px-4 rounded-full transition">
-                            Bekijk op bol
+                            Ansehen op bol
                         </a>
                     </div>
                 </div>
@@ -342,7 +342,7 @@
 
                             {{-- Inline CTA --}}
                             @if(isset($section['recommend_cta_inline']) && $section['recommend_cta_inline'] && $review->product)
-                                <x-cta.product-inline :product="$review->product" text="Bekijk dit product" />
+                                <x-cta.product-inline :product="$review->product" text="Ansehen dit product" />
                             @endif
                         </x-content.section>
                     @endforeach
@@ -369,7 +369,7 @@
                                             <svg class="w-4 h-4 mr-2" fill="currentColor" viewBox="0 0 20 20">
                                                 <path fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clip-rule="evenodd" />
                                             </svg>
-                                            Koop dit als je:
+                                            Kaufen dit als je:
                                         </h4>
                                         <ul class="text-green-800 text-sm space-y-1">
                                             @foreach($json['verdict']['buy_if'] as $reason)
@@ -412,20 +412,20 @@
 
                     {{-- Bottom CTA --}}
                     @if($review->product)
-                        <x-cta.product-primary :product="$review->product" text="Bekijk actuele prijs" classes="mt-8" />
+                        <x-cta.product-primary :product="$review->product" text="Ansehen actuele Preis" classes="mt-8" />
                     @else
-                        <x-cta.list-primary text="Ontdek alle producten" classes="mt-8" />
+                        <x-cta.list-primary text="Entdecken alle Produkte" classes="mt-8" />
                     @endif
                 </div>
             </div>
         </div>
     @else
-        {{-- Oude reviews zonder JSON structuur --}}
+        {{-- Oude Testberichte zonder JSON structStunde --}}
         <div class="max-w-7xl mx-auto px-4 py-12">
             <div class="bg-white rounded-2xl shadow-xl p-6 sm:p-8 md:p-12">
                 <!-- Terugknop -->
                 <div class="mb-6">
-                    <a href="{{ route('reviews.index') }}" class="inline-block bg-blue-600 hover:bg-blue-700 text-white text-sm font-medium px-5 py-2 rounded-full shadow transition">
+                    <a href="{{ route('testberichte.index') }}" class="inline-block bg-blue-600 hover:bg-blue-700 text-white text-sm font-medium px-5 py-2 rounded-full shadow transition">
                         &larr; Terug naar overzicht
                     </a>
                 </div>
@@ -449,12 +449,12 @@
 
                         <a href="{{ $affiliateLink }}" target="_blank" rel="nofollow sponsored"
                            class="inline-block bg-yellow-400 hover:bg-yellow-500 text-black font-semibold py-2 px-4 rounded-full transition">
-                            Bekijk op bol
+                            Ansehen op bol
                         </a>
                     </div>
                 </div>
                 
-                <!-- Fallback naar oude structuur voor bestaande reviews -->
+                <!-- Fallback naar oude structStunde voor bestaande Testberichte -->
                 <article class="space-y-8 sm:space-y-12 text-gray-800 leading-relaxed">
                 @if ($review->intro)
                     <section class="border-l-4 border-blue-600 pl-4 sm:pl-6">
@@ -485,7 +485,7 @@
                             <svg class="w-6 sm:w-8 h-6 sm:h-8 text-purple-600 mr-3" fill="currentColor" viewBox="0 0 20 20">
                                 <path fill-rule="evenodd" d="M18 10c0 4.418-3.582 8-8 8s-8-3.582-8-8 3.582-8 8-8 8 3.582 8 8zm-9-4a1 1 0 112 0v3a1 1 0 01-2 0V6zm1 8a1.25 1.25 0 100-2.5 1.25 1.25 0 000 2.5z" clip-rule="evenodd" />
                             </svg>
-                            <h2 class="text-xl sm:text-2xl font-bold text-purple-800">Conclusie</h2>
+                            <h2 class="text-xl sm:text-2xl font-bold text-purple-800">Fazit</h2>
                         </div>
                         <div class="text-gray-700 text-sm sm:text-base sm:text-lg">
                             {!! $review->conclusion !!}
@@ -500,20 +500,20 @@
     <!-- CTA onderaan -->
     <div class="max-w-7xl mx-auto px-4">
         <section class="bg-gradient-to-r from-blue-600 to-blue-800 text-white rounded-xl shadow-lg p-6 sm:p-8 mb-16 text-center">
-            <h2 class="text-2xl sm:text-3xl font-bold mb-4">Benieuwd naar andere producten?</h2>
+            <h2 class="text-2xl sm:text-3xl font-bold mb-4">Benieuwd naar andere Produkte?</h2>
             <p class="text-base sm:text-lg mb-6 max-w-2xl mx-auto">
-                Ontdek ons volledige assortiment en vind het product dat het beste bij jouw wensen past.
+                Entdecken ons volledige assortiment en vind het product dat het beste bij jouw wensen past.
             </p>
-            <a href="{{ route('producten.index') }}"
+            <a href="{{ route('produkte.index') }}"
             class="inline-block bg-white text-blue-800 font-semibold py-3 px-8 rounded-full shadow-lg hover:bg-gray-100 transition duration-200 ease-in-out focus:outline-none focus:ring-2 focus:ring-white focus:ring-offset-2">
-                Bekijk alle producten
+                Alle ansehen Produkte
             </a>
         </section>
 
         <!-- Teruglink -->
         <div class="mt-12 text-center">
-            <a href="{{ route('reviews.index') }}" class="text-blue-600 hover:text-blue-800 font-semibold text-sm">
-                &larr; Terug naar alle reviews
+            <a href="{{ route('testberichte.index') }}" class="text-blue-600 hover:text-blue-800 font-semibold text-sm">
+                &larr; Terug naar alle Testberichte
             </a>
         </div>
     </div>
@@ -557,7 +557,7 @@
     }
 @endphp
 
-{{-- Sticky CTA Button - Only for v3 reviews --}}
+{{-- Sticky CTA Button - Only for v3 Testberichte --}}
 @if ($review->created_at->isAfter('2025-08-23') && $isV3 && $product)
 <div class="fixed bottom-6 left-1/2 transform -translate-x-1/2 z-50">
     <div class="bg-white shadow-2xl rounded-2xl border border-gray-200 px-6 py-4 flex items-center space-x-4 max-w-sm">
@@ -574,7 +574,7 @@
            target="_blank"
            rel="nofollow sponsored"
            class="bg-green-600 hover:bg-green-700 text-white font-semibold px-4 py-2 rounded-xl text-sm transition-colors duration-200 whitespace-nowrap">
-            Bekijk op bol.com
+            Ansehen op bol.com
         </a>
     </div>
 </div>
@@ -585,7 +585,7 @@
 </script>
 @endsection
 
-{{-- Sticky Discount CTA for Custom Reviews --}}
+{{-- Sticky Discount CTA for Custom Testberichte --}}
 @if($customAffiliate && isset($customAffiliate['discount_code']))
     <x-cta.sticky-discount
         :discountCode="$customAffiliate['discount_code']"

@@ -1,14 +1,14 @@
 @extends('layouts.app')
 
-@section('title', 'Pagina niet gevonden - 404')
-@section('meta-description', 'Sorry, we konden de pagina die je zocht niet vinden. Ontdek onze beste producten en vind wat je zoekt.')
+@section('title', 'Seite nicht gefunden - 404')
+@section('meta-description', 'Sorry, we konden de pagina die je zocht niet vinden. Entdecken onze beste Produkte en vind wat je zoekt.')
 
 @section('content')
 
 @php
     $primaryColor = getSetting('primary_color', '#7c3aed');
     $siteName = getSetting('site_name', config('app.name'));
-    $siteNiche = getSetting('site_niche', 'producten');
+    $siteNiche = getSetting('site_niche', 'Produkte');
 @endphp
 
 <style>
@@ -89,9 +89,9 @@
                 Ga naar homepage
             </a>
             
-            <a href="{{ route('producten.index') }}" 
+            <a href="{{ route('produkte.index') }}" 
                class="cta-button-secondary inline-flex items-center justify-center px-8 py-4 font-semibold text-lg">
-                Bekijk alle {{ $siteNiche }}
+                Alle ansehen {{ $siteNiche }}
             </a>
         </div>
 
@@ -107,7 +107,7 @@
         
         <div class="text-center mb-8">
             <h2 class="text-2xl sm:text-3xl font-bold text-gray-900 mb-3 tracking-tight">
-                Populaire bestemmingen
+                Beliebte bestemmingen
             </h2>
             <p class="text-lg text-apple-gray max-w-xl mx-auto">
                 Hier vind je waar de meeste mensen naar op zoek zijn.
@@ -118,28 +118,28 @@
             
             <!-- Popular Products -->
             <div class="apple-card rounded-lg p-4 text-center">
-                <h3 class="text-base font-semibold text-gray-900 mb-3">Populairste {{ $siteNiche }}</h3>
-                <a href="{{ route('producten.index') }}" 
+                <h3 class="text-base font-semibold text-gray-900 mb-3">Beliebtste {{ $siteNiche }}</h3>
+                <a href="{{ route('produkte.index') }}" 
                    class="text-blue-600 font-semibold hover:text-blue-700 transition-colors text-sm">
-                    Bekijk alle producten →
+                    Alle ansehen Produkte →
                 </a>
             </div>
 
             <!-- Top Rated -->
             <div class="apple-card rounded-lg p-4 text-center">
                 <h3 class="text-base font-semibold text-gray-900 mb-3">Best beoordeelde</h3>
-                <a href="{{ route('producten.top') }}" 
+                <a href="{{ route('produkte.top') }}" 
                    class="text-blue-600 font-semibold hover:text-blue-700 transition-colors text-sm">
-                    Bekijk Top 5 →
+                    Ansehen Top 5 →
                 </a>
             </div>
 
-            <!-- Reviews -->
+            <!-- Testberichte -->
             <div class="apple-card rounded-lg p-4 text-center">
-                <h3 class="text-base font-semibold text-gray-900 mb-3">Reviews & ervaringen</h3>
-                <a href="{{ route('reviews.index') }}" 
+                <h3 class="text-base font-semibold text-gray-900 mb-3">Testberichte & ervaringen</h3>
+                <a href="{{ route('testberichte.index') }}" 
                    class="text-blue-600 font-semibold hover:text-blue-700 transition-colors text-sm">
-                    Lees reviews →
+                    Lees Testberichte →
                 </a>
             </div>
         </div>
@@ -155,8 +155,8 @@
     "@type": "WebPage",
     "@id": "{{ url()->current() }}",
     "url": "{{ url()->current() }}",
-    "name": "404 - Pagina niet gevonden",
-    "description": "Sorry, we konden de pagina die je zocht niet vinden. Ontdek onze beste {{ $siteNiche }} en vind wat je zoekt.",
+    "name": "404 - Seite nicht gefunden",
+    "description": "Sorry, we konden de pagina die je zocht niet vinden. Entdecken onze beste {{ $siteNiche }} en vind wat je zoekt.",
     "inLanguage": "nl-NL",
     "isPartOf": {
         "@type": "WebSite",

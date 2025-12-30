@@ -1,18 +1,30 @@
-# Project Context: Affiliate Sites Template
+# Project Context: German Affiliate Sites Template
+
+## CRITICAL: THIS IS THE GERMAN VERSION
+**This codebase is specifically for GERMAN-language affiliate sites targeting the German market (Germany, Austria, Switzerland). All content, routes, and text MUST be in GERMAN.**
 
 ## Overview
-This Laravel project serves as a **comprehensive template for affiliate websites** for the bol.com affiliate program. It's designed to be reused across **20+ niche-specific affiliate sites** with sophisticated content management and comparison functionality.
+This Laravel project serves as a **comprehensive template for German-language affiliate websites** for the Amazon PartnerNet (Amazon.de) affiliate program. It's designed to be reused across **multiple niche-specific affiliate sites** with sophisticated content management and comparison functionality.
+
+**Key Differences from Dutch Version:**
+- Language: German (Deutsch, not Dutch/Nederlands)
+- Locale: `lang="de"` and `Carbon::setLocale('de')`
+- Affiliate Programs: Amazon PartnerNet (Amazon.de) - primary focus
+- Routes: German URLs (`/produkte` not `/producten`, `/beste-marken`, `/vergleichen`)
+- Number Format: German/Euro style (€1.299,99 - same as Dutch)
+- Target Markets: Germany, Austria, Switzerland (DACH region)
 
 ## Business Model & Strategy
-- **Affiliate Program**: bol.com partner program with site-specific IDs
-- **Multi-Site Network**: ~30 different websites covering various product niches
-- **Niche Examples**: 
-  - Airfryers with double compartments
-  - Massage guns  
+- **Affiliate Programs**: Amazon PartnerNet (Amazon.de) - primary focus
+- **Multi-Site Network**: Reusable template for different product niches
+- **Niche Examples**:
+  - Dual basket air fryers
+  - Massage guns
   - Home trainers
+  - Robot lawn mowers
   - Other consumer electronics/appliances
-- **Differentiation Strategy**: Same codebase, different databases per site. name, content, product pictures, product text, blogs, reviews, everything gets regulated by the database.
-- **Revenue Model**: Commission-based affiliate sales through bol.com integration
+- **Differentiation Strategy**: Same codebase, different databases per site. Name, content, product images, product text, blogs, reviews - everything managed by the database.
+- **Revenue Model**: Commission-based affiliate sales through Amazon PartnerNet (Amazon.de)
 
 ## Technical Architecture
 
@@ -23,11 +35,11 @@ This Laravel project serves as a **comprehensive template for affiliate websites
 - **Deployment**: Single codebase deployed multiple times
 
 ### Database Structure
-- **Products**: Core product data with specifications, images, prices
+- **Products**: Core product data with EAN (later ASIN), specifications, images, prices
 - **Product Specifications**: Grouped specifications (`group` field) for organized display
-- **Content Blocks**: Dynamic content management (`key` → `content` mapping)
+- **Content Blocks**: Dynamic content management (`key` → `content` mapping) - German content
 - **Settings**: Site-specific configuration (`getSetting()` helper)
-- **Reviews & Blogs**: Content types for SEO and user engagement
+- **Reviews & Blogs**: Content types for SEO and user engagement - German content
 
 ### Content Management System
 - **Dynamic Content**: All text content stored in database via `getContent()` helper
@@ -44,7 +56,7 @@ This Laravel project serves as a **comprehensive template for affiliate websites
   - Newest additions (< 14 days)
   - Popular fallback (random quality products)
 - **Top 5 Algorithm**: Excellence scoring with exclusions to prevent overlap
-- **Dynamic Badging**: Context-aware badges (Deal, Topkeuze, Nieuw, Populair)
+- **Dynamic Badging**: Context-aware badges (Angebot, Top-Wahl, Neu, Beliebt)
 
 ### 2. Advanced Product Comparison System
 - **Multi-Device Support**: 
@@ -105,8 +117,8 @@ grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4
 
 ### SEO Patterns
 ```php
-// Image alt text template
-alt="{{ $product->title }} - {{ $product->brand ?? 'Product' }} review en vergelijking - €{{ number_format($product->price ?? 0, 2, ',', '.') }}"
+// Image alt text template (German)
+alt="{{ $product->title }} - {{ $product->brand ?? 'Produkt' }} Test und Vergleich - €{{ number_format($product->price ?? 0, 2, ',', '.') }}"
 
 // Affiliate link standard
 rel="nofollow sponsored" target="_blank"
@@ -126,11 +138,11 @@ rel="nofollow sponsored" target="_blank"
 - **Comparison**: Advanced product comparison logic
 
 ### Views Architecture
-- **layouts/app.blade.php**: Master template with SEO, navigation, mobile menu
-- **home.blade.php**: Smart Picks showcase
-- **producten/index.blade.php**: Product filtering and grid
-- **producten/show.blade.php**: Product details with grouped specifications
-- **producten/vergelijken.blade.php**: Responsive comparison table
+- **layouts/app.blade.php**: Master template with SEO, navigation, mobile menu (German UI)
+- **home.blade.php**: Smart Picks showcase (German)
+- **produkte/index.blade.php**: Product filtering and grid (German)
+- **produkte/show.blade.php**: Product details with grouped specifications (German)
+- **vergleichen.blade.php**: Responsive comparison table (German)
 
 ### Key Features Implementation
 - **Hamburger Menu**: Alpine.js with smooth animations, backdrop blur
@@ -174,14 +186,22 @@ rel="nofollow sponsored" target="_blank"
 
 ### Laravel Artisan Commands
 ```bash
-# Update product data
-php artisan fetch:bol-products
+# Current: Fetch Bol.com products (temporary, for demo site)
+php artisan app:fetch-bol-product {ean}
 
-# Update pricing
-php artisan update:bol-prices
+# Future: Amazon.de product data (TO BE IMPLEMENTED after approval)
+php artisan fetch:amazon-products
 
-# Category synchronization  
-php artisan fetch:bol-category-products
+# Update pricing (TO BE IMPLEMENTED)
+php artisan update:prices
+
+# Generate content (German)
+php artisan generate:blog
+php artisan generate:review
+php artisan generate:content-blocks
+
+# SEO maintenance
+php artisan seo:fix-all
 ```
 
 ### Development Workflow
@@ -222,8 +242,10 @@ php artisan fetch:bol-category-products
 
 ### Key Helpers
 - `getSetting($key, $default)` - Site-specific settings
-- `getContent($key, $variables)` - Dynamic content blocks
-- `getBolAffiliateLink($url, $title)` - Secure affiliate links
+- `getContent($key, $variables)` - Dynamic content blocks (in GERMAN/Deutsch)
+- `getBolAffiliateLink($url, $title)` - Bol.com affiliate links (TEMPORARY for demo)
+- `getAmazonDeAffiliateLink($asin, $title)` - Amazon.de affiliate links (TO BE IMPLEMENTED)
+- `formatPrice($amount)` - Format price in German/Euro style (€1.299,99)
 
 ### Common Patterns
 - Responsive grids: `grid-cols-1 sm:grid-cols-2 lg:grid-cols-3`
@@ -257,3 +279,47 @@ php artisan fetch:bol-category-products
 - Professional, emoji-free communication
 
 **This is non-negotiable. The user has explicitly forbidden all emoji usage.**
+
+---
+
+## CRITICAL: GERMAN LANGUAGE POLICY
+
+**EVERYTHING must be in GERMAN (Deutsch):**
+- All content blocks in database (German text)
+- All AI prompts for content generation (German output)
+- All routes and URLs (use `/produkte` NOT `/products`)
+- All meta tags and SEO content (German)
+- All user-facing text in views (German)
+- All database seed content (German)
+- Comments in code can remain English for developer clarity
+
+**Route Translations (Dutch → German):**
+- `/producten` → `/produkte`
+- `/producten/{slug}` → `/produkte/{slug}`
+- `/beste-merken` → `/beste-marken` (same as Dutch!)
+- `/informatie/{slug}` → `/information/{slug}`
+- `/vergelijken` → `/vergleichen`
+- `/reviews` → `/testberichte` (or keep `/reviews`)
+- `/blogs` → `/blog` or `/ratgeber`
+
+**Affiliate Program:**
+- PRIMARY: Amazon PartnerNet (Amazon.de)
+- TEMPORARY: Bol.com (for demo site before Amazon approval)
+- Helper: `getAmazonDeAffiliateLink()` (to be implemented)
+- Current: `getBolAffiliateLink()` (temporary)
+
+**Number Formatting:**
+- German/Euro: €1.299,99 (SAME as Dutch - comma for decimals, period for thousands)
+- Use `number_format($price, 2, ',', '.')` for prices
+
+**Locale Settings:**
+```php
+Carbon::setLocale('de'); // German locale
+<html lang="de"> // German language
+```
+
+**Development Strategy:**
+1. PHASE 1 (NOW): German UI/content + Bol.com products (for demo/approval)
+2. PHASE 2 (AFTER APPROVAL): Switch to Amazon.de API + ASIN support
+
+**This is the GERMAN template - double check everything is in German (Deutsch) before deploying!**

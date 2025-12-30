@@ -61,7 +61,7 @@
             </a>
 
             @if($reviewSlug)
-            <a href="{{ route('reviews.show', $reviewSlug) }}"
+            <a href="{{ route('testberichte.show', $reviewSlug) }}"
                class="block w-full text-center text-gray-600 hover:text-gray-800 text-xs font-semibold py-1.5 sm:py-2 transition-colors">
                 Of lees eerst onze {{ $brandName }} review &rarr;
             </a>

@@ -15,7 +15,7 @@ class FetchBolProduct extends Command
 {
     protected $signature = 'app:fetch-bol-product {eans*}';
 
-    protected $description = 'Haal meerdere producten van bol.com op via API';
+    protected $description = 'Hole mehrere Produkte von bol.com über API (temporär für Demo, wird zu Amazon.de)';
 
     protected OpenAIService $openAI;
 
@@ -124,6 +124,13 @@ class FetchBolProduct extends Command
             $this->info("Fallback merk uit titel: {$brand} (EAN: {$ean})");
         }
 
+        // Translate Dutch title to German
+        $germanTitle = $this->openAI->translateToGerman($rawTitle);
+        if ($germanTitle) {
+            $this->info("Titel vertaald: {$rawTitle} → {$germanTitle}");
+            $rawTitle = $germanTitle;
+        }
+
         $siteNiche = getSetting('site_niche', '');
         $nicheFilters = config("nichefilters.{$siteNiche}.filters", []);
         $titleCheck = strtolower($rawTitle);
@@ -136,18 +143,18 @@ class FetchBolProduct extends Command
             return;
         }
 
-        // Generate meta tags via templates (sneller dan OpenAI)
+        // Generate meta tags via templates (sneller dan OpenAI) - GERMAN
         $siteName = getSetting('site_name', config('app.name'));
-        
+
         // Voorkom dubbele merknaam in titel
         $titleText = $brand && str_starts_with(strtolower($rawTitle), strtolower($brand)) ? $rawTitle : ($brand ? "$brand $rawTitle" : $rawTitle);
-        $metaTitle = Str::limit("$titleText | Vergelijk & Bespaar", 60, '');
-        
-        // Korte product naam voor description
+        $metaTitle = Str::limit("$titleText | Vergleichen & Sparen", 60, '');
+
+        // Korte product naam voor description (GERMAN)
         $shortTitle = Str::limit($rawTitle, 80, '');
         $ratingText = $ratingAverage ? " ★" . number_format($ratingAverage, 1) : '';
         $priceText = $price ? " €" . number_format($price, 0, ',', '.') : '';
-        $metaDescription = Str::limit("Ontdek de $shortTitle.$ratingText$priceText. Vergelijk specificaties en bekijk reviews. Kies bewust op $siteName!", 160, '');
+        $metaDescription = Str::limit("Entdecken Sie $shortTitle.$ratingText$priceText. Vergleichen Sie Spezifikationen und sehen Sie Testberichte. Wählen Sie bewusst auf $siteName!", 160, '');
 
         $imageUrls = collect();
 

@@ -12,6 +12,6 @@ class ProductVergelijkController extends Controller
         $eans = explode(',', $request->get('eans', ''));
         $products = Product::whereIn('ean', $eans)->get();
 
-        return view('producten.vergelijken', compact('products'));
+        return view('vergleichen', compact('products'));
     }
 }

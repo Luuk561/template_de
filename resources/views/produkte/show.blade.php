@@ -1,11 +1,11 @@
 @extends('layouts.app')
 
 @section('title', strip_tags($product->seo_title))
-@section('meta_description', strip_tags($product->seo_description) ?: 'Bekijk dit product en ontdek of het past bij jouw situatie.')
+@section('meta_description', strip_tags($product->seo_description) ?: 'Ansehen dit product en ontdek of het past bij jouw situatie.')
 
 @section('breadcrumbs')
     <x-breadcrumbs :items="[
-        'Producten' => route('producten.index'),
+        'Produkte' => route('produkte.index'),
         (string) \Illuminate\Support\Str::of(str_replace('-', ' ', $product->title))->words(6, '...') => null
     ]" />
 @endsection
@@ -20,7 +20,7 @@
     $primaryColor = getSetting('primary_color', '#7c3aed');
 
     /**
-     * --- Beschrijving opschonen & robuust renderen ---
+     * --- Beschreibung opschonen & robuust renderen ---
      * 1) Kies bron: ai_description_html > source_description > description
      * 2) Als het plain text is -> zet om naar nette HTML (paragraphs + simpele lijstjes)
      * 3) Strip <section> wrappers en demote <h1> naar <h2> (voorkomt dubbele grote headings)
@@ -145,7 +145,7 @@
                                 </p>
                                 @if($product->strikethrough_price)
                                     @php $savings = $product->strikethrough_price - $product->price; @endphp
-                                    <p class="text-sm font-bold text-green-600 mt-1">Bespaar €{{ number_format($savings, 2, ',', '.') }}</p>
+                                    <p class="text-sm font-bold text-green-600 mt-1">Sparen €{{ number_format($savings, 2, ',', '.') }}</p>
                                 @endif
                             </div>
                             <div class="flex flex-col gap-2">
@@ -231,16 +231,16 @@
                 @if($product->review || $product->blogPosts->isNotEmpty())
                     <div class="flex flex-col gap-2">
                         @if($product->review)
-                            <a href="{{ route('reviews.show', $product->review->slug) }}"
+                            <a href="{{ route('testberichte.show', $product->review->slug) }}"
                                class="block bg-white hover:bg-gray-50 text-gray-900 text-center text-sm font-medium px-6 py-2 rounded-lg border border-gray-300 transition">
                                 Lees review
                             </a>
                         @endif
 
                         @if($product->blogPosts->isNotEmpty())
-                            <a href="{{ route('blogs.show', $product->blogPosts->first()->slug) }}"
+                            <a href="{{ route('ratgeber.show', $product->blogPosts->first()->slug) }}"
                                class="block bg-white hover:bg-gray-50 text-gray-900 text-center text-sm font-medium px-6 py-2 rounded-lg border border-gray-300 transition">
-                                Bekijk blog
+                                Ansehen blog
                             </a>
                         @endif
                     </div>
@@ -249,20 +249,20 @@
 
             <!-- DETAILS -->
             <section class="lg:col-span-2 flex flex-col">
-                <h2 class="text-2xl font-bold text-gray-900 mb-4">Productbeschrijving</h2>
+                <h2 class="text-2xl font-bold text-gray-900 mb-4">ProductBeschreibung</h2>
 
-                <!-- AI-beschrijving (robust render) -->
+                <!-- AI-Beschreibung (robust render) -->
                 <div class="product-copy mb-8 text-gray-700 leading-relaxed" itemprop="description">
                     @if($renderHtml !== '')
                         {!! $renderHtml !!}
                     @else
-                        <p>Beschrijving volgt binnenkort.</p>
+                        <p>Beschreibung volgt binnenkort.</p>
                     @endif
                 </div>
 
                 @if($product->specifications->isNotEmpty())
                     <div class="mb-8">
-                        <h2 class="text-2xl font-bold text-gray-900 mb-4">Specificaties</h2>
+                        <h2 class="text-2xl font-bold text-gray-900 mb-4">Spezifikationen</h2>
                         
                         @php
                             $groupedSpecs = $product->specifications->groupBy('group');
@@ -332,19 +332,19 @@
     <div class="max-w-4xl mx-auto">
         <div class="text-center">
             <h2 class="text-2xl font-bold text-gray-900 mb-3">
-                Vergelijk met andere modellen
+                Vergleichen met andere modellen
             </h2>
             <p class="text-gray-600 mb-6">
-                Bekijk onze top selectie of alle producten
+                Ansehen onze top selectie of alle Produkte
             </p>
             <div class="flex flex-col sm:flex-row gap-3 justify-center">
-                <a href="{{ route('producten.top') }}"
+                <a href="{{ route('produkte.top') }}"
                    class="cta-button inline-flex items-center justify-center gap-2 px-6 py-3 rounded-lg font-semibold transition-all text-white">
-                    Bekijk Top 5
+                    Ansehen Top 5
                 </a>
-                <a href="{{ route('producten.index') }}"
+                <a href="{{ route('produkte.index') }}"
                    class="inline-flex items-center justify-center gap-2 bg-white hover:bg-gray-50 text-gray-900 px-6 py-3 rounded-lg font-semibold border border-gray-300 transition-all">
-                    Alle producten
+                    Alle Produkte
                 </a>
             </div>
         </div>
@@ -360,7 +360,7 @@
     // Gebruik de opgeschoonde HTML van hierboven voor schema
     $descForSchema = strip_tags($renderHtml);
     if (empty($descForSchema)) {
-        $descForSchema = 'Productbeschrijving wordt binnenkort toegevoegd.';
+        $descForSchema = 'ProductBeschreibung wordt binnenkort toegevoegd.';
     }
 
     // Determine availability based on delivery_time or assume in stock
@@ -408,7 +408,7 @@
 {!! $structuredProduct->toScript() !!}
 </script>
 
-{{-- Minimale, zelfstandige opmaak voor de beschrijving (geen Tailwind Typography vereist) --}}
+{{-- Minimale, zelfstandige opmaak voor de Beschreibung (geen Tailwind Typography vereist) --}}
 <style>
 .product-copy h2{font-weight:700;font-size:1.25rem;margin:1rem 0 .5rem}
 .product-copy h3{font-weight:600;margin:.75rem 0 .25rem}
@@ -481,11 +481,11 @@
     <div class="max-w-7xl mx-auto">
         @if(!($product->is_available ?? true))
             <div class="mb-6">
-                <h2 class="text-2xl font-bold text-gray-900 mb-1">Vergelijkbare producten</h2>
-                <p class="text-sm text-gray-600">Bekijk deze beschikbare alternatieven</p>
+                <h2 class="text-2xl font-bold text-gray-900 mb-1">Vergleichenbare Produkte</h2>
+                <p class="text-sm text-gray-600">Ansehen deze beschikbare alternatieven</p>
             </div>
         @else
-            <h2 class="text-2xl font-bold text-gray-900 mb-6">Vergelijkbare producten</h2>
+            <h2 class="text-2xl font-bold text-gray-900 mb-6">Vergleichenbare Produkte</h2>
         @endif
 
         <div class="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 gap-4">
@@ -521,9 +521,9 @@
 
                     <!-- Buttons -->
                     <div class="mt-auto flex flex-col gap-2">
-                        <a href="{{ route('producten.show', $relatedProduct->slug) }}"
+                        <a href="{{ route('produkte.show', $relatedProduct->slug) }}"
                            class="bg-white hover:bg-gray-50 text-gray-900 text-xs font-medium py-2 px-3 rounded-lg text-center transition border border-gray-300">
-                            Bekijk
+                            Ansehen
                         </a>
                         <x-product-cta :product="$relatedProduct" size="small" />
                     </div>

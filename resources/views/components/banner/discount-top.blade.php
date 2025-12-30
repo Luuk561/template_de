@@ -41,7 +41,7 @@
                 BEKIJK MOOVV
             </a>
             @if($reviewSlug)
-            <a href="{{ route('reviews.show', $reviewSlug) }}"
+            <a href="{{ route('testberichte.show', $reviewSlug) }}"
                class="text-white hover:text-green-100 underline text-xs font-semibold transition-colors whitespace-nowrap">
                 Lees review
             </a>

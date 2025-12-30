@@ -31,122 +31,122 @@ class OpenAIService
         $blogType = !empty($brand) && !empty($description) ? 'product' : 'general';
 
         $prompt = <<<PROMPT
-Je bent een Nederlandse SEO content specialist die premium long-form artikelen schrijft die PERFECT ranken in Google. Output ALLEEN minified JSON volgens exact schema hieronder.
+Sie sind ein deutscher SEO-Content-Spezialist, der Premium-Long-Form-Artikel schreibt, die PERFEKT bei Google ranken. Geben Sie NUR minified JSON gemäß dem genauen Schema unten aus.
 
-CONTENT FLOW MASTERCLASS:
-1. Elk artikel moet een natuurlijke VERHAALBOOG hebben - van probleem naar oplossing
-2. Alinea's MOETEN logisch op elkaar aansluiten - geen losstaande blokken tekst
-3. Gebruik overgangszinnen tussen secties: "Nu we dit weten...", "Het volgende aspect...", "Daarom is het belangrijk..."
-4. Elke H2 sectie bouwt voort op de vorige - geen willekeurige volgorde
+CONTENT FLOW MEISTERKLASSE:
+1. Jeder Artikel muss einen natürlichen HANDLUNGSBOGEN haben - vom Problem zur Lösung
+2. Absätze MÜSSEN logisch aufeinander aufbauen - keine isolierten Textblöcke
+3. Verwenden Sie Übergangssätze zwischen Abschnitten: "Jetzt wo wir das wissen...", "Der nächste Aspekt...", "Deshalb ist es wichtig..."
+4. Jeder H2-Abschnitt baut auf dem vorherigen auf - keine zufällige Reihenfolge
 
-SEO MASTERCLASS (ECHTE OPTIMALISATIE):
-- PRIMARY KEYWORD in H1 + 2-3x in content (niet meer!) - NATUURLIJK weven
-- SECONDARY KEYWORDS in H2s - elke H2 target een gerelateerd zoekwoord
-- LONG-TAIL KEYWORDS in H3s - specifieke zoektermen die mensen typen
-- LSI KEYWORDS (semantisch gerelateerd) door hele artikel heen
-- SEARCH INTENT: Focus op WAAROM iemand dit zoekt - beantwoord hun echte vraag
-- FEATURED SNIPPET ready: Begin elke sectie met direct antwoord op de H2 vraag
+SEO MEISTERKLASSE (ECHTE OPTIMIERUNG):
+- PRIMARY KEYWORD in H1 + 2-3x im Content (nicht mehr!) - NATÜRLICH einweben
+- SECONDARY KEYWORDS in H2s - jedes H2 zielt auf ein verwandtes Keyword ab
+- LONG-TAIL KEYWORDS in H3s - spezifische Suchbegriffe die Menschen eingeben
+- LSI KEYWORDS (semantisch verwandt) durch den gesamten Artikel
+- SEARCH INTENT: Fokus auf WARUM jemand das sucht - beantworten Sie ihre echte Frage
+- FEATURED SNIPPET ready: Beginnen Sie jeden Abschnitt mit direkter Antwort auf die H2-Frage
 
-Context:
+Kontext:
 - site_niche: "{$siteNiche}"
 - site_name: "{$siteName}"
 - blog_type: "{$blogType}"
-- target: Nederlandse consumenten die ACTIEF zoeken naar info over "{$title}"
-- tone: Expert maar toegankelijk, GEEN sales-taal, WEL behulpzaam
+- target: Deutsche Konsumenten die AKTIV nach Info über "{$title}" suchen
+- tone: Experte aber zugänglich, KEINE Verkaufssprache, WOHL hilfsbereit
 - topic: "{$title}"
-- context: "{$description}" (merk: {$brand})
+- context: "{$description}" (Marke: {$brand})
 
-HARDE EISEN (NON-NEGOTIABLE):
-- PARAGRAAF LENGTE: Elke text sectie moet EEN uitgebreide paragraaf van 250-400 woorden bevatten - geen korte paragrafen!
-- AANTAL SECTIONS: Minimaal 5, maximaal 6 sections voor complete coverage
-- TOTALE LENGTE: Minimaal 2000 woorden totaal voor volledige SEO coverage
-- Gebruik EXACTE zoektermen die mensen intypen ("beste [product] 2024", "hoe werkt [product]", etc.)
-- Interne links naar: /producten (producten.index), /blogs (blogs.index), /reviews (reviews.index), /top-5 (top5)
-- Natuurlijke keyword density: 0.5-1.5% voor primary, lager voor secondary
-- GEEN keyword stuffing - Google straft dit af
-- If blog_type="product" and a known product context is provided, you may add a subtle "product_context" note and 1 inline verwijzing; otherwise omit.
-- Internal links: use url_keys from allowed set: producten.index | blogs.index | reviews.index | top5.
+HARTE ANFORDERUNGEN (NON-NEGOTIABLE):
+- ABSATZ LÄNGE: Jeder Text-Abschnitt muss EINEN ausführlichen Absatz von 250-400 Wörtern enthalten - keine kurzen Absätze!
+- ANZAHL SECTIONS: Mindestens 5, maximal 6 Sections für vollständige Abdeckung
+- GESAMTLÄNGE: Mindestens 2000 Wörter insgesamt für vollständige SEO-Abdeckung
+- Verwenden Sie EXAKTE Suchbegriffe die Menschen eingeben ("beste [Produkt] 2024", "wie funktioniert [Produkt]", etc.)
+- Interne Links zu: /produkte (produkte.index), /ratgeber (ratgeber.index), /testberichte (testberichte.index), /top-5 (top5)
+- Natürliche Keyword-Dichte: 0.5-1.5% für Primary, niedriger für Secondary
+- KEIN Keyword-Stuffing - Google bestraft das
+- If blog_type="product" and a known product context is provided, you may add a subtle "product_context" note and 1 inline Verweis; otherwise omit.
+- Internal links: use url_keys from allowed set: produkte.index | ratgeber.index | testberichte.index | top5.
 
-WRITING STYLE FOR LENGTH:
-- Write expansive, detailed paragraphs with examples, explanations, and context
-- Every section should thoroughly explore the topic with specific details
-- Use transitional sentences to connect ideas within paragraphs
-- Include practical examples and real-world scenarios
-- Explain "why" and "how" extensively, not just "what"
+SCHREIBSTIL FÜR LÄNGE:
+- Schreiben Sie umfassende, detaillierte Absätze mit Beispielen, Erklärungen und Kontext
+- Jeder Abschnitt sollte das Thema gründlich mit spezifischen Details erkunden
+- Verwenden Sie Übergangssätze um Ideen innerhalb von Absätzen zu verbinden
+- Fügen Sie praktische Beispiele und realistische Szenarien hinzu
+- Erklären Sie "warum" und "wie" ausführlich, nicht nur "was"
 
 Schema (BlogV3):
 
 {
   "version": "blog.v3",
-  "locale": "nl-NL",
+  "locale": "de-DE",
   "author": "",              // = site_name
   "title": "",               // H1 ≤70 chars
-  "standfirst": "",          // 2-3 zinnen, sterke intro
-  "sections": [              // EXACTLY 5-6 sections total for SEO depth
+  "standfirst": "",          // 2-3 Sätze, starke Intro
+  "sections": [              // GENAU 5-6 Sections insgesamt für SEO-Tiefe
     {
       "type": "text|image|quote|faq",
-      "heading": "",         // H2 ≤60 chars with secondary keywords (text, faq), leeg voor image/quote
-      "subheadings": [""],   // H3 ≤50 chars for text sections with long-tail keywords (optional)
-      "paragraphs": [""],    // Array with ONE detailed paragraph of 250-400 words per text section (geen HTML)
-      "image": {"url": "", "caption": ""},        // only if type=image
-      "quote": {"text": ""},                    // only if type=quote
-      "faq": [{"q": "", "a": ""}],               // only if type=faq (3-5 items with keyword-rich questions)
+      "heading": "",         // H2 ≤60 chars mit Secondary Keywords (text, faq), leer für image/quote
+      "subheadings": [""],   // H3 ≤50 chars für Text-Sections mit Long-Tail Keywords (optional)
+      "paragraphs": [""],    // Array mit EINEM detaillierten Absatz von 250-400 Wörtern pro Text-Section (kein HTML)
+      "image": {"url": "", "caption": ""},        // nur wenn type=image
+      "quote": {"text": ""},                    // nur wenn type=quote
+      "faq": [{"q": "", "a": ""}],               // nur wenn type=faq (3-5 Items mit Keyword-reichen Fragen)
       "internal_links": [{"label": "", "url_key": "EXACT_URL_FROM_CONTEXT"}]
     }
   ],
   "closing": {
-    "headline": "",          // afsluitende H2 ≤60 chars
-    "summary": "",           // 2-3 alinea's van elk 150+ woorden met concrete waarde
-    "primary_cta": {"label": "", "url_key": "producten.index|top5"} // exactly 1
+    "headline": "",          // abschließende H2 ≤60 chars
+    "summary": "",           // 2-3 Absätze von je 150+ Wörtern mit konkretem Wert
+    "primary_cta": {"label": "", "url_key": "produkte.index|top5"} // genau 1
   },
-  "product_context": {       // ONLY when blog_type="product"; else omit or {}
+  "product_context": {       // NUR wenn blog_type="product"; sonst weglassen oder {}
     "name": "", "why_relevant": ""
   }
 }
 
-CONTENT FLOW CHECKLIST:
-✅ Elke alinea sluit aan op de vorige - gebruik overgangszinnen
-✅ Logische opbouw: probleem/vraag → uitleg → praktische tips → conclusie
-✅ H2 secties bouwen een verhaal: basisbegrippen → diepere kennis → praktische toepassing
-✅ Geen "losse blokken" - alles hangt samen als één verhaal
+CONTENT FLOW CHECKLISTE:
+✅ Jeder Absatz schließt an den vorherigen an - verwenden Sie Übergangssätze
+✅ Logischer Aufbau: Problem/Frage → Erklärung → praktische Tipps → Fazit
+✅ H2-Abschnitte bauen eine Geschichte: Grundbegriffe → tieferes Wissen → praktische Anwendung
+✅ Keine "losen Blöcke" - alles hängt zusammen als eine Geschichte
 
-SEO EXECUTION:
-✅ H1 met primary keyword (natuurlijk, niet geforceerd)
-✅ H2s met secondary keywords die mensen zoeken
-✅ H3s met long-tail zoektermen - NOOIT herhalen wat H2 al zegt!
-✅ Begin elke sectie met direct antwoord op de vraag
-✅ Gebruik LSI keywords (semantisch verwante woorden)
-✅ Focus op SEARCH INTENT - beantwoord échte vragen
+SEO UMSETZUNG:
+✅ H1 mit Primary Keyword (natürlich, nicht erzwungen)
+✅ H2s mit Secondary Keywords die Menschen suchen
+✅ H3s mit Long-Tail Suchbegriffen - NIEMALS wiederholen was H2 schon sagt!
+✅ Beginnen Sie jeden Abschnitt mit direkter Antwort auf die Frage
+✅ Verwenden Sie LSI Keywords (semantisch verwandte Wörter)
+✅ Fokus auf SEARCH INTENT - beantworten Sie echte Fragen
 
-HEADING HIERARCHIE (KRITIEK):
-❌ FOUT: H2 "Wat zijn groentefrietjes?" + H3 "Wat zijn krokante groentefrietjes?" (dubbel!)
-✅ GOED: H2 "Wat zijn groentefrietjes?" + H3 "Voordelen tegenover gewone friet"
-❌ FOUT: H2 "Hoe maak je groentefrietjes?" + H3 "Hoe maak je krokante groentefrietjes?" (dubbel!)
-✅ GOED: H2 "Hoe maak je groentefrietjes?" + H3 "Voorbereiding groenten" + H3 "Bakproces stap-voor-stap"
+ÜBERSCHRIFTEN HIERARCHIE (KRITISCH):
+❌ FALSCH: H2 "Was sind Gemüsepommes?" + H3 "Was sind knusprige Gemüsepommes?" (doppelt!)
+✅ RICHTIG: H2 "Was sind Gemüsepommes?" + H3 "Vorteile gegenüber normalen Pommes"
+❌ FALSCH: H2 "Wie macht man Gemüsepommes?" + H3 "Wie macht man knusprige Gemüsepommes?" (doppelt!)
+✅ RICHTIG: H2 "Wie macht man Gemüsepommes?" + H3 "Gemüse vorbereiten" + H3 "Backprozess Schritt-für-Schritt"
 
-REGEL: H3s behandelen ANDERE aspecten van het H2 onderwerp, NOOIT hetzelfde onderwerp!
+REGEL: H3s behandeln ANDERE Aspekte des H2-Themas, NIEMALS dasselbe Thema!
 
-KWALITEIT EISEN (VERPLICHT):
-- PARAGRAAF LENGTE: Elke text sectie heeft EEN uitgebreide paragraaf van 250-400 woorden
-- TOTAAL ARTIKEL: Minimaal 2000 woorden voor volledige SEO coverage
-- DIEPGANG: Concrete, praktische informatie met voorbeelden en uitleg - geen vage algemene tekst
-- Nederlandse SEO termen die mensen echt zoeken
-- Natuurlijke keyword integratie (0.5-1.5% density)
-- ABSOLUUT GEEN EMOJIS - dit is professionele content, geen social media
+QUALITÄTSANFORDERUNGEN (VERPFLICHTEND):
+- ABSATZ LÄNGE: Jeder Text-Abschnitt hat EINEN ausführlichen Absatz von 250-400 Wörtern
+- GESAMT ARTIKEL: Mindestens 2000 Wörter für vollständige SEO-Abdeckung
+- TIEFGANG: Konkrete, praktische Informationen mit Beispielen und Erklärungen - kein vager allgemeiner Text
+- Deutsche SEO-Begriffe die Menschen wirklich suchen
+- Natürliche Keyword-Integration (0.5-1.5% Dichte)
+- ABSOLUT KEINE EMOJIS - dies ist professioneller Content, kein Social Media
 
-FINAL QUALITY CHECK BEFORE RETURNING:
-- Count words in each text section paragraph - MUST be 250-400 words
-- Count total sections - MUST be 5-6 sections
-- Calculate total word count - MUST be 2000+ words
-- If requirements not met, EXPAND content significantly before returning JSON
+FINALE QUALITÄTSPRÜFUNG VOR RÜCKGABE:
+- Zählen Sie Wörter in jedem Text-Abschnitt Absatz - MUSS 250-400 Wörter sein
+- Zählen Sie Gesamt-Sections - MUSS 5-6 Sections sein
+- Berechnen Sie Gesamtwortzahl - MUSS 2000+ Wörter sein
+- Wenn Anforderungen nicht erfüllt, ERWEITERN Sie den Content erheblich vor JSON-Rückgabe
 
-Return alleen minified JSON, niets anders.
+Geben Sie nur minified JSON zurück, nichts anderes.
 PROMPT;
 
         $response = $this->chat([
-            ['role' => 'system', 'content' => 'You are writing a comprehensive 2000+ word article. Return ONLY minified JSON with extensive, detailed paragraphs. Each text section MUST have a 250-400 word paragraph. NO short paragraphs allowed.'],
+            ['role' => 'system', 'content' => 'Sie schreiben einen umfassenden 2000+ Wörter Artikel auf Deutsch. Geben Sie NUR minified JSON mit ausführlichen, detaillierten Absätzen zurück. Jeder Text-Abschnitt MUSS einen 250-400 Wörter Absatz haben. KEINE kurzen Absätze erlaubt.'],
             ['role' => 'user', 'content' => $prompt],
-        ], $model, 0.4, 8000); // Lage temperature voor consistentie, hoge tokens voor volledige Nederlandse content (8k voor no truncation)
+        ], $model, 0.4, 8000); // Niedrige Temperature für Konsistenz, hohe Tokens für vollständigen deutschen Content (8k für no truncation)
 
         $content = trim($response['content'] ?? '{}');
 
@@ -181,22 +181,22 @@ PROMPT;
             // Return fallback JSON that matches blog.v3 schema requirements
             return json_encode([
                 'version' => 'blog.v3',
-                'locale' => 'nl-NL',
-                'author' => getSetting('site_name', 'Redactie'),
-                'title' => 'Content generatie mislukt - ' . date('Y-m-d H:i'),
-                'standfirst' => 'Er is een technische fout opgetreden bij het genereren van deze content.',
-                'is_fallback' => true, // Marker voor commands om fallback te detecteren
+                'locale' => 'de-DE',
+                'author' => getSetting('site_name', 'Redaktion'),
+                'title' => 'Content-Generierung fehlgeschlagen - ' . date('Y-m-d H:i'),
+                'standfirst' => 'Es ist ein technischer Fehler bei der Generierung dieses Contents aufgetreten.',
+                'is_fallback' => true, // Marker für Commands um Fallback zu erkennen
                 'sections' => [
                     [
                         'type' => 'text',
-                        'heading' => 'Technische fout',
-                        'paragraphs' => ['Er is een fout opgetreden bij het genereren van content. Probeer het later opnieuw.'],
+                        'heading' => 'Technischer Fehler',
+                        'paragraphs' => ['Bei der Generierung des Contents ist ein Fehler aufgetreten. Bitte versuchen Sie es später erneut.'],
                     ]
                 ],
                 'closing' => [
-                    'headline' => 'Onze excuses',
-                    'summary' => 'We werken aan een oplossing.',
-                    'primary_cta' => ['label' => 'Terug naar overzicht', 'url_key' => 'producten.index']
+                    'headline' => 'Unsere Entschuldigung',
+                    'summary' => 'Wir arbeiten an einer Lösung.',
+                    'primary_cta' => ['label' => 'Zurück zur Übersicht', 'url_key' => 'produkte.index']
                 ]
             ]);
         }
@@ -210,125 +210,125 @@ PROMPT;
     public function generateProductReview(string $title, string $description, string $brand, string $model = 'gpt-4o-mini'): string
     {
         $prompt = <<<PROMPT
-Je bent een Nederlandse SEO product specialist die reviews schrijft die PERFECT ranken EN converteren. Output ALLEEN minified JSON.
+Sie sind ein deutscher SEO-Produktspezialist der Testberichte schreibt die PERFEKT ranken UND konvertieren. Geben Sie NUR minified JSON aus.
 
-REVIEW FLOW MASTERCLASS:
-1. Vertel een VERHAAL - van uitpakken tot dagelijks gebruik na weken
-2. Elke sectie bouwt voort: verwachtingen → praktijk → oordeel
-3. Gebruik overgangszinnen: "Na een week gebruik bleek...", "Wat ons opviel...", "In de praktijk betekent dit..."
-4. CONCREET zijn - geen vage termen maar specifieke ervaringen
+TESTBERICHT FLOW MEISTERKLASSE:
+1. Erzählen Sie eine GESCHICHTE - vom Auspacken bis zur täglichen Nutzung nach Wochen
+2. Jeder Abschnitt baut auf: Erwartungen → Praxis → Urteil
+3. Verwenden Sie Übergangssätze: "Nach einer Woche Nutzung zeigte sich...", "Was uns auffiel...", "In der Praxis bedeutet dies..."
+4. KONKRET sein - keine vagen Begriffe sondern spezifische Erfahrungen
 
-SEO OPTIMALISATIE VOOR REVIEWS:
-- PRIMARY KEYWORD: "[product] review" of "[product] test" in titel
-- SECONDARY KEYWORDS: "ervaringen", "voor en nadelen", "advies", "vergelijking"
-- LONG-TAIL: "is [product] het waard", "[product] vs [concurrent]", "problemen met [product]"
-- SEARCH INTENT: Mensen willen EERLIJKE mening van echte gebruiker
-- FEATURED SNIPPET ready: Begin met direct antwoord "Is [product] aan te raden?"
+SEO OPTIMIERUNG FÜR TESTBERICHTE:
+- PRIMARY KEYWORD: "[Produkt] Test" oder "[Produkt] Testbericht" im Titel
+- SECONDARY KEYWORDS: "Erfahrungen", "Vor- und Nachteile", "Empfehlung", "Vergleich"
+- LONG-TAIL: "lohnt sich [Produkt]", "[Produkt] vs [Konkurrent]", "Probleme mit [Produkt]"
+- SEARCH INTENT: Menschen wollen EHRLICHE Meinung von echtem Nutzer
+- FEATURED SNIPPET ready: Beginnen Sie mit direkter Antwort "Ist [Produkt] zu empfehlen?"
 
-Review over "{$title}" (merk: {$brand}) volgens exact JSON schema:
+Testbericht über "{$title}" (Marke: {$brand}) gemäß exaktem JSON-Schema:
 
 {
-  "version": "review.v3", 
-  "locale": "nl-NL",
-  "intro": "Eerlijke, pakkende introductie in 2-3 zinnen over je ervaring met dit product",
+  "version": "review.v3",
+  "locale": "de-DE",
+  "intro": "Ehrliche, packende Einleitung in 2-3 Sätzen über Ihre Erfahrung mit diesem Produkt",
   "sections": [
     {
       "type": "text",
-      "heading": "Eerste indruk en verwachtingen",
-      "paragraphs": ["Uitpakervaring en eerste indrukken", "Verwachtingen op basis van specificaties", "Context waarin je het product gaat testen"]
+      "heading": "Erster Eindruck und Erwartungen",
+      "paragraphs": ["Auspackeerlebnis und erste Eindrücke", "Erwartungen basierend auf Spezifikationen", "Kontext in dem Sie das Produkt testen werden"]
     },
     {
-      "type": "pros-cons", 
-      "heading": "Voor- en nadelen uit de praktijk",
-      "pros": ["Concreet voordeel uit eigen ervaring", "Praktisch pluspunt", "Unieke eigenschap", "Positieve verrassing"],
-      "cons": ["Eerlijk minpunt", "Praktische beperking", "Verbeterpunt"]
+      "type": "pros-cons",
+      "heading": "Vor- und Nachteile aus der Praxis",
+      "pros": ["Konkreter Vorteil aus eigener Erfahrung", "Praktischer Pluspunkt", "Einzigartige Eigenschaft", "Positive Überraschung"],
+      "cons": ["Ehrlicher Minuspunkt", "Praktische Einschränkung", "Verbesserungspunkt"]
     },
     {
       "type": "quote",
-      "quote": "Een opvallende bevinding of kernwaarde die het product definieert"
-    },
-    {
-      "type": "text", 
-      "heading": "Prestaties in de praktijk",
-      "paragraphs": ["Concrete testresultaten", "Vergelijking met verwachtingen", "Hoe het presteert in dagelijks gebruik"]
+      "quote": "Eine auffallende Erkenntnis oder Kernwert der das Produkt definiert"
     },
     {
       "type": "text",
-      "heading": "Voor wie is dit geschikt?",
-      "paragraphs": ["Ideale doelgroep en gebruikssituaties", "Wanneer zou je dit aanbevelen", "Alternatieven voor andere behoeften"]
+      "heading": "Leistung in der Praxis",
+      "paragraphs": ["Konkrete Testergebnisse", "Vergleich mit Erwartungen", "Wie es im täglichen Gebrauch funktioniert"]
+    },
+    {
+      "type": "text",
+      "heading": "Für wen ist dies geeignet?",
+      "paragraphs": ["Ideale Zielgruppe und Anwendungssituationen", "Wann würden Sie dies empfehlen", "Alternativen für andere Bedürfnisse"]
     },
     {
       "type": "steps",
-      "heading": "Koopbeslissing stap voor stap",
+      "heading": "Kaufentscheidung Schritt für Schritt",
       "items": [
-        {"title": "Definieer je behoeften", "detail": "Welke functies zijn echt belangrijk voor jouw situatie?"},
-        {"title": "Vergelijk specificaties", "detail": "Waar moet je op letten bij het vergelijken van modellen?"},
-        {"title": "Overweeg alternatieven", "detail": "Welke andere opties passen bij je budget en eisen?"},
-        {"title": "Maak de definitieve keuze", "detail": "Finale afweging en waar je het beste kunt kopen"}
+        {"title": "Definieren Sie Ihre Bedürfnisse", "detail": "Welche Funktionen sind wirklich wichtig für Ihre Situation?"},
+        {"title": "Vergleichen Sie Spezifikationen", "detail": "Worauf müssen Sie beim Vergleich von Modellen achten?"},
+        {"title": "Erwägen Sie Alternativen", "detail": "Welche anderen Optionen passen zu Ihrem Budget und Anforderungen?"},
+        {"title": "Treffen Sie die endgültige Wahl", "detail": "Finale Abwägung und wo Sie am besten kaufen können"}
       ]
     },
     {
       "type": "faq",
       "items": [
-        {"q": "Hoe lang gaat dit product mee?", "a": "Verwachte levensduur op basis van bouwkwaliteit"},
-        {"q": "Is het geschikt voor beginners?", "a": "Gebruiksgemak en leercurve"},
-        {"q": "Wat onderscheidt het van concurrenten?", "a": "Unieke voordelen ten opzichte van alternatieven"},
-        {"q": "Waar moet je op letten bij aankoop?", "a": "Praktische aankoopadvies"}
+        {"q": "Wie lange hält dieses Produkt?", "a": "Erwartete Lebensdauer basierend auf Verarbeitungsqualität"},
+        {"q": "Ist es für Anfänger geeignet?", "a": "Bedienungsfreundlichkeit und Lernkurve"},
+        {"q": "Was unterscheidet es von Konkurrenten?", "a": "Einzigartige Vorteile gegenüber Alternativen"},
+        {"q": "Worauf sollte man beim Kauf achten?", "a": "Praktische Kaufberatung"}
       ]
     },
     {
       "type": "conclusion",
-      "heading": "Eindoordeel",
-      "paragraphs": ["Samenvatting van sterke en zwakke punten", "Eindaanbeveling en praktisch advies"]
+      "heading": "Endurteil",
+      "paragraphs": ["Zusammenfassung der Stärken und Schwächen", "Endempfehlung und praktische Beratung"]
     }
   ],
   "verdict": {
-    "headline": "Onze eindconclusie",
-    "buy_if": ["Koop als je situatie 1 hebt", "Perfect bij behoefte 2"],
-    "skip_if": ["Sla over bij situatie 1", "Niet geschikt als je behoefte 2 hebt"],
-    "bottom_line": "Eén zin die de kern van je aanbeveling samenvat"
+    "headline": "Unser Fazit",
+    "buy_if": ["Kaufen wenn Sie Situation 1 haben", "Perfekt bei Bedarf 2"],
+    "skip_if": ["Überspringen bei Situation 1", "Nicht geeignet wenn Sie Bedarf 2 haben"],
+    "bottom_line": "Ein Satz der den Kern Ihrer Empfehlung zusammenfasst"
   }
 }
 
-Productinformatie (context, niet letterlijk overnemen):
+Produktinformationen (Kontext, nicht wörtlich übernehmen):
 - Titel: {$title}
-- Beschrijving: {$description}
-- Merk: {$brand}
+- Beschreibung: {$description}
+- Marke: {$brand}
 
-REVIEW FLOW CHECKLIST:
-✅ Vertel een chronologisch verhaal: eerste indruk → dagelijks gebruik → eindoordeel
-✅ Elke sectie refereert aan vorige: "Zoals eerder genoemd...", "Dit bleek in de praktijk..."
-✅ Concreet zijn: "Na 3 weken gebruik", "Bij dagelijkse taken van 2 uur"
-✅ Persoonlijke ervaring: "Wat ons opviel", "Onze ervaring was"
+TESTBERICHT FLOW CHECKLISTE:
+✅ Erzählen Sie eine chronologische Geschichte: erster Eindruck → täglicher Gebrauch → Endurteil
+✅ Jeder Abschnitt bezieht sich auf vorherige: "Wie bereits erwähnt...", "In der Praxis zeigte sich..."
+✅ Konkret sein: "Nach 3 Wochen Nutzung", "Bei täglichen Aufgaben von 2 Stunden"
+✅ Persönliche Erfahrung: "Was uns auffiel", "Unsere Erfahrung war"
 
-SEO OPTIMALISATIE REVIEWS:
-✅ Titel met primary keyword: "[Product] Review" of "[Product] Test"
-✅ H2s beantwoorden directe vragen: "Is [product] zijn geld waard?"
-✅ Featured snippet ready: Begin met direct JA/NEE antwoord
-✅ Long-tail keywords: "problemen met [product]", "[product] vs [concurrent]"
-✅ LSI keywords: "ervaring", "advies", "aanbeveling", "vergelijking"
+SEO OPTIMIERUNG TESTBERICHTE:
+✅ Titel mit Primary Keyword: "[Produkt] Test" oder "[Produkt] Testbericht"
+✅ H2s beantworten direkte Fragen: "Ist [Produkt] sein Geld wert?"
+✅ Featured Snippet ready: Beginnen Sie mit direkter JA/NEIN Antwort
+✅ Long-Tail Keywords: "Probleme mit [Produkt]", "[Produkt] vs [Konkurrent]"
+✅ LSI Keywords: "Erfahrung", "Empfehlung", "Beratung", "Vergleich"
 
-🚫 LINKING REGELS (VERPLICHT):
-- Plaats NOOIT links in lopende tekst (paragraphs)
-- Vermeld producten/merken wel, maar NIET linken
-- Geen interne links - CTA knoppen in template doen dat werk
-- Content is puur informatie - navigatie is apart
+🚫 LINKING REGELN (VERPFLICHTEND):
+- Platzieren Sie NIEMALS Links in laufendem Text (paragraphs)
+- Erwähnen Sie Produkte/Marken, aber NICHT verlinken
+- Keine internen Links - CTA-Buttons im Template erledigen diese Arbeit
+- Content ist reine Information - Navigation ist separat
 
-KWALITEIT EISEN:
-- Elke paragraaf 120+ woorden voor SEO authority
-- Specifieke details, geen vage algemene opmerkingen
-- Eerlijke voor/nadelen gebaseerd op echte gebruikssituaties
-- Duidelijke doelgroep aanbevelingen
-- Nederlandse tone-of-voice: professioneel maar persoonlijk
-- ABSOLUUT GEEN EMOJIS - dit is serieuze product review content
+QUALITÄTSANFORDERUNGEN:
+- Jeder Absatz 120+ Wörter für SEO-Autorität
+- Spezifische Details, keine vagen allgemeinen Bemerkungen
+- Ehrliche Vor-/Nachteile basierend auf echten Nutzungssituationen
+- Klare Zielgruppenempfehlungen
+- Deutscher Ton: professionell aber persönlich
+- ABSOLUT KEINE EMOJIS - dies ist seriöser Produkttest-Content
 
-Return alleen minified JSON, niets anders.
+Geben Sie nur minified JSON zurück, nichts anderes.
 PROMPT;
 
         $response = $this->chat([
-            ['role' => 'system', 'content' => 'Return ONLY minified JSON. No markdown, no commentary.'],
+            ['role' => 'system', 'content' => 'Geben Sie NUR minified JSON zurück. Kein Markdown, kein Kommentar.'],
             ['role' => 'user', 'content' => $prompt],
-        ], $model, 0.4, 8000); // Lage temperature voor consistentie, hoge tokens voor volledige Nederlandse reviews (8k voor no truncation)
+        ], $model, 0.4, 8000); // Niedrige Temperature für Konsistenz, hohe Tokens für vollständige deutsche Testberichte (8k für no truncation)
 
         $content = trim($response['content'] ?? '{}');
 
@@ -355,10 +355,10 @@ PROMPT;
             // Return fallback JSON if parsing fails
             return json_encode([
                 'version' => 'review.v3',
-                'locale' => 'nl-NL', 
-                'intro' => 'Er is een fout opgetreden bij het genereren van content.',
+                'locale' => 'de-DE',
+                'intro' => 'Bei der Generierung des Contents ist ein Fehler aufgetreten.',
                 'sections' => [],
-                'verdict' => ['headline' => 'Conclusie', 'bottom_line' => 'Review niet beschikbaar']
+                'verdict' => ['headline' => 'Fazit', 'bottom_line' => 'Testbericht nicht verfügbar']
             ]);
         }
         
@@ -372,124 +372,124 @@ PROMPT;
     public function generateCustomProductReview(string $title, string $description, string $brand, string $niche, string $model = 'gpt-4o-mini'): string
     {
         $prompt = <<<PROMPT
-Je bent een Nederlandse product specialist die objectieve productanalyses schrijft voor {$niche} websites.
-Output ALLEEN minified JSON volgens het exacte schema hieronder.
+Sie sind ein deutscher Produktspezialist der objektive Produktanalysen für {$niche} Websites schreibt.
+Geben Sie NUR minified JSON gemäß dem exakten Schema unten aus.
 
-SCHRIJFSTIJL - BELANGRIJK:
-- NOOIT schrijven alsof je het product fysiek hebt getest
-- Gebruik GEEN: "ik heb getest", "na het uitpakken", "in mijn ervaring", "ik merkte", "wij testten"
-- Gebruik WEL: "dit product biedt", "op basis van de specificaties", "gebruikers rapporteren", "de features laten zien"
-- Focus op objectieve analyse van specs, features en logische verwachtingen
-- Professioneel en informatief, niet persoonlijk
+SCHREIBSTIL - WICHTIG:
+- NIEMALS schreiben als ob Sie das Produkt physisch getestet haben
+- Verwenden Sie NICHT: "ich habe getestet", "nach dem Auspacken", "in meiner Erfahrung", "ich bemerkte", "wir testeten"
+- Verwenden Sie WOHL: "dieses Produkt bietet", "basierend auf den Spezifikationen", "Nutzer berichten", "die Features zeigen"
+- Fokus auf objektive Analyse von Specs, Features und logischen Erwartungen
+- Professionell und informativ, nicht persönlich
 
-CONTENT FOCUS:
-- Analyseer specificaties en wat ze betekenen voor de gebruiker
-- Bespreek features en hun praktische toepassingen
-- Vergelijk met alternatieven op basis van specs
-- Geef eerlijke voor- en nadelen gebaseerd op productinformatie
-- Help consumenten een weloverwogen beslissing te maken
+CONTENT FOKUS:
+- Analysieren Sie Spezifikationen und was sie für den Nutzer bedeuten
+- Besprechen Sie Features und ihre praktischen Anwendungen
+- Vergleichen Sie mit Alternativen basierend auf Specs
+- Geben Sie ehrliche Vor- und Nachteile basierend auf Produktinformationen
+- Helfen Sie Konsumenten eine fundierte Entscheidung zu treffen
 
-Product: "{$title}"
-Merk: {$brand}
-Categorie: {$niche}
-Productinformatie: {$description}
+Produkt: "{$title}"
+Marke: {$brand}
+Kategorie: {$niche}
+Produktinformationen: {$description}
 
-Genereer een review volgens dit exacte JSON schema:
+Generieren Sie einen Testbericht gemäß diesem exakten JSON-Schema:
 
 {
   "version": "review.v3",
-  "locale": "nl-NL",
-  "intro": "Objectieve opening over wat dit product biedt en waarom het relevant is (2-3 zinnen, GEEN persoonlijke ervaring)",
+  "locale": "de-DE",
+  "intro": "Objektive Einleitung über was dieses Produkt bietet und warum es relevant ist (2-3 Sätze, KEINE persönliche Erfahrung)",
   "sections": [
     {
       "type": "text",
-      "heading": "Wat dit product biedt",
-      "paragraphs": ["Wat je krijgt volgens de fabrikant, belangrijkste features", "Toegevoegde waarde en unieke eigenschappen"]
+      "heading": "Was dieses Produkt bietet",
+      "paragraphs": ["Was Sie laut Hersteller bekommen, wichtigste Features", "Mehrwert und einzigartige Eigenschaften"]
     },
     {
       "type": "text",
-      "heading": "Specificaties en features in detail",
-      "paragraphs": ["Technische specs uitgelegd en wat ze betekenen", "Hoe de features werken en wat je ermee kunt", "Vergelijking met vergelijkbare producten"]
+      "heading": "Spezifikationen und Features im Detail",
+      "paragraphs": ["Technische Specs erklärt und was sie bedeuten", "Wie die Features funktionieren und was Sie damit machen können", "Vergleich mit ähnlichen Produkten"]
     },
     {
       "type": "pros-cons",
-      "heading": "Sterke punten en aandachtspunten",
-      "pros": ["Concreet voordeel op basis van specs", "Praktisch sterk punt", "Unieke feature of eigenschap", "Goede prijs-kwaliteit aspect"],
-      "cons": ["Eerlijk aandachtspunt of beperking", "Mogelijk nadeel voor specifieke gebruikers", "Aspect waar concurrentie beter scoort"]
+      "heading": "Stärken und Beachtungspunkte",
+      "pros": ["Konkreter Vorteil basierend auf Specs", "Praktischer Pluspunkt", "Einzigartige Feature oder Eigenschaft", "Gutes Preis-Leistungs-Verhältnis"],
+      "cons": ["Ehrlicher Beachtungspunkt oder Einschränkung", "Möglicher Nachteil für spezifische Nutzer", "Aspekt wo Konkurrenz besser abschneidet"]
     },
     {
       "type": "quote",
-      "quote": "Kernpunt van de analyse - wat maakt dit product bijzonder of belangrijk om te weten"
+      "quote": "Kernpunkt der Analyse - was macht dieses Produkt besonders oder wichtig zu wissen"
     },
     {
       "type": "text",
-      "heading": "Geschiktheid en toepassingen",
-      "paragraphs": ["Voor welke gebruikers en situaties dit product het meest geschikt is", "Wanneer dit de juiste keuze is en wanneer niet"]
+      "heading": "Eignung und Anwendungen",
+      "paragraphs": ["Für welche Nutzer und Situationen dieses Produkt am besten geeignet ist", "Wann dies die richtige Wahl ist und wann nicht"]
     },
     {
       "type": "text",
-      "heading": "Verwachtingen voor gebruik",
-      "paragraphs": ["Wat je kunt verwachten op basis van de specs en features", "Hoe dit zich vertaalt naar dagelijks gebruik", "Potentiële voordelen en beperkingen in de praktijk"]
+      "heading": "Erwartungen für die Nutzung",
+      "paragraphs": ["Was Sie basierend auf den Specs und Features erwarten können", "Wie sich dies im täglichen Gebrauch zeigt", "Potentielle Vorteile und Einschränkungen in der Praxis"]
     },
     {
       "type": "steps",
-      "heading": "Aankoopoverweging stap voor stap",
+      "heading": "Kaufüberlegung Schritt für Schritt",
       "items": [
-        {"title": "Bepaal je behoeften", "detail": "Welke functies zijn belangrijk voor jouw situatie?"},
-        {"title": "Vergelijk alternatieven", "detail": "Hoe verhoudt dit zich tot andere opties in deze prijsklasse?"},
-        {"title": "Check de specificaties", "detail": "Voldoen de specs aan jouw eisen?"},
-        {"title": "Maak je keuze", "detail": "Is dit de beste optie voor jouw budget en behoeften?"}
+        {"title": "Bestimmen Sie Ihre Bedürfnisse", "detail": "Welche Funktionen sind wichtig für Ihre Situation?"},
+        {"title": "Vergleichen Sie Alternativen", "detail": "Wie verhält sich dies zu anderen Optionen in dieser Preisklasse?"},
+        {"title": "Prüfen Sie die Spezifikationen", "detail": "Erfüllen die Specs Ihre Anforderungen?"},
+        {"title": "Treffen Sie Ihre Wahl", "detail": "Ist dies die beste Option für Ihr Budget und Bedürfnisse?"}
       ]
     },
     {
       "type": "faq",
       "items": [
-        {"q": "Voor wie is dit product geschikt?", "a": "Doelgroep en ideale gebruikssituaties"},
-        {"q": "Wat zijn de belangrijkste voordelen?", "a": "Kernvoordelen gebaseerd op features"},
-        {"q": "Waar moet je op letten?", "a": "Belangrijke aandachtspunten bij aankoop"},
-        {"q": "Hoe verhoudt het zich tot alternatieven?", "a": "Positionering ten opzichte van concurrentie"}
+        {"q": "Für wen ist dieses Produkt geeignet?", "a": "Zielgruppe und ideale Nutzungssituationen"},
+        {"q": "Was sind die wichtigsten Vorteile?", "a": "Kernvorteile basierend auf Features"},
+        {"q": "Worauf sollte man achten?", "a": "Wichtige Beachtungspunkte beim Kauf"},
+        {"q": "Wie verhält es sich zu Alternativen?", "a": "Positionierung gegenüber Konkurrenz"}
       ]
     },
     {
       "type": "conclusion",
-      "heading": "Conclusie",
-      "paragraphs": ["Samenvatting van de analyse: sterke punten en aandachtspunten", "Aanbeveling: voor wie is dit een goede keuze?"]
+      "heading": "Fazit",
+      "paragraphs": ["Zusammenfassung der Analyse: Stärken und Beachtungspunkte", "Empfehlung: für wen ist dies eine gute Wahl?"]
     }
   ],
   "verdict": {
-    "headline": "Onze beoordeling",
+    "headline": "Unsere Bewertung",
     "buy_if": [
-      "Koop als je [specifieke behoefte/situatie]",
-      "Perfect bij [specifieke use case]"
+      "Kaufen wenn Sie [spezifisches Bedürfnis/Situation]",
+      "Perfekt bei [spezifischer Anwendungsfall]"
     ],
     "skip_if": [
-      "Sla over als je [specifieke situatie waar dit niet past]",
-      "Niet geschikt als [specifieke beperking]"
+      "Überspringen wenn Sie [spezifische Situation wo dies nicht passt]",
+      "Nicht geeignet wenn [spezifische Einschränkung]"
     ],
-    "bottom_line": "Kernboodschap: waarde propositie in één zin"
+    "bottom_line": "Kernbotschaft: Wertversprechen in einem Satz"
   }
 }
 
-🚫 LINKING REGELS (VERPLICHT):
-- Plaats NOOIT links in lopende tekst (paragraphs)
-- Vermeld producten/merken wel, maar NIET linken
-- Geen interne links - CTA knoppen in template doen dat werk
-- Content is puur informatie - navigatie is apart
+🚫 LINKING REGELN (VERPFLICHTEND):
+- Platzieren Sie NIEMALS Links in laufendem Text (paragraphs)
+- Erwähnen Sie Produkte/Marken, aber NICHT verlinken
+- Keine internen Links - CTA-Buttons im Template erledigen diese Arbeit
+- Content ist reine Information - Navigation ist separat
 
-KRITISCHE REGELS:
-1. Gebruik NOOIT persoonlijke ervaringen of test-taal
-2. Baseer alles op specs, features en logische analyse
-3. Blijf objectief en informatief
-4. Voor/nadelen moeten concreet en specifiek zijn
-5. Sections moeten natuurlijk lezen, niet robotachtig
-6. Totaal 1200-1600 woorden
-7. Return ALLEEN minified JSON, geen markdown
+KRITISCHE REGELN:
+1. Verwenden Sie NIEMALS persönliche Erfahrungen oder Test-Sprache
+2. Basieren Sie alles auf Specs, Features und logischer Analyse
+3. Bleiben Sie objektiv und informativ
+4. Vor-/Nachteile müssen konkret und spezifisch sein
+5. Sections müssen natürlich lesen, nicht roboterhaft
+6. Gesamt 1200-1600 Wörter
+7. Geben Sie NUR minified JSON zurück, kein Markdown
 
-Genereer nu de JSON:
+Generieren Sie jetzt das JSON:
 PROMPT;
 
         $response = $this->chat([
-            ['role' => 'system', 'content' => 'Je bent een professionele product analist die objectieve productanalyses schrijft.'],
+            ['role' => 'system', 'content' => 'Sie sind ein professioneller Produktanalyst der objektive Produktanalysen schreibt.'],
             ['role' => 'user', 'content' => $prompt],
         ], $model, 0.7, 4000);
 
@@ -502,44 +502,44 @@ PROMPT;
      */
     public function generateMetaTags(string $title, string $description, string $brand, string $model = 'gpt-4o-mini'): array
     {
-        $prompt = "Je bent een SEO-expert die meta tags schrijft die Google AI Overview vriendelijk zijn.
+        $prompt = "Sie sind ein SEO-Experte der Meta-Tags schreibt die Google AI Overview freundlich sind.
 
-Schrijf pakkende meta tags die conversie stimuleren:
+Schreiben Sie packende Meta-Tags die Konversion stimulieren:
 
-META TITLE (exact 60 tekens):
-- Integreer kernzoekwoord + merk + USP
-- Gebruik separators (| of •) voor structuur  
-- Eindig met actie-CTA (\"Vergelijk\", \"Ontdek\", \"Bekijk\")
-- Voorbeelden: \"Beste Philips Airfryer {huidige jaar} | Vergelijk Modellen\" of \"Samsung TV Aanbieding • Ontdek Kortingen\"
+META TITLE (exakt 60 Zeichen):
+- Integrieren Sie Kern-Keyword + Marke + USP
+- Verwenden Sie Separatoren (| oder •) für Struktur
+- Enden Sie mit Aktions-CTA (\"Vergleichen\", \"Entdecken\", \"Ansehen\")
+- Beispiele: \"Beste Philips Airfryer {aktuelles Jahr} | Modelle Vergleichen\" oder \"Samsung TV Angebot • Rabatte Entdecken\"
 
-META DESCRIPTION (exact 160 tekens):
-- Beantwoord de kernvraag van de zoeker
-- Voeg USP + voordeel + CTA toe
-- Gebruik actiewoorden (\"ontdek\", \"vergelijk\", \"bespaar\")  
-- Integreer sociale proof indien mogelijk
-- Sluit af met duidelijke call-to-action
+META DESCRIPTION (exakt 160 Zeichen):
+- Beantworten Sie die Kernfrage des Suchers
+- Fügen Sie USP + Vorteil + CTA hinzu
+- Verwenden Sie Aktionswörter (\"entdecken\", \"vergleichen\", \"sparen\")
+- Integrieren Sie Social Proof falls möglich
+- Schließen Sie mit klarem Call-to-Action ab
 
-Optimaliseer voor Google AI Overview:
-- Geef directe antwoorden op zoekvragen
-- Gebruik contextueel rijke informatie
-- Integreer relevante synoniemen natuurlijk
-- Focus op gebruikersintentie en voordelen
+Optimieren für Google AI Overview:
+- Geben Sie direkte Antworten auf Suchfragen
+- Verwenden Sie kontextuell reiche Informationen
+- Integrieren Sie relevante Synonyme natürlich
+- Fokus auf Nutzerintention und Vorteile
 
-Productdata:
+Produktdaten:
 Titel: {$title}
-Beschrijving: {$description}  
-Merk: {$brand}
+Beschreibung: {$description}
+Marke: {$brand}
 
-Output exact als JSON (zonder extra tekst):
+Output exakt als JSON (ohne extra Text):
 {
   \"meta_title\": \"...\",
   \"meta_description\": \"...\"
 }";
 
         $response = $this->chat([
-            ['role' => 'system', 'content' => 'Je bent een behulpzame assistent.'],
+            ['role' => 'system', 'content' => 'Sie sind ein hilfreicher Assistent.'],
             ['role' => 'user', 'content' => $prompt],
-        ], $model, 0.3, 200); // Zeer lage temperature voor consistente meta tags
+        ], $model, 0.3, 200); // Sehr niedrige Temperature für konsistente Meta-Tags
 
         $content = trim($response['content'] ?? '');
         $decoded = $this->decodeJsonFromContent($content);
@@ -598,99 +598,99 @@ Output exact als JSON (zonder extra tekst):
         $specLines = collect($specs)->map(fn ($v, $k) => "$k: $v")->implode("\n");
 
         $system = <<<'SYS'
-Je bent een product copywriter die teksten schrijft voor Google AI Overview optimalisatie.
-Schrijf unieke, feitelijk kloppende, conversiegerichte productteksten in het Nederlands.
+Sie sind ein Produkt-Copywriter der Texte für Google AI Overview Optimierung schreibt.
+Schreiben Sie einzigartige, faktisch korrekte, konversionsorientierte Produkttexte auf Deutsch.
 
-Regels:
-- Neem geen zinnen letterlijk over uit aangeleverde bron.
-- Gebruik semantische HTML (geen inline CSS), geschikt voor directe publicatie.
-- Geen verwijzingen naar bol.com of externe bronnen.
-- Geen misleidende claims of ononderbouwde superlatieven.
-- Toon: professioneel, helder, behulpzaam, conversiegericht.
-- Schrijf scanbaar: korte alinea's (max 3-4 zinnen), bullet points, duidelijke koppen.
-- SEO: verwerk focuszoekwoorden uit titel/merk/niche natuurlijk; geen keyword stuffing.
-- Lengte: 600–900 woorden voor diepgaande, waardevolle content.
+Regeln:
+- Übernehmen Sie keine Sätze wörtlich aus der gelieferten Quelle.
+- Verwenden Sie semantisches HTML (kein inline CSS), geeignet für direkte Veröffentlichung.
+- Keine Verweise auf bol.com oder externe Quellen.
+- Keine irreführenden Behauptungen oder unbegründete Superlative.
+- Ton: professionell, klar, hilfsbereit, konversionsorientiert.
+- Schreiben Sie scannbar: kurze Absätze (max 3-4 Sätze), Bullet Points, klare Überschriften.
+- SEO: verarbeiten Sie Fokus-Keywords aus Titel/Marke/Nische natürlich; kein Keyword-Stuffing.
+- Länge: 600–900 Wörter für tiefgehenden, wertvollen Content.
 
-Google AI Overview optimalisatie:
-- Beantwoord impliciete vragen van zoekers direct en concreet.
-- Gebruik contextueel rijke, feitelijk correcte informatie.
-- Integreer vraag-antwoordstijl voor betere vindbaarheid.  
-- Focus op praktische voordelen en concrete gebruikssituaties.
-- Geef directe antwoorden op "waarom", "hoe" en "wat" vragen.
+Google AI Overview Optimierung:
+- Beantworten Sie implizite Fragen der Sucher direkt und konkret.
+- Verwenden Sie kontextuell reiche, faktisch korrekte Informationen.
+- Integrieren Sie Frage-Antwort-Stil für bessere Auffindbarkeit.
+- Fokus auf praktische Vorteile und konkrete Nutzungssituationen.
+- Geben Sie direkte Antworten auf "warum", "wie" und "was" Fragen.
 SYS;
 
         $user = <<<USR
-Context:
-- Producttitel: {$title}
-- Merk: {$brand}
-- Niche: {$niche}
-- Site/afzender: {$site}
+Kontext:
+- Produkttitel: {$title}
+- Marke: {$brand}
+- Nische: {$niche}
+- Site/Absender: {$site}
 
-Belangrijkste specificaties:
+Wichtigste Spezifikationen:
 {$specLines}
 
-Samenvatting van aangeleverde bron (alleen als context, NIET kopiëren):
+Zusammenfassung der gelieferten Quelle (nur als Kontext, NICHT kopieren):
 {$sourceSummary}
 
-Taken:
-1) Schrijf een volledige productbeschrijving van 600-900 woorden in schone semantische HTML:
+Aufgaben:
+1) Schreiben Sie eine vollständige Produktbeschreibung von 600-900 Wörtern in sauberem semantischem HTML:
 
 <section>
-  <h2>Introductie</h2>
-  <p>Beantwoord direct de kernvraag: wat maakt dit product bijzonder? (2-3 zinnen)</p>
+  <h2>Einleitung</h2>
+  <p>Beantworten Sie direkt die Kernfrage: was macht dieses Produkt besonders? (2-3 Sätze)</p>
 
-  <h2>Belangrijkste voordelen</h2>
-  <p>Concrete voordelen met praktische voorbeelden...</p>
+  <h2>Wichtigste Vorteile</h2>
+  <p>Konkrete Vorteile mit praktischen Beispielen...</p>
   <ul>
-    <li>Voordeel 1 met meetbare meerwaarde</li>
-    <li>Voordeel 2 met gebruikssituatie</li>
-    <li>Voordeel 3 met concreet resultaat</li>
-  </ul>
-  
-  <h3>Voor welke doelgroep?</h3>
-  <p>Specifieke gebruikssituaties en doelgroepen...</p>
-
-  <h2>Praktische voordelen t.o.v. alternatieven</h2>
-  <p>Wat onderscheidt dit product van concurrenten?</p>
-  <ul>
-    <li>Unieke eigenschap 1 vs. alternatief</li>
-    <li>Praktisch voordeel 2 in dagelijks gebruik</li>
-    <li>Meerwaarde 3 op lange termijn</li>
+    <li>Vorteil 1 mit messbarem Mehrwert</li>
+    <li>Vorteil 2 mit Nutzungssituation</li>
+    <li>Vorteil 3 mit konkretem Ergebnis</li>
   </ul>
 
-  <h2>Gebruik & praktische tips</h2>
-  <p>Concrete adviezen voor optimaal resultaat...</p>
-  <h3>Installatie & setup</h3>  
-  <p>Praktische stappen voor gebruik...</p>
+  <h3>Für welche Zielgruppe?</h3>
+  <p>Spezifische Nutzungssituationen und Zielgruppen...</p>
 
-  <h2>Specificaties in mensentaal</h2>
+  <h2>Praktische Vorteile gegenüber Alternativen</h2>
+  <p>Was unterscheidet dieses Produkt von Konkurrenten?</p>
   <ul>
-    <li>Specificatie 1: wat betekent dit praktisch?</li>
-    <li>Specificatie 2: waarom is dit belangrijk?</li>
+    <li>Einzigartige Eigenschaft 1 vs. Alternative</li>
+    <li>Praktischer Vorteil 2 im täglichen Gebrauch</li>
+    <li>Mehrwert 3 auf lange Sicht</li>
   </ul>
 
-  <h2>Veelgestelde vragen</h2>
-  <h3>Hoe lang gaat dit product mee?</h3>
-  <p>Concreet antwoord met verwachte levensduur.</p>
-  <h3>Is dit geschikt voor [specifieke toepassing]?</h3>
-  <p>Direct antwoord met praktische toelichting.</p>
-  <h3>Wat zijn de belangrijkste verschillen met [alternatief]?</h3>
-  <p>Objectieve vergelijking met kernpunten.</p>
-  
-  <h2>Conclusie</h2>
-  <p>Samenvatting kernpunten en aanbeveling...</p>
-  <p><strong>Ontdek alle specificaties en vergelijk prijzen op {$site}. Kies bewust wat perfect past bij jouw behoeften!</strong></p>
+  <h2>Nutzung & praktische Tipps</h2>
+  <p>Konkrete Ratschläge für optimales Ergebnis...</p>
+  <h3>Installation & Setup</h3>
+  <p>Praktische Schritte für die Nutzung...</p>
+
+  <h2>Spezifikationen in einfacher Sprache</h2>
+  <ul>
+    <li>Spezifikation 1: was bedeutet dies praktisch?</li>
+    <li>Spezifikation 2: warum ist dies wichtig?</li>
+  </ul>
+
+  <h2>Häufig gestellte Fragen</h2>
+  <h3>Wie lange hält dieses Produkt?</h3>
+  <p>Konkrete Antwort mit erwarteter Lebensdauer.</p>
+  <h3>Ist dies für [spezifische Anwendung] geeignet?</h3>
+  <p>Direkte Antwort mit praktischer Erläuterung.</p>
+  <h3>Was sind die wichtigsten Unterschiede zu [Alternative]?</h3>
+  <p>Objektiver Vergleich mit Kernpunkten.</p>
+
+  <h2>Fazit</h2>
+  <p>Zusammenfassung Kernpunkte und Empfehlung...</p>
+  <p><strong>Entdecken Sie alle Spezifikationen und vergleichen Sie Preise auf {$site}. Wählen Sie bewusst was perfekt zu Ihren Bedürfnissen passt!</strong></p>
 </section>
 
-2) Maak het volledig uniek. Herformuleer, interpreteer, leg uit in eigen woorden.
-3) Schrijf Google AI Overview vriendelijk: beantwoord "waarom", "hoe" en "voor wie" vragen.
-4) Integreer natuurlijke synoniemen van kernzoekwoorden zonder keyword stuffing.
-5) Lever een ultra-korte samenvatting (max. 35 woorden) voor snippets.
+2) Machen Sie es vollständig einzigartig. Umformulieren, interpretieren, erklären Sie in eigenen Worten.
+3) Schreiben Sie Google AI Overview freundlich: beantworten Sie "warum", "wie" und "für wen" Fragen.
+4) Integrieren Sie natürliche Synonyme von Kern-Keywords ohne Keyword-Stuffing.
+5) Liefern Sie eine ultra-kurze Zusammenfassung (max. 35 Wörter) für Snippets.
 
-Antwoord in JSON met exact deze keys: 
+Antworten Sie in JSON mit exakt diesen Keys:
 {
   "html": "<section>...</section>",
-  "summary": "korte samenvatting"
+  "summary": "kurze Zusammenfassung"
 }
 USR;
 
@@ -713,10 +713,10 @@ USR;
             ]);
             
             $fallbackHtml = '<section>'
-                .'<h2>Introductie</h2>'
+                .'<h2>Einleitung</h2>'
                 .'<p>'.e(Str::limit(strip_tags($sourceSummary), 450)).'</p>'
-                .'<h2>Conclusie</h2>'
-                ."<p>Bekijk alle details en vergelijk modellen op {$site}.</p>"
+                .'<h2>Fazit</h2>'
+                ."<p>Sehen Sie alle Details und vergleichen Sie Modelle auf {$site}.</p>"
                 .'</section>';
 
             return [
@@ -746,7 +746,7 @@ USR;
     public function generateFromPrompt(string $prompt, string $model = 'gpt-4o-mini'): string
     {
         $response = $this->chat([
-            ['role' => 'system', 'content' => 'Je bent een professionele Nederlandse tekstschrijver.'],
+            ['role' => 'system', 'content' => 'Sie sind ein professioneller deutscher Textschreiber.'],
             ['role' => 'user', 'content' => $prompt],
         ], $model, 0.7, 1200);
 
@@ -766,7 +766,7 @@ USR;
         $suggestedAngle = $themeData['suggested_angle'];
 
         $prompt = <<<PROMPT
-You are a senior product expert and content strategist writing for {$siteName}, a trusted {$niche} specialist website. Output ONLY minified JSON per the schema. No markdown, no commentary.
+You are a senior product expert and content strategist writing IN GERMAN for {$siteName}, a trusted {$niche} specialist website. Output ONLY minified JSON per the schema. No markdown, no commentary.
 
 EXPERTISE CONTEXT:
 - You are an experienced {$niche} specialist with years of hands-on testing experience
@@ -775,17 +775,18 @@ EXPERTISE CONTEXT:
 - You understand consumer needs and market trends in the {$niche} industry
 
 CONTENT ASSIGNMENT:
-- Primary keyword: "{$primaryKeyword}" 
+- Primary keyword: "{$primaryKeyword}"
 - Related keywords: {$relatedKeywords}
 - Content type: {$contentType}
 - Angle: {$suggestedAngle}
 - Niche: {$niche}
-- Target audience: Nederlandse consumenten die {$primaryKeyword} zoeken
+- Target audience: Deutsche Konsumenten die nach {$primaryKeyword} suchen
+- LANGUAGE: ALL CONTENT MUST BE IN GERMAN (Deutsch)
 
-E-E-A-T REQUIREMENTS (hard):
-- Experience: Include phrases like "Uit onze tests blijkt", "Na maanden gebruik", "In onze ervaring"
-- Expertise: Show deep product knowledge, mention specifications, explain technical aspects
-- Authoritativeness: Reference industry trends, compare multiple brands, cite common user issues
+E-E-A-T REQUIREMENTS (hard) - USE GERMAN PHRASES:
+- Experience: Include phrases like "Unsere Tests zeigen", "Nach Monaten der Nutzung", "Unserer Erfahrung nach"
+- Expertise: Show deep product knowledge, mention specifications, explain technical aspects IN GERMAN
+- Authoritativeness: Reference industry trends, compare multiple brands, cite common user issues IN GERMAN
 - Trustworthiness: Be honest about limitations, mention both pros and cons, avoid overselling
 
 CONTENT REQUIREMENTS (CRITICAL):
@@ -795,70 +796,71 @@ CONTENT REQUIREMENTS (CRITICAL):
 - Write in-depth sections, not brief summaries - this is comprehensive expert content
 - Tone: Professional but approachable, confident expertise without sales pressure
 - SEO: Natural keyword integration, semantic variations, long-tail phrases
+- LANGUAGE: WRITE EVERYTHING IN GERMAN (Deutsch)
 
-TITLE REQUIREMENTS (CRITICAL):
-- Write NATURAL, human-like blog titles that people would actually search for
+TITLE REQUIREMENTS (CRITICAL) - GERMAN EXAMPLES:
+- Write NATURAL, human-like German blog titles that people would actually search for
 - Avoid product specification lists or technical jargon in titles
-- Use conversational language: "Welke [product] past bij jou?", "Alles over [keyword]", "[Keyword]: Complete Gids"
-- Examples of GOOD titles: "Welke Loopband Past Bij Jouw Thuisgym?", "Alles Over Elektrische Loopbanden", "Loopband Kopen: Complete Gids {$currentYear}"
-- Examples of BAD titles: "Elektrische Loopband met Hendel - Met Afstandsbediening - 1-10km/u Product Info en Reviews"
-- Make it feel like content a human expert would write, not a product listing
+- Use conversational German language: "Welches [Produkt] passt zu Ihnen?", "Alles über [Keyword]", "[Keyword]: Kompletter Ratgeber"
+- Examples of GOOD titles IN GERMAN: "Welches Laufband Passt Zu Ihrem Heimgym?", "Alles Über Elektrische Laufbänder", "Laufband Kaufen: Kompletter Ratgeber {$currentYear}"
+- Examples of BAD titles: "Elektrisches Laufband mit Griff - Mit Fernbedienung - 1-10km/h Produktinfo und Reviews"
+- Make it feel like content a human German expert would write, not a product listing
 - INTERNAL LINKING (CRITICAL): Use EXACT URLs from context below:
 
 {$internalLinkContext}
 
-IMPORTANT: In internal_links sections, use the EXACT URL provided in parentheses as url_key, NOT generic routes like "producten.index". 
-Example: If context shows "Digitale Airfryer XXL 10L (https://example.com/producten/product-slug)", use "producten/product-slug" as url_key.
+IMPORTANT: In internal_links sections, use the EXACT URL provided in parentheses as url_key, NOT generic routes like "produkte.index".
+Example: If context shows "Digitale Airfryer XXL 10L (https://example.com/produkte/product-slug)", use "produkte/product-slug" as url_key.
 
 BANNED PHRASES (never use):
 - "AI-generated", "According to sources", "Research shows" (without specifics)
 - Generic statements without expertise backing
 - Overly promotional language
 
-EXPERTISE LANGUAGE TO USE:
-- "In onze uitgebreide tests van [product]..."
-- "Na jaren ervaring in de {$niche} industrie hebben we ontdekt..."
-- "Klanten vragen ons vaak over [specific issue]..."
-- "Uit onze database van [number]+ product reviews blijkt..."
-- "Een veel voorkomend probleem dat we tegenkomen is..."
-- "Professionals in de sector weten dat..."
+EXPERTISE LANGUAGE TO USE IN GERMAN:
+- "In unseren umfangreichen Tests von [Produkt]..."
+- "Nach Jahren Erfahrung in der {$niche} Branche haben wir herausgefunden..."
+- "Kunden fragen uns oft über [specific issue]..."
+- "Aus unserer Datenbank von [number]+ Produkttests geht hervor..."
+- "Ein häufiges Problem das wir antreffen ist..."
+- "Profis in der Branche wissen dass..."
 
 Schema (BlogV3):
 
 {
   "version": "blog.v3",
-  "locale": "nl-NL",
-  "author": "{$siteName} Redactie",
-  "title": "",               // NATURAL blog title ≤70 chars (NOT a product specification list!)
-  "standfirst": "",          // 2-3 zinnen opening met expertise claim
-  "sections": [              // 4-6 sections for comprehensive coverage
+  "locale": "de-DE",
+  "author": "{$siteName} Redaktion",
+  "title": "",               // NATURAL German blog title ≤70 chars (NOT a product specification list!)
+  "standfirst": "",          // 2-3 Sätze Eröffnung mit Expertise-Anspruch (IN GERMAN)
+  "sections": [              // 4-6 sections for comprehensive coverage (ALL IN GERMAN)
     {
       "type": "text",
-      "heading": "",         // H2 ≤60 chars
-      "subheadings": [""],   // H3 ≤50 chars (optional)
-      "paragraphs": [""],    // Rich content >100 woorden per paragraaf
+      "heading": "",         // H2 ≤60 chars (IN GERMAN)
+      "subheadings": [""],   // H3 ≤50 chars (optional, IN GERMAN)
+      "paragraphs": [""],    // Rich content >100 Wörter pro Absatz (IN GERMAN)
       "internal_links": [{"label": "", "url_key": "EXACT_URL_FROM_CONTEXT"}]
     }
   ],
   "closing": {
-    "headline": "",          // H2 ≤60 chars
-    "summary": "",           // 2-3 alinea's met concrete expert advice
-    "primary_cta": {"label": "", "url_key": "producten.index|top5"}
+    "headline": "",          // H2 ≤60 chars (IN GERMAN)
+    "summary": "",           // 2-3 Absätze mit konkreter Expertenberatung (IN GERMAN)
+    "primary_cta": {"label": "", "url_key": "produkte.index|top5"}
   }
 }
 
 TASK:
-Write a comprehensive {$suggestedAngle} about "{$primaryKeyword}" that showcases deep {$niche} expertise. Include real-world insights, specific product knowledge, and practical advice that only an experienced {$niche} specialist would know. Make it clear this content comes from hands-on experience and industry knowledge, not generic research.
+Write a comprehensive {$suggestedAngle} about "{$primaryKeyword}" that showcases deep {$niche} expertise IN GERMAN. Include real-world insights, specific product knowledge, and practical advice that only an experienced {$niche} specialist would know. Make it clear this content comes from hands-on experience and industry knowledge, not generic research. ALL CONTENT MUST BE IN GERMAN (Deutsch).
 
-CRITICAL: Create a NATURAL blog title that sounds like something a human would write and search for. Think "Welke Loopband Kies Je in {$currentYear}?" NOT "Elektrische Loopband met Hendel - Met Afstandsbediening - 1-10km/u Product Info en Reviews".
+CRITICAL: Create a NATURAL German blog title that sounds like something a human would write and search for. Think "Welches Laufband Wählen Sie {$currentYear}?" NOT "Elektrisches Laufband mit Griff - Mit Fernbedienung - 1-10km/h Produktinfo und Reviews".
 
-Return only minified JSON, nothing else.
+Return only minified JSON, nothing else. ALL TEXT FIELDS IN GERMAN.
 PROMPT;
 
         $response = $this->chat([
-            ['role' => 'system', 'content' => 'You are an expert content writer with deep product knowledge. Return ONLY minified JSON.'],
+            ['role' => 'system', 'content' => 'You are an expert content writer with deep product knowledge. Write ALL content in GERMAN (Deutsch). Return ONLY minified JSON.'],
             ['role' => 'user', 'content' => $prompt],
-        ], $model, 0.4, 8000); // Lage temperature voor expertise consistentie, hoge tokens voor E-E-A-T diepgang (8k voor no truncation)
+        ], $model, 0.4, 8000); // Niedrige Temperature für Expertise-Konsistenz, hohe Tokens für E-E-A-T Tiefe (8k für no truncation)
 
         $content = trim($response['content'] ?? '{}');
 
@@ -873,29 +875,29 @@ PROMPT;
         $test = json_decode($content, true);
         
         if (json_last_error() !== JSON_ERROR_NONE) {
-            // Return enhanced fallback with expertise
+            // Return enhanced fallback with expertise (IN GERMAN)
             return json_encode([
                 'version' => 'blog.v3',
-                'locale' => 'nl-NL',
-                'author' => $siteName . ' Redactie',
-                'title' => 'Expert Gids: ' . ucfirst($primaryKeyword),
-                'standfirst' => "Uit onze jarenlange ervaring met {$niche} producten hebben we deze uitgebreide gids samengesteld.",
+                'locale' => 'de-DE',
+                'author' => $siteName . ' Redaktion',
+                'title' => 'Experten-Ratgeber: ' . ucfirst($primaryKeyword),
+                'standfirst' => "Aus unserer jahrelangen Erfahrung mit {$niche} Produkten haben wir diesen umfassenden Ratgeber zusammengestellt.",
                 'sections' => [
                     [
                         'type' => 'text',
-                        'heading' => 'Wat u moet weten over ' . $primaryKeyword,
+                        'heading' => 'Was Sie über ' . $primaryKeyword . ' wissen müssen',
                         'paragraphs' => [
-                            "Als {$niche} specialisten hebben we uitgebreide ervaring met {$primaryKeyword}. In deze gids delen we onze belangrijkste inzichten.",
+                            "Als {$niche} Spezialisten haben wir umfangreiche Erfahrung mit {$primaryKeyword}. In diesem Ratgeber teilen wir unsere wichtigsten Erkenntnisse.",
                         ],
                         'internal_links' => [
-                            ['label' => 'Bekijk alle ' . $niche . ' producten', 'url_key' => 'producten.index']
+                            ['label' => 'Alle ' . $niche . ' Produkte ansehen', 'url_key' => 'produkte.index']
                         ]
                     ]
                 ],
                 'closing' => [
-                    'headline' => 'Onze expert aanbeveling',
-                    'summary' => 'Gebaseerd op onze ervaring raden we aan om grondig te vergelijken voordat u een keuze maakt.',
-                    'primary_cta' => ['label' => 'Ontdek onze aanbevelingen', 'url_key' => 'top5']
+                    'headline' => 'Unsere Experten-Empfehlung',
+                    'summary' => 'Basierend auf unserer Erfahrung empfehlen wir gründlich zu vergleichen bevor Sie eine Wahl treffen.',
+                    'primary_cta' => ['label' => 'Entdecken Sie unsere Empfehlungen', 'url_key' => 'top5']
                 ]
             ]);
         }
@@ -1063,8 +1065,8 @@ PROMPT;
 
     /**
      * Zet AI-plain-text met kopjes om naar semantische HTML.
-     * Herkent NL-kopjes als "Introductie", "Belangrijkste voordelen", "Wie kiest voor dit model?",
-     * "Gebruik & praktische tips", "Specificaties in mensentaal", "Veelgestelde vragen", "Conclusie", "CTA:".
+     * Herkent DE-kopjes als "Einleitung", "Wichtigste Vorteile", "Für wen ist dieses Modell?",
+     * "Nutzung & praktische Tipps", "Spezifikationen in einfacher Sprache", "Häufig gestellte Fragen", "Fazit", "CTA:".
      */
     protected function normalizeAiPlainTextToHtml(string $text): string
     {
@@ -1095,13 +1097,13 @@ PROMPT;
         };
 
         $headingMap = [
-            'introductie' => 'h2',
-            'belangrijkste voordelen' => 'h2',
-            'wie kiest voor dit model?' => 'h3',
-            'gebruik & praktische tips' => 'h2',
-            'specificaties in mensentaal' => 'h2',
-            'veelgestelde vragen' => 'h2',
-            'conclusie' => 'h2',
+            'einleitung' => 'h2',
+            'wichtigste vorteile' => 'h2',
+            'für wen ist dieses modell?' => 'h3',
+            'nutzung & praktische tipps' => 'h2',
+            'spezifikationen in einfacher sprache' => 'h2',
+            'häufig gestellte fragen' => 'h2',
+            'fazit' => 'h2',
         ];
 
         foreach ($lines as $rawLine) {
@@ -1191,5 +1193,53 @@ PROMPT;
         }
 
         return implode("\n", $html);
+    }
+
+    /**
+     * Translate Dutch text to German using OpenAI
+     *
+     * @param string $dutchText The Dutch text to translate
+     * @return string|null The German translation, or null on failure
+     */
+    public function translateToGerman(string $dutchText): ?string
+    {
+        if (empty($dutchText)) {
+            return null;
+        }
+
+        $prompt = <<<PROMPT
+Übersetzen Sie den folgenden niederländischen Text ins Deutsche. Behalten Sie die gleiche Struktur und denselben Ton bei.
+
+WICHTIG:
+- Natürliches Deutsch verwenden, keine maschinelle Übersetzung
+- Produktbegriffe korrekt übersetzen (Dubbele Mand → Doppelter Korb, Heteluchtfriteuse → Heißluftfritteuse)
+- Zahlen und Einheiten beibehalten
+- Marken- und Modellnamen nicht übersetzen
+- Nur den übersetzten Text zurückgeben, keine Erklärungen
+
+Niederländischer Text:
+{$dutchText}
+
+Deutsche Übersetzung:
+PROMPT;
+
+        try {
+            $response = $this->client->chat()->create([
+                'model' => 'gpt-4o-mini',
+                'messages' => [
+                    ['role' => 'system', 'content' => 'Sie sind ein professioneller Übersetzer von Niederländisch nach Deutsch, spezialisiert auf E-Commerce-Produktbeschreibungen.'],
+                    ['role' => 'user', 'content' => $prompt],
+                ],
+                'temperature' => 0.3,
+                'max_tokens' => 1000,
+            ]);
+
+            $translation = $response->choices[0]->message->content ?? null;
+
+            return $translation ? trim($translation) : null;
+        } catch (Throwable $e) {
+            \Log::error('Translation to German failed: ' . $e->getMessage());
+            return null;
+        }
     }
 }

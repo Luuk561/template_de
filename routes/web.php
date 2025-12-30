@@ -21,37 +21,41 @@ use Spatie\Sitemap\Tags\Url;
 // Homepagina
 Route::get('/', [HomeController::class, 'index'])->name('home');
 
-// Producten overzicht
-Route::get('/producten', [ProductController::class, 'index'])->name('producten.index');
-Route::get('/producten/{slug}', [ProductController::class, 'show'])->name('producten.show');
-Route::get('/vergelijken', [ProductVergelijkController::class, 'index'])->name('producten.vergelijken');
-Route::post('/vergelijken/ai-conclusie', [AIConclusieController::class, 'conclude'])->name('ai.conclusie');
+// Produkte Übersicht (German routes)
+Route::get('/produkte', [ProductController::class, 'index'])->name('produkte.index');
+Route::get('/produkte/{slug}', [ProductController::class, 'show'])->name('produkte.show');
+Route::get('/vergleichen', [ProductVergelijkController::class, 'index'])->name('produkte.vergleichen');
+Route::post('/vergleichen/ai-conclusie', [AIConclusieController::class, 'conclude'])->name('ai.conclusie');
 
-// Top 5 pagina
-Route::get('/top-5', [ProductController::class, 'top'])->name('producten.top');
+// Search API for autocomplete
+Route::get('/api/search', [ProductController::class, 'searchApi'])->name('api.search');
 
-// Beste merken pagina
-Route::get('/beste-merken', [ProductController::class, 'merken'])->name('producten.merken');
+// Top 5 Seite
+Route::get('/top-5', [ProductController::class, 'top'])->name('produkte.top');
 
-// Blogpagina's
-Route::get('/blogs', [BlogController::class, 'index'])->name('blogs.index');
-Route::get('/blogs/{slug}', [BlogController::class, 'show'])->name('blogs.show');
+// Beste Marken Seite
+Route::get('/beste-marken', [ProductController::class, 'merken'])->name('produkte.merken');
 
-// Review overzicht en detailpagina
-Route::get('/reviews', [ReviewController::class, 'index'])->name('reviews.index');
-Route::get('/reviews/{slug}', [ReviewController::class, 'show'])->name('reviews.show');
+// Blog/Ratgeber Seiten
+Route::get('/ratgeber', [BlogController::class, 'index'])->name('ratgeber.index');
+Route::get('/ratgeber/{slug}', [BlogController::class, 'show'])->name('ratgeber.show');
 
-// Team pagina's (E-E-A-T)
+// Testberichte Übersicht und Detailseite
+Route::get('/testberichte', [ReviewController::class, 'index'])->name('testberichte.index');
+Route::get('/testberichte/{slug}', [ReviewController::class, 'show'])->name('testberichte.show');
+
+// Team Seiten (E-E-A-T)
 Route::get('/team', [TeamController::class, 'index'])->name('team.index');
 Route::get('/team/{slug}', [TeamController::class, 'show'])->name('team.show');
 
-// Informatie pagina's
-Route::get('/informatie/{slug}', [InformationPageController::class, 'show'])->name('informatie.show');
+// Informationsseiten
+Route::get('/information/{slug}', [InformationPageController::class, 'show'])->name('information.show');
 
-// Informatieve pagina's
-Route::view('/privacy', 'pages.privacy')->name('privacy');
-Route::view('/disclaimer', 'pages.disclaimer')->name('disclaimer');
-Route::view('/contact', 'pages.contact')->name('contact');
+// Rechtliche Seiten
+Route::view('/impressum', 'pages.impressum')->name('impressum');
+Route::view('/datenschutz', 'pages.privacy')->name('datenschutz');
+Route::view('/haftungsausschluss', 'pages.disclaimer')->name('haftungsausschluss');
+Route::view('/kontakt', 'pages.contact')->name('kontakt');
 
 // Black Friday pagina
 Route::get('/blackfriday', [BlackFridayController::class, 'show'])->name('blackfriday');
@@ -91,61 +95,61 @@ Route::get('/sitemap.xml', function () {
     return Cache::remember('sitemap_xml', 3600, function () {
         $sitemap = Sitemap::create();
 
-        // Statische pagina's met priority en changefreq
+        // Statische Seiten mit Priority und Changefreq
         $sitemap
             ->add(Url::create('/')
                 ->setPriority(1.0)
                 ->setChangeFrequency(Url::CHANGE_FREQUENCY_DAILY))
-            ->add(Url::create('/producten')
+            ->add(Url::create('/produkte')
                 ->setPriority(0.9)
                 ->setChangeFrequency(Url::CHANGE_FREQUENCY_DAILY))
             ->add(Url::create('/top-5')
                 ->setPriority(0.8)
                 ->setChangeFrequency(Url::CHANGE_FREQUENCY_WEEKLY))
-            ->add(Url::create('/beste-merken')
+            ->add(Url::create('/beste-marken')
                 ->setPriority(0.7)
                 ->setChangeFrequency(Url::CHANGE_FREQUENCY_WEEKLY))
-            ->add(Url::create('/blogs')
+            ->add(Url::create('/ratgeber')
                 ->setPriority(0.7)
                 ->setChangeFrequency(Url::CHANGE_FREQUENCY_WEEKLY))
-            ->add(Url::create('/reviews')
+            ->add(Url::create('/testberichte')
                 ->setPriority(0.7)
                 ->setChangeFrequency(Url::CHANGE_FREQUENCY_WEEKLY))
             ->add(Url::create('/team')
                 ->setPriority(0.5)
                 ->setChangeFrequency(Url::CHANGE_FREQUENCY_MONTHLY))
-            ->add(Url::create('/privacy')
+            ->add(Url::create('/datenschutz')
                 ->setPriority(0.3)
                 ->setChangeFrequency(Url::CHANGE_FREQUENCY_YEARLY))
-            ->add(Url::create('/disclaimer')
+            ->add(Url::create('/haftungsausschluss')
                 ->setPriority(0.3)
                 ->setChangeFrequency(Url::CHANGE_FREQUENCY_YEARLY))
-            ->add(Url::create('/contact')
+            ->add(Url::create('/kontakt')
                 ->setPriority(0.4)
                 ->setChangeFrequency(Url::CHANGE_FREQUENCY_MONTHLY))
             ->add(Url::create('/meer-ontdekken')
                 ->setPriority(0.5)
                 ->setChangeFrequency(Url::CHANGE_FREQUENCY_MONTHLY));
 
-        // Dynamische producten
+        // Dynamische Produkte
         Product::whereNotNull('slug')->get()->each(function ($product) use ($sitemap) {
-            $sitemap->add(Url::create("/producten/{$product->slug}")
+            $sitemap->add(Url::create("/produkte/{$product->slug}")
                 ->setLastModificationDate($product->updated_at)
                 ->setPriority(0.8)
                 ->setChangeFrequency(Url::CHANGE_FREQUENCY_WEEKLY));
         });
 
-        // Dynamische blogs
+        // Dynamische Ratgeber
         BlogPost::whereNotNull('slug')->get()->each(function ($blog) use ($sitemap) {
-            $sitemap->add(Url::create("/blogs/{$blog->slug}")
+            $sitemap->add(Url::create("/ratgeber/{$blog->slug}")
                 ->setLastModificationDate($blog->updated_at)
                 ->setPriority(0.6)
                 ->setChangeFrequency(Url::CHANGE_FREQUENCY_MONTHLY));
         });
 
-        // Dynamische reviews
+        // Dynamische Testberichte
         Review::whereNotNull('slug')->get()->each(function ($review) use ($sitemap) {
-            $sitemap->add(Url::create("/reviews/{$review->slug}")
+            $sitemap->add(Url::create("/testberichte/{$review->slug}")
                 ->setLastModificationDate($review->updated_at)
                 ->setPriority(0.7)
                 ->setChangeFrequency(Url::CHANGE_FREQUENCY_MONTHLY));
@@ -159,9 +163,9 @@ Route::get('/sitemap.xml', function () {
                 ->setChangeFrequency(Url::CHANGE_FREQUENCY_MONTHLY));
         });
 
-        // Dynamische informatie pagina's
+        // Dynamische Informationsseiten
         InformationPage::where('is_active', true)->whereNotNull('slug')->get()->each(function ($page) use ($sitemap) {
-            $sitemap->add(Url::create("/informatie/{$page->slug}")
+            $sitemap->add(Url::create("/information/{$page->slug}")
                 ->setLastModificationDate($page->updated_at)
                 ->setPriority(0.7)
                 ->setChangeFrequency(Url::CHANGE_FREQUENCY_MONTHLY));
@@ -177,26 +181,26 @@ Route::get('/robots.txt', function () {
     return response($content)->header('Content-Type', 'text/plain');
 });
 
-// llms.txt for AI search bots (ChatGPT, Claude, etc.)
+// llms.txt für AI Search Bots (ChatGPT, Claude, etc.)
 Route::get('/llms.txt', function () {
     $siteName = getSetting('site_name', config('app.name'));
-    $siteNiche = getSetting('site_niche', 'producten');
+    $siteNiche = getSetting('site_niche', 'Produkte');
 
     $content = <<<TXT
-# $siteName - AI Bot Instructions
+# $siteName - AI Bot Anweisungen
 
-## About This Site
-This is an affiliate website focused on $siteNiche. We provide honest reviews, comparisons, and buying guides.
+## Über diese Website
+Dies ist eine Affiliate-Website mit Fokus auf $siteNiche. Wir bieten ehrliche Testberichte, Vergleiche und Kaufratgeber.
 
-## Content Guidelines
-- All product reviews are based on specifications and user ratings
-- Prices and availability are fetched from bol.com API
-- Blog content provides helpful buying guides and tips
-- Affiliate links are properly disclosed
+## Inhaltsrichtlinien
+- Alle Produkttestberichte basieren auf Spezifikationen und Nutzerbewertungen
+- Preise und Verfügbarkeit werden von Amazon.de bezogen
+- Ratgeber-Inhalte bieten hilfreiche Kauftipps
+- Affiliate-Links werden ordnungsgemäß gekennzeichnet
 
-## Crawling Instructions
-You may crawl and index our content for AI search purposes.
-Please respect our sitemap: {url('/sitemap.xml')}
+## Crawling-Anweisungen
+Sie dürfen unsere Inhalte für AI-Suchzwecke crawlen und indexieren.
+Bitte beachten Sie unsere Sitemap: {url('/sitemap.xml')}
 
 TXT;
 

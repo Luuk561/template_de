@@ -4,7 +4,7 @@
 
 @section('breadcrumbs')
     <x-breadcrumbs :items="[
-        'Producten' => route('producten.index'),
+        'Produkte' => route('produkte.index'),
     ]" />
 @endsection
 
@@ -12,7 +12,7 @@
 @include('components.banners.black-friday')
 
 @php
-    $heroImage = getImage('producten.index'); 
+    $heroImage = getImage('Produkte.index'); 
     $hasPageImage = !empty($heroImage);
     $primaryColor = getSetting('primary_color', '#7c3aed');
         // Black Friday flag (per site via settings) + preview via URL (?bf=on / ?bf=off)
@@ -115,41 +115,41 @@
 <!-- ===== HEADER + FILTERS SECTION ===== -->
 <section id="filters" class="w-full bg-gradient-to-b from-white via-gray-50 to-white pt-24 pb-6">
     <div class="max-w-7xl mx-auto px-6 sm:px-8">
-        <form method="GET" action="{{ route('producten.index') }}#filters">
-            <!-- Titel + Filters -->
+        <form method="GET" action="{{ route('produkte.index') }}#filters">
+            <!-- Titel + Filter -->
             <div class="flex flex-col lg:flex-row lg:items-start gap-6 mb-4">
                 <!-- Titel linksboven -->
                 <div class="lg:w-1/4">
                     <h1 class="text-2xl sm:text-3xl font-bold leading-tight mb-1">
-                        @if(hasStructuredContent('producten_index_hero_titel'))
-                            {!! getContent('producten_index_hero_titel.title') !!}
+                        @if(hasStructuredContent('Produkte_index_hero_titel'))
+                            {!! getContent('Produkte_index_hero_titel.title') !!}
                         @else
-                            {!! getContent('producten_index_hero_titel', ['fallback' => 'Alle producten']) !!}
+                            {!! getContent('Produkte_index_hero_titel', ['fallback' => 'Alle Produkte']) !!}
                         @endif
                     </h1>
                     <p class="text-sm text-gray-600">
-                        Filter en vergelijk
+                        Filtern. Vergleichen. Die beste Option finden.
                     </p>
                 </div>
 
-                <!-- Alle Filters rechtsboven -->
+                <!-- Alle Filter rechtsboven -->
                 <div class="lg:w-3/4">
                     <div class="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-5 gap-3 mb-4">
                         <!-- Zoekveld -->
                         <div>
-                            <input type="text" name="search" id="search" value="{{ request('search') }}" placeholder="Zoeken..."
+                            <input type="text" name="search" id="search" value="{{ request('search') }}" placeholder="Suchen..."
                                 class="w-full border border-gray-300 rounded-lg shadow-sm focus:ring focus:ring-opacity-50 px-4 py-2 text-sm"
                                 style="focus:ring-color: var(--primary-color);">
                         </div>
 
-                        <!-- Sorteer -->
+                        <!-- Sortieren -->
                         <div>
                             <select name="sort" id="sort"
                                 class="w-full border border-gray-300 rounded-lg shadow-sm focus:ring focus:ring-opacity-50 px-4 py-2 text-sm">
-                                <option value="">Sorteer op...</option>
-                                <option value="popular" {{ request('sort') == 'popular' ? 'selected' : '' }}>Populairste</option>
-                                <option value="price_asc" {{ request('sort') == 'price_asc' ? 'selected' : '' }}>Prijs: Laag → Hoog</option>
-                                <option value="price_desc" {{ request('sort') == 'price_desc' ? 'selected' : '' }}>Prijs: Hoog → Laag</option>
+                                <option value="">Sortieren op...</option>
+                                <option value="popular" {{ request('sort') == 'popular' ? 'selected' : '' }}>Beliebtste</option>
+                                <option value="price_asc" {{ request('sort') == 'price_asc' ? 'selected' : '' }}>Preis: Laag → Hoog</option>
+                                <option value="price_desc" {{ request('sort') == 'price_desc' ? 'selected' : '' }}>Preis: Hoog → Laag</option>
                                 <option value="rating" {{ request('sort') == 'rating' ? 'selected' : '' }}>Hoogste beoordeling</option>
                             </select>
                         </div>
@@ -165,15 +165,15 @@
                             </select>
                         </div>
 
-                        <!-- Min prijs -->
+                        <!-- Min Preis -->
                         <div>
-                            <input type="number" name="min_price" id="min_price" value="{{ request('min_price') }}" min="0" placeholder="Min prijs (€)"
+                            <input type="number" name="min_price" id="min_price" value="{{ request('min_price') }}" min="0" placeholder="Min Preis (€)"
                                 class="w-full border border-gray-300 rounded-lg shadow-sm focus:ring focus:ring-opacity-50 px-4 py-2 text-sm">
                         </div>
 
-                        <!-- Max prijs -->
+                        <!-- Max Preis -->
                         <div>
-                            <input type="number" name="max_price" id="max_price" value="{{ request('max_price') }}" min="0" placeholder="Max prijs (€)"
+                            <input type="number" name="max_price" id="max_price" value="{{ request('max_price') }}" min="0" placeholder="Max Preis (€)"
                                 class="w-full border border-gray-300 rounded-lg shadow-sm focus:ring focus:ring-opacity-50 px-4 py-2 text-sm">
                         </div>
                     </div>
@@ -192,7 +192,7 @@
                             Toepassen
                         </button>
 
-                        <a href="{{ route('producten.index') }}#filters"
+                        <a href="{{ route('produkte.index') }}#filters"
                            class="text-sm font-medium hover:underline transition-colors"
                            style="color: var(--primary-color);">
                             Wis filters
@@ -213,13 +213,13 @@
             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z"/>
         </svg>
         <p class="text-sm sm:text-base text-gray-800 font-semibold">
-            Twijfel tussen meerdere opties? <span class="text-blue-700">Vink 2-3 producten aan</span> om ze naast elkaar te vergelijken
+            Twijfel tussen meerdere opties? <span class="text-blue-700">Vink 2-3 Produkte aan</span> om ze naast elkaar te vergelijken
         </p>
     </div>
 </section>
 
 <!-- PRODUCTGRID -->
-<section id="producten" class="w-full py-16 px-4 sm:px-10 lg:px-12 bg-white">
+<section id="Produkte" class="w-full py-16 px-4 sm:px-10 lg:px-12 bg-white">
     <div class="grid grid-cols-1 min-[480px]:grid-cols-2 md:grid-cols-3 xl:grid-cols-4 gap-4 sm:gap-6">
         @forelse($products as $product)
             @php
@@ -240,7 +240,7 @@
                 <input type="checkbox" 
                         class="compare-checkbox absolute top-3 right-3 w-6 h-6 sm:w-5 sm:h-5 accent-blue-600 rounded z-10"
                         data-ean="{{ $product->ean }}" 
-                        title="Vergelijk dit product"
+                        title="Vergleichen dit product"
                         aria-label="Vink aan om {{ $product->title }} te vergelijken" />
 
                 @if($savings > 0)
@@ -251,7 +251,7 @@
                         </span>
                     @else
                         <span class="absolute top-3 left-3 bg-red-600 text-white text-[10px] px-2.5 py-1 rounded-lg font-bold shadow-md">
-                            Aanbieding
+                            Angebot
                         </span>
                     @endif
                 @endif
@@ -288,11 +288,11 @@
                     @endif
                 </div>
 
-                <!-- Prijs -->
+                <!-- Preis -->
                 <div class="text-center mb-4">
                     @if($savings > 0)
                         <div class="inline-block text-white px-3 py-1.5 rounded-lg font-bold text-xs mb-2" style="background: linear-gradient(135deg, #22c55e 0%, #16a34a 100%); box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);">
-                            Bespaar €{{ number_format($savings, 2, ',', '.') }}
+                            Sparen €{{ number_format($savings, 2, ',', '.') }}
                         </div>
                     @endif
                     <div class="flex items-baseline justify-center gap-2">
@@ -307,18 +307,18 @@
                 <div class="mt-auto flex flex-col gap-2">
                     <a href="{{ $affiliateLink }}" target="_blank" rel="nofollow sponsored noopener"
                        class="cta-primary text-white text-sm font-semibold py-3 px-4 rounded-xl text-center transition-all duration-200 shadow-sm">
-                        Bekijk op bol.com
+                        Ansehen op bol.com
                     </a>
-                    <a href="{{ route('producten.show', $product->slug) }}"
+                    <a href="{{ route('produkte.show', $product->slug) }}"
                        class="bg-white hover:bg-gray-50 text-gray-900 text-sm font-semibold py-3 px-4 rounded-xl text-center transition-all duration-200 border-2 border-gray-200 hover:border-gray-300 no-underline">
-                        Bekijk product
+                        Ansehen product
                     </a>
                 </div>
             </div>
         @empty
             <div class="col-span-full text-center py-16">
                 <img src="https://media.giphy.com/media/3og0IPxMM0erATueVW/giphy.gif" alt="Niks gevonden" class="mx-auto mb-6 w-48 h-auto">
-                <h3 class="text-2xl font-bold text-gray-800 mb-2">Geen producten gevonden</h3>
+                <h3 class="text-2xl font-bold text-gray-800 mb-2">Geen Produkte gevonden</h3>
                 <p class="text-gray-600 max-w-xl mx-auto">Geen resultaat. Wis filters of probeer andere zoektermen.</p>
             </div>
         @endforelse
@@ -334,30 +334,30 @@
 <!-- INFO BLOKKEN (STRUCTURED + HTML FALLBACK) -->
 <section class="w-full bg-white py-16 px-6 sm:px-8">
     <div class="max-w-4xl mx-auto space-y-12">
-        {{-- INFO BLOK 1 - No button needed (/producten is eindstation) --}}
+        {{-- INFO BLOK 1 - No button needed (/Produkte is eindstation) --}}
         <div>
-            @if(hasStructuredContent('producten_index_info_blok_1'))
-                <h2 class="text-3xl font-bold mb-4 text-gray-900">{!! getContent('producten_index_info_blok_1.title') !!}</h2>
+            @if(hasStructuredContent('Produkte_index_info_blok_1'))
+                <h2 class="text-3xl font-bold mb-4 text-gray-900">{!! getContent('Produkte_index_info_blok_1.title') !!}</h2>
                 <div class="prose prose-gray prose-lg">
-                    <p>{!! getContent('producten_index_info_blok_1.text') !!}</p>
+                    <p>{!! getContent('Produkte_index_info_blok_1.text') !!}</p>
                 </div>
             @else
                 <div class="prose prose-gray prose-lg">
-                    {!! getContent('producten_index_info_blok_1', ['fallback' => '<p>Informatie volgt binnenkort.</p>']) !!}
+                    {!! getContent('Produkte_index_info_blok_1', ['fallback' => '<p>Informatie volgt binnenkort.</p>']) !!}
                 </div>
             @endif
         </div>
 
-        {{-- INFO BLOK 2 - No button needed (/producten is eindstation) --}}
+        {{-- INFO BLOK 2 - No button needed (/Produkte is eindstation) --}}
         <div>
-            @if(hasStructuredContent('producten_index_info_blok_2'))
-                <h2 class="text-3xl font-bold mb-4 text-gray-900">{!! getContent('producten_index_info_blok_2.title') !!}</h2>
+            @if(hasStructuredContent('Produkte_index_info_blok_2'))
+                <h2 class="text-3xl font-bold mb-4 text-gray-900">{!! getContent('Produkte_index_info_blok_2.title') !!}</h2>
                 <div class="prose prose-gray prose-lg">
-                    <p>{!! getContent('producten_index_info_blok_2.text') !!}</p>
+                    <p>{!! getContent('Produkte_index_info_blok_2.text') !!}</p>
                 </div>
             @else
                 <div class="prose prose-gray prose-lg">
-                    {!! getContent('producten_index_info_blok_2', ['fallback' => '<p>Meer info wordt aangevuld.</p>']) !!}
+                    {!! getContent('Produkte_index_info_blok_2', ['fallback' => '<p>Meer info wordt aangevuld.</p>']) !!}
                 </div>
             @endif
         </div>
@@ -367,7 +367,7 @@
 <!-- VERGELIJK KNOP -->
 <div id="compare-bar" class="fixed bottom-4 right-4 z-50 hidden">
     <div class="flex items-center gap-3">
-        <!-- Vergelijk knop -->
+        <!-- Vergleichen knop -->
         <button
             id="compare-button"
             disabled
@@ -379,7 +379,7 @@
                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
                         d="M7 16l-4-4m0 0l4-4m-4 4h18m-4 4l4-4m0 0l-4-4"/>
                 </svg>
-            Vergelijken <span id="compare-count">0/3</span>
+            Vergleichenen <span id="compare-count">0/3</span>
         </button>
 
         <!-- ✅ Wis selectie knop -->
@@ -387,7 +387,7 @@
             id="clear-selection"
             class="bg-red-600 hover:bg-red-700 text-white text-sm font-semibold py-2 px-4 rounded-full shadow transition focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-red-500"
             type="button"
-            title="Wis alle geselecteerde producten"
+            title="Wis alle geselecteerde Produkte"
         >
             Wis selectie
         </button>
@@ -445,14 +445,14 @@
                 const selected = [...checkboxes].filter(cb => cb.checked);
                 if (selected.length > 3) {
                     cb.checked = false;
-                    alert('Je kunt maximaal 3 producten vergelijken.');
+                    alert('Je kunt maximaal 3 Produkte vergelijken.');
                     return;
                 }
                 updateBar();
             });
         });
 
-        // ✅ "Vergelijk" knop
+        // ✅ "Vergleichen" knop
         btn.addEventListener('click', () => {
             const selectedEans = [...checkboxes]
                 .filter(cb => cb.checked)
@@ -463,14 +463,14 @@
 
             // ✅ Corrigeer dubbele telling door uniek te houden
             if (combined.length > 3) {
-                alert('Je kunt maximaal 3 producten vergelijken.');
+                alert('Je kunt maximaal 3 Produkte vergelijken.');
                 return;
             }
 
             if (combined.length >= 2) {
                 window.location.href = `/vergelijken?eans=${combined.join(',')}`;
             } else {
-                alert('Selecteer minimaal twee producten om te vergelijken.');
+                alert('Selecteer minimaal twee Produkte om te vergelijken.');
             }
         });
 
@@ -502,8 +502,8 @@
 {
     "@context": "https://schema.org",
     "@type": "CollectionPage",
-    "name": "{{ getSetting('site_niche', 'Producten') }} - {{ getSetting('site_name') }}",
-    "description": "Vergelijk en koop de beste {{ getSetting('site_niche', 'producten') }}. Filter op prijs, merk en kenmerken.",
+    "name": "{{ getSetting('site_niche', 'Produkte') }} - {{ getSetting('site_name') }}",
+    "description": "Vergleichen en koop de beste {{ getSetting('site_niche', 'Produkte') }}. Filter op Preis, merk en Merkmale.",
     "mainEntity": {
         "@type": "ItemList",
         "numberOfItems": {{ $products->total() }},
@@ -537,7 +537,7 @@
                         "reviewCount": "{{ $product->rating_count ?? 1 }}"
                     },
                     @endif
-                    "url": "{{ route('producten.show', $product->slug) }}"
+                    "url": "{{ route('produkte.show', $product->slug) }}"
                 }
             }@if(!$loop->last),@endif
             @endforeach

@@ -75,7 +75,7 @@
                         class="inline-flex items-center gap-2 text-sm font-medium hover:underline"
                         style="color: {{ $primaryColor }}"
                     >
-                        Bekijk profiel van {{ $teamMember->name }} →
+                        Ansehen profiel van {{ $teamMember->name }} →
                     </a>
                 </div>
             </div>

@@ -19,7 +19,7 @@ class BlogController extends Controller
             ->orderByDesc('created_at')
             ->paginate(12);
 
-        return view('blogs.index', compact('blogPosts'));
+        return view('ratgeber.index', compact('blogPosts'));
     }
 
     /**
@@ -32,6 +32,6 @@ class BlogController extends Controller
             ->with('product.images') // ✅ laad ook gerelateerde productafbeeldingen
             ->firstOrFail();
 
-        return view('blogs.show', compact('post'));
+        return view('ratgeber.show', compact('post'));
     }
 }

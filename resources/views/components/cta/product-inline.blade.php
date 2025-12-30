@@ -1,4 +1,4 @@
-@props(['product' => null, 'text' => 'Bekijk dit product', 'classes' => ''])
+@props(['product' => null, 'text' => 'Ansehen dit product', 'classes' => ''])
 
 @if($product && $product->url)
   @php

@@ -50,23 +50,23 @@
         @foreach($internal_links as $link)
           @php
             $linkUrl = match($link['url_key'] ?? '') {
-              'producten.index' => route('producten.index'),
+              'Produkte.index' => route('produkte.index'),
               'top5' => url('/top-5'),
-              'blogs.index' => route('blogs.index'),
-              'reviews.index' => route('reviews.index'),
+              'blogs.index' => route('ratgeber.index'),
+              'Testberichte.index' => route('testberichte.index'),
               default => $link['url_key'] ?? '#'
             };
             
             // Handle specific product/blog/review URLs
-            if (str_starts_with($link['url_key'] ?? '', 'producten/')) {
-              $productSlug = str_replace('producten/', '', $link['url_key']);
-              $linkUrl = route('producten.show', $productSlug);
+            if (str_starts_with($link['url_key'] ?? '', 'Produkte/')) {
+              $productSlug = str_replace('Produkte/', '', $link['url_key']);
+              $linkUrl = route('produkte.show', $productSlug);
             } elseif (str_starts_with($link['url_key'] ?? '', 'blogs/')) {
               $blogSlug = str_replace('blogs/', '', $link['url_key']);
-              $linkUrl = route('blogs.show', $blogSlug);
-            } elseif (str_starts_with($link['url_key'] ?? '', 'reviews/')) {
-              $reviewSlug = str_replace('reviews/', '', $link['url_key']);
-              $linkUrl = route('reviews.show', $reviewSlug);
+              $linkUrl = route('ratgeber.show', $blogSlug);
+            } elseif (str_starts_with($link['url_key'] ?? '', 'Testberichte/')) {
+              $reviewSlug = str_replace('Testberichte/', '', $link['url_key']);
+              $linkUrl = route('testberichte.show', $reviewSlug);
             }
           @endphp
           
@@ -75,7 +75,7 @@
             <svg class="w-4 h-4 mr-2 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
               <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 7l5 5m0 0l-5 5m5-5H6"></path>
             </svg>
-            {{ $link['label'] ?? 'Meer informatie' }}
+            {{ $link['label'] ?? 'Mehr Informationen' }}
           </a>
         @endforeach
       </div>

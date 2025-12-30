@@ -20,7 +20,7 @@ class ReviewController extends Controller
             ->orderByDesc('created_at')
             ->paginate(12);
 
-        return view('reviews.index', compact('reviews'));
+        return view('testberichte.index', compact('reviews'));
     }
 
     /**
@@ -35,6 +35,6 @@ class ReviewController extends Controller
         // ✅ Gebruik tweede afbeelding indien beschikbaar, anders fallback
         $secondaryImage = $review->product?->images->get(1)?->url ?? $review->product?->image_url;
 
-        return view('reviews.show', compact('review', 'secondaryImage'));
+        return view('testberichte.show', compact('review', 'secondaryImage'));
     }
 }

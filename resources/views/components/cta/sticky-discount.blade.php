@@ -24,7 +24,7 @@
                target="_blank"
                rel="nofollow sponsored"
                class="bg-white hover:bg-green-50 text-green-700 font-bold px-5 py-2.5 rounded-xl text-sm transition-colors duration-200 whitespace-nowrap shadow-lg">
-                Bekijk nu
+                Ansehen nu
             </a>
         </div>
     </div>

@@ -25,11 +25,37 @@ if (! function_exists('getImage')) {
 
 
 if (! function_exists('getBolAffiliateLink')) {
+    /**
+     * TEMPORARY: Bol.com affiliate link for demo site
+     * Will be replaced by getAmazonDeAffiliateLink() after Amazon approval
+     */
     function getBolAffiliateLink(string $productUrl, string $productTitle): string
     {
         $siteId = config('bol.site_id', 'fallback_id');
 
         return 'https://partner.bol.com/click/click?p=2&t=url&s='.$siteId.'&f=TXL&url='.urlencode($productUrl).'&name='.urlencode($productTitle);
+    }
+}
+
+if (! function_exists('getAmazonDeAffiliateLink')) {
+    /**
+     * Generate Amazon.de PartnerNet affiliate link
+     *
+     * @param string $asin Amazon Standard Identification Number
+     * @param string $productTitle Product title for tracking
+     * @return string Affiliate link for Amazon.de
+     */
+    function getAmazonDeAffiliateLink(string $asin, string $productTitle = ''): string
+    {
+        $amazonTag = config('amazon.de.associate_tag', 'your-tag-21');
+
+        // Amazon.de product URL with affiliate tag
+        // Format: https://www.amazon.de/dp/{ASIN}?tag={your-tag}
+        return sprintf(
+            'https://www.amazon.de/dp/%s?tag=%s',
+            $asin,
+            $amazonTag
+        );
     }
 }
 

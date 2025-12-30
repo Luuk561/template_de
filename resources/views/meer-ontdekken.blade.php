@@ -12,7 +12,7 @@
     $categoryData = $niches[$currentCategory] ?? [];
 
     $title = $categoryData['title'] ?? 'Meer ontdekken binnen jouw categorie';
-    $metaDescription = $categoryData['meta_description'] ?? 'Ontdek verwante niche-websites binnen jouw interessegebied.';
+    $metaDescription = $categoryData['meta_description'] ?? 'Entdecken verwante niche-websites binnen jouw interessegebied.';
     $heroHeading = $categoryData['hero_heading'] ?? 'Meer ontdekken binnen jouw categorie';
     $heroSubtext = $categoryData['hero_subtext'] ?? 'Deze site maakt deel uit van een netwerk van betrouwbare niche-websites.';
     $ctaText = $categoryData['cta_text'] ?? 'Bezoek verwante niche-websites';
@@ -125,7 +125,7 @@
     <div class="relative z-10 max-w-4xl mx-auto">
         <div class="inline-block mb-6 px-5 py-2 bg-white rounded-full shadow-md border border-indigo-100">
             <span class="text-sm font-bold text-indigo-600">
-                Ontdek ons netwerk
+                Entdecken ons netwerk
             </span>
         </div>
         <h1 class="text-4xl sm:text-5xl lg:text-6xl font-extrabold leading-tight mb-6 text-gray-900">
@@ -154,7 +154,7 @@
         @if($relatedSites->isNotEmpty())
             <div class="text-center mb-12">
                 <h2 class="text-3xl sm:text-4xl font-bold text-gray-900 mb-4">
-                    Ontdek vergelijkbare sites
+                    Entdecken vergelijkbare sites
                 </h2>
                 <p class="text-lg text-gray-600 max-w-2xl mx-auto">
                     Deel van hetzelfde netwerk, dezelfde kwaliteit
@@ -249,7 +249,7 @@
     <div class="relative z-10 max-w-3xl mx-auto text-center space-y-6 sm:space-y-8">
         <h2 class="text-3xl sm:text-4xl font-extrabold">Blijf ontdekken</h2>
         <p class="text-lg text-white/90 leading-relaxed">
-            Onze niche-sites zijn met zorg geselecteerd om jou te helpen de beste keuze te maken. Van sportproducten tot slimme apparaten — wij hebben het voor je uitgezocht.
+            Onze niche-sites zijn met zorg geselecteerd om jou te helpen de beste keuze te maken. Van sportProdukte tot slimme apparaten — wij hebben het voor je uitgezocht.
         </p>
         <a href="{{ route('home') }}" class="inline-block text-sm font-medium underline hover:text-white/70 transition whitespace-nowrap">
             Terug naar de homepage →

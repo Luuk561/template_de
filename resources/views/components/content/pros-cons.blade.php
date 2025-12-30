@@ -1,4 +1,4 @@
-@props(['pros' => [], 'cons' => [], 'heading' => 'Voor- en nadelen'])
+@props(['pros' => [], 'cons' => [], 'heading' => 'Voor- en Nachteile'])
 
 @if(!empty($pros) || !empty($cons))
 <section class="my-24 max-w-5xl mx-auto px-6">
@@ -17,7 +17,7 @@
               <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7" />
             </svg>
           </div>
-          <h3 class="text-2xl font-semibold text-green-800">Voordelen</h3>
+          <h3 class="text-2xl font-semibold text-green-800">Vorteile</h3>
         </div>
         <ul class="space-y-4">
           @foreach($pros as $pro)
@@ -42,7 +42,7 @@
               <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" />
             </svg>
           </div>
-          <h3 class="text-2xl font-semibold text-red-800">Nadelen</h3>
+          <h3 class="text-2xl font-semibold text-red-800">Nachteile</h3>
         </div>
         <ul class="space-y-4">
           @foreach($cons as $con)

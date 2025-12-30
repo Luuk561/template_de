@@ -1,12 +1,12 @@
 @extends('layouts.app')
 
-@section('title', 'Vergelijk producten')
-@section('meta_description', 'Vergelijk je favoriete producten direct naast elkaar op specificaties, prijs, reviews en meer. Vind snel de beste keuze voor jouw situatie en budget.')
+@section('title', 'Vergleichen Produkte')
+@section('meta_description', 'Vergleichen je favoriete Produkte direct naast elkaar op Spezifikationen, Preis, Testberichte en meer. Vind snel de beste keuze voor jouw situatie en budget.')
 
 @section('breadcrumbs')
     <x-breadcrumbs :items="[
-        'Producten' => route('producten.index'),
-        'Vergelijken' => route('producten.vergelijken'),
+        'Produkte' => route('produkte.index'),
+        'Vergleichenen' => route('produkte.vergelijken'),
     ]" />
 @endsection
 
@@ -42,14 +42,14 @@
     <div class="max-w-7xl mx-auto">
         <div class="flex flex-col sm:flex-row sm:justify-between sm:items-start gap-4 mb-8">
             <div>
-                <h1 class="text-2xl sm:text-3xl font-bold text-gray-900 mb-2">Vergelijk producten</h1>
+                <h1 class="text-2xl sm:text-3xl font-bold text-gray-900 mb-2">Vergleichen Produkte</h1>
                 <p class="text-gray-600 text-sm">
-                    Vergelijk tot 3 producten naast elkaar
+                    Vergleichen tot 3 Produkte naast elkaar
                 </p>
             </div>
 
             @if(count($products) < 3)
-                <a href="{{ route('producten.index', ['terug_naar_vergelijker' => '1', 'eans' => request('eans')]) }}"
+                <a href="{{ route('produkte.index', ['terug_naar_vergelijker' => '1', 'eans' => request('eans')]) }}"
                    class="inline-flex items-center gap-2 text-white font-semibold px-6 py-3 rounded-lg transition hover:opacity-90"
                    style="background-color: {{ $primaryColor }}">
                     <svg class="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
@@ -63,7 +63,7 @@
                     <svg class="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4"/>
                     </svg>
-                    Max. 3 producten
+                    Max. 3 Produkte
                 </div>
             @endif
         </div>
@@ -71,11 +71,11 @@
 
     @if($products->isEmpty())
         <div class="max-w-7xl mx-auto text-center py-20">
-            <h2 class="text-xl font-semibold text-gray-700 mb-4">Geen producten geselecteerd</h2>
-            <a href="{{ route('producten.index') }}"
+            <h2 class="text-xl font-semibold text-gray-700 mb-4">Geen Produkte geselecteerd</h2>
+            <a href="{{ route('produkte.index') }}"
                class="inline-block text-white px-6 py-3 rounded-lg font-semibold transition hover:opacity-90"
                style="background-color: {{ $primaryColor }}">
-                Producten bekijken
+                Produkte bekijken
             </a>
         </div>
     @endif    
@@ -103,10 +103,10 @@
                                     <a href="{{ $affiliateLink }}" target="_blank" rel="nofollow sponsored"
                                        class="block text-xs text-white font-bold py-1.5 rounded transition text-center hover:opacity-90"
                                        style="background-color: {{ $primaryColor }}">
-                                        Bekijk op bol.com
+                                        Ansehen op bol.com
                                     </a>
 
-                                    <a href="{{ route('producten.show', $product->slug) }}"
+                                    <a href="{{ route('produkte.show', $product->slug) }}"
                                        class="block text-xs text-gray-900 font-medium py-1.5 rounded transition text-center border border-gray-300 bg-white hover:bg-gray-50">
                                         Details
                                     </a>
@@ -115,7 +115,7 @@
                                     $eans = collect(explode(',', request('eans', '')));
                                     $updatedEans = $eans->reject(fn($ean) => $ean == $product->ean)->implode(',');
                                 @endphp
-                                <a href="{{ route('producten.vergelijken', ['eans' => $updatedEans]) }}"
+                                <a href="{{ route('produkte.vergelijken', ['eans' => $updatedEans]) }}"
                                 class="absolute -top-2 -right-2 bg-red-500 hover:bg-red-600 text-white text-xs w-6 h-6 rounded-full shadow-lg flex items-center justify-center transition transform hover:scale-110"
                                 title="Verwijder {{ $product->title }}">
                                     ×
@@ -189,19 +189,19 @@
                                     <a href="{{ $affiliateLink }}" target="_blank" rel="nofollow sponsored"
                                        class="block text-sm text-white font-semibold py-2 rounded transition text-center hover:opacity-90"
                                        style="background-color: {{ $primaryColor }}">
-                                        Bekijk op bol.com
+                                        Ansehen op bol.com
                                     </a>
 
-                                    <a href="{{ route('producten.show', $product->slug) }}"
+                                    <a href="{{ route('produkte.show', $product->slug) }}"
                                        class="block text-sm text-gray-900 font-medium py-2 rounded transition text-center border border-gray-300 bg-white hover:bg-gray-50">
-                                        Bekijk details
+                                        Ansehen details
                                     </a>
                                 </div>
                                 @php
                                     $eans = collect(explode(',', request('eans', '')));
                                     $updatedEans = $eans->reject(fn($ean) => $ean == $product->ean)->implode(',');
                                 @endphp
-                                <a href="{{ route('producten.vergelijken', ['eans' => $updatedEans]) }}"
+                                <a href="{{ route('produkte.vergelijken', ['eans' => $updatedEans]) }}"
                                 class="absolute top-0 right-0 bg-red-500 hover:bg-red-600 text-white text-[10px] sm:text-xs px-1.5 sm:px-2 py-1 rounded-full shadow"
                                 title="Verwijder {{ $product->title }}">
                                     ✕
@@ -237,8 +237,8 @@
                                     @if($tooLong)
                                         <button @click="open = !open"
                                                 class="mt-1 text-blue-600 text-[10px] sm:text-xs hover:underline focus:outline-none">
-                                            <span x-show="!open">Toon meer</span>
-                                            <span x-show="open">Toon minder</span>
+                                            <span x-show="!open">Mehr anzeigen</span>
+                                            <span x-show="open">Weniger anzeigen</span>
                                         </button>
                                     @endif
                                 </div>

@@ -9,7 +9,7 @@
 
 @section('breadcrumbs')
     <x-breadcrumbs :items="[
-        'Blogs' => route('blogs.index'),
+        'Blogs' => route('ratgeber.index'),
         \Illuminate\Support\Str::limit($post->title, 60) => ''
     ]" />
 @endsection
@@ -43,7 +43,7 @@
         <div class="w-full bg-white">
             {{-- Back Button --}}
             <div class="max-w-4xl mx-auto px-6 pt-8 pb-4">
-            <a href="{{ route('blogs.index') }}" class="inline-flex items-center text-gray-600 hover:text-gray-900 transition-colors duration-200">
+            <a href="{{ route('ratgeber.index') }}" class="inline-flex items-center text-gray-600 hover:text-gray-900 transition-colors duration-200">
                 <svg class="w-4 h-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7" />
                 </svg>
@@ -183,7 +183,7 @@
                                        target="_blank"
                                        rel="nofollow sponsored"
                                        class="inline-flex items-center mt-4 bg-green-600 hover:bg-green-700 text-white font-semibold px-6 py-3 rounded-lg transition-colors duration-200">
-                                        Bekijk {{ $json['custom_affiliate']['product_name'] ?? 'dit product' }}
+                                        Ansehen {{ $json['custom_affiliate']['product_name'] ?? 'dit product' }}
                                         <svg class="w-4 h-4 ml-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14" />
                                         </svg>
@@ -216,12 +216,12 @@
                     @php
                         $cta = $json['closing']['primary_cta'];
                         $ctaUrl = match($cta['url_key'] ?? '') {
-                            'custom_affiliate' => $json['custom_affiliate']['link'] ?? route('producten.index'),
-                            'producten.index' => route('producten.index'),
+                            'custom_affiliate' => $json['custom_affiliate']['link'] ?? route('produkte.index'),
+                            'Produkte.index' => route('produkte.index'),
                             'top5' => url('/top-5'),
-                            'blogs.index' => route('blogs.index'),
-                            'reviews.index' => route('reviews.index'),
-                            default => route('producten.index')
+                            'blogs.index' => route('ratgeber.index'),
+                            'Testberichte.index' => route('testberichte.index'),
+                            default => route('produkte.index')
                         };
                         $isExternalLink = ($cta['url_key'] ?? '') === 'custom_affiliate';
                     @endphp
@@ -230,7 +230,7 @@
                         <a href="{{ $ctaUrl }}"
                            @if($isExternalLink) target="_blank" rel="nofollow sponsored" @endif 
                            class="inline-flex items-center bg-gray-900 hover:bg-gray-800 text-white font-medium px-8 py-4 rounded-full transition-all duration-300 text-lg shadow-lg hover:shadow-xl transform hover:-translate-y-1">
-                            {{ $cta['label'] ?? 'Ontdek meer' }}
+                            {{ $cta['label'] ?? 'Entdecken meer' }}
                             <svg class="w-5 h-5 ml-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 8l4 4m0 0l-4 4m4-4H3" />
                             </svg>
@@ -247,7 +247,7 @@
             <div class="bg-white rounded-2xl shadow-xl p-6 sm:p-8 md:p-12">
                 <!-- Terugknop -->
                 <div class="mb-6">
-                    <a href="{{ route('blogs.index') }}" class="inline-block bg-blue-600 hover:bg-blue-700 text-white text-sm font-medium px-5 py-2 rounded-full shadow transition">
+                    <a href="{{ route('ratgeber.index') }}" class="inline-block bg-blue-600 hover:bg-blue-700 text-white text-sm font-medium px-5 py-2 rounded-full shadow transition">
                         &larr; Terug naar overzicht
                     </a>
                 </div>
@@ -269,7 +269,7 @@
                                 </div>
                             </a>
                             <a href="{{ $affiliateLink }}" target="_blank" rel="nofollow sponsored" class="mt-3 text-sm text-blue-600 hover:underline">
-                                Bekijk dit product op bol
+                                Ansehen dit product op bol
                             </a>
                         </div>
                     @endif
@@ -309,7 +309,7 @@
                     @if(!empty($json['verdict']))
                         <div class="mb-16">
                             <h2 class="text-3xl font-light text-gray-900 mb-6 tracking-tight">
-                                {{ ContentJson::getString($json['verdict'], 'headline', 'Onze conclusie') }}
+                                {{ ContentJson::getString($json['verdict'], 'headline', 'Onze Fazit') }}
                             </h2>
                             <p class="text-xl text-gray-600 font-light leading-relaxed">
                                 {{ ContentJson::getString($json['verdict'], 'body') }}
@@ -319,9 +319,9 @@
 
                     {{-- Bottom CTA --}}
                     @if($post->product)
-                        <x-cta.product-primary :product="$post->product" text="Bekijk actuele prijs" classes="mt-8" />
+                        <x-cta.product-primary :product="$post->product" text="Ansehen actuele Preis" classes="mt-8" />
                     @else
-                        <x-cta.list-primary text="Ontdek alle opties" classes="mt-8" />
+                        <x-cta.list-primary text="Entdecken alle opties" classes="mt-8" />
                     @endif
                 </div>
             </div>
@@ -332,7 +332,7 @@
             <div class="bg-white rounded-2xl shadow-xl p-6 sm:p-8 md:p-12">
                 <!-- Terugknop -->
                 <div class="mb-6">
-                    <a href="{{ route('blogs.index') }}" class="inline-block bg-blue-600 hover:bg-blue-700 text-white text-sm font-medium px-5 py-2 rounded-full shadow transition">
+                    <a href="{{ route('ratgeber.index') }}" class="inline-block bg-blue-600 hover:bg-blue-700 text-white text-sm font-medium px-5 py-2 rounded-full shadow transition">
                         &larr; Terug naar overzicht
                     </a>
                 </div>
@@ -354,13 +354,13 @@
                                 </div>
                             </a>
                             <a href="{{ $affiliateLink }}" target="_blank" rel="nofollow sponsored" class="mt-3 text-sm text-blue-600 hover:underline">
-                                Bekijk dit product op bol
+                                Ansehen dit product op bol
                             </a>
                         </div>
                     @endif
                 </div>
                 
-                <!-- Fallback naar oude structuur voor bestaande blogs -->
+                <!-- Fallback naar oude structStunde voor bestaande blogs -->
                 @if ($post->intro)
                     <section class="bg-blue-50 border-l-4 border-blue-500 pl-6 pr-4 py-4 rounded-lg">
                         <h2 class="text-xl sm:text-2xl font-bold text-blue-900 mb-3">Introductie</h2>
@@ -377,7 +377,7 @@
 
                 @if ($post->benefits)
                     <section class="bg-green-50 border-l-4 border-green-500 pl-6 pr-4 py-4 rounded-lg">
-                        <h2 class="text-xl sm:text-2xl font-bold text-green-900 mb-3">Voordelen</h2>
+                        <h2 class="text-xl sm:text-2xl font-bold text-green-900 mb-3">Vorteile</h2>
                         <div class="prose prose-sm max-w-none">
                             {!! $post->benefits !!}
                         </div>
@@ -416,20 +416,20 @@
         @if ($post->product)
             <div class="bg-gradient-to-r from-blue-600 to-blue-800 text-white rounded-lg shadow-lg p-6 sm:p-8 flex flex-col items-center text-center">
                 <h2 class="text-2xl sm:text-3xl font-bold mb-4">Benieuwd naar dit product?</h2>
-                <p class="text-base sm:text-lg mb-6 max-w-xl">Bekijk de actuele prijs, lees reviews en ontdek waarom dit product zo populair is.</p>
+                <p class="text-base sm:text-lg mb-6 max-w-xl">Ansehen de actuele Preis, lees Testberichte en ontdek waarom dit product zo populair is.</p>
                 <a href="{{ $affiliateLink }}" target="_blank" rel="nofollow sponsored"
                    class="inline-block bg-yellow-400 hover:bg-yellow-500 text-black font-semibold py-3 px-8 rounded-full shadow-lg transition duration-200 ease-in-out focus:outline-none focus:ring-2 focus:ring-yellow-400 focus:ring-offset-2">
-                    Bekijk op bol
+                    Ansehen op bol
                 </a>
             </div>
         @elseif ($post->created_at->isAfter('2025-09-10') && $post->type === 'general')
             {{-- Alleen tonen voor GSC-gegenereerde content (na 10 sept 2025) --}}
             <div class="bg-gradient-to-r from-blue-600 to-blue-800 text-white rounded-lg shadow-lg p-6 sm:p-8 flex flex-col items-center text-center">
-                <h2 class="text-2xl sm:text-3xl font-bold mb-4">Op zoek naar de beste producten?</h2>
-                <p class="text-base sm:text-lg mb-6 max-w-xl">Ontdek onze zorgvuldig geselecteerde producten en kies de perfecte match voor jouw situatie.</p>
-                <a href="{{ route('producten.index') }}"
+                <h2 class="text-2xl sm:text-3xl font-bold mb-4">Op zoek naar de beste Produkte?</h2>
+                <p class="text-base sm:text-lg mb-6 max-w-xl">Entdecken onze zorgvuldig geselecteerde Produkte en kies de perfecte match voor jouw situatie.</p>
+                <a href="{{ route('produkte.index') }}"
                    class="inline-block bg-white text-blue-800 font-semibold py-3 px-8 rounded-full shadow-lg hover:bg-gray-100 transition duration-200 ease-in-out focus:outline-none focus:ring-2 focus:ring-white focus:ring-offset-2">
-                    Bekijk het assortiment
+                    Ansehen het assortiment
                 </a>
             </div>
         @endif
@@ -439,19 +439,19 @@
     <!-- CTA Top 5 - Alleen voor GSC content -->
     <section class="bg-gradient-to-r from-purple-600 to-pink-600 text-white rounded-lg shadow-lg p-6 sm:p-8 mt-16 mb-20 flex flex-col sm:flex-row items-center justify-between">
         <div class="mb-4 sm:mb-0">
-            <h2 class="text-2xl sm:text-3xl font-bold mb-2">Bekijk onze Top 5 Aanbevelingen</h2>
-            <p class="text-base sm:text-lg">Maak kiezen makkelijk met onze best beoordeelde producten, speciaal voor jou geselecteerd.</p>
+            <h2 class="text-2xl sm:text-3xl font-bold mb-2">Ansehen onze Top 5 Aanbevelingen</h2>
+            <p class="text-base sm:text-lg">Maak kiezen makkelijk met onze best beoordeelde Produkte, speciaal voor jou geselecteerd.</p>
         </div>
         <a href="{{ url('/top-5') }}"
            class="inline-block bg-white text-purple-700 font-semibold py-3 px-8 rounded-full shadow-lg hover:bg-gray-100 transition duration-200 ease-in-out focus:outline-none focus:ring-2 focus:ring-white focus:ring-offset-2">
-            Bekijk de Top 5
+            Ansehen de Top 5
         </a>
         </section>
     @endif
 
         <!-- Teruglink -->
         <div class="text-center">
-            <a href="{{ route('blogs.index') }}" class="text-blue-600 hover:text-blue-800 font-semibold text-sm">
+            <a href="{{ route('ratgeber.index') }}" class="text-blue-600 hover:text-blue-800 font-semibold text-sm">
                 &larr; Terug naar alle blogs
             </a>
         </div>
@@ -505,7 +505,7 @@
            target="_blank"
            rel="nofollow sponsored"
            class="bg-blue-600 hover:bg-blue-700 text-white font-semibold px-4 py-2 rounded-xl text-sm transition-colors duration-200 whitespace-nowrap">
-            Bekijk nu
+            Ansehen nu
         </a>
     </div>
 </div>

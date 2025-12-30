@@ -1,24 +1,24 @@
 @extends('layouts.app')
 
-@section('title', 'Disclaimer')
-@section('meta_description', 'Lees onze disclaimer over aansprakelijkheid, affiliate-partnerships, correctheid van informatie en het gebruik van externe links op deze website.')
+@section('title', 'Haftungsausschluss')
+@section('meta_description', 'Lesen Sie unseren Haftungsausschluss über Verantwortlichkeit, Affiliate-Partnerschaften, Richtigkeit der Informationen und die Verwendung externer Links auf dieser Website.')
 
 @section('content')
 <div class="max-w-3xl mx-auto px-4 py-12">
-    <h1 class="text-2xl font-semibold mb-6">Disclaimer</h1>
+    <h1 class="text-2xl font-semibold mb-6">Haftungsausschluss</h1>
 
-    <p class="mb-4">De informatie op deze website is met zorg samengesteld. We streven naar actuele, objectieve en duidelijke content. Toch kunnen er fouten voorkomen of kan informatie verouderen. Je kunt geen rechten ontlenen aan de inhoud van deze site.</p>
+    <p class="mb-4">Die Informationen auf dieser Website wurden mit Sorgfalt zusammengestellt. Wir streben nach aktuellen, objektiven und klaren Inhalten. Dennoch können Fehler auftreten oder Informationen veralten. Sie können aus dem Inhalt dieser Website keine Rechte ableiten.</p>
 
-    <h2 class="text-xl font-semibold mt-8 mb-3">Aansprakelijkheid</h2>
-    <p class="mb-4">Wij aanvaarden geen enkele aansprakelijkheid voor directe of indirecte schade die voortvloeit uit het gebruik van deze website of van informatie die via externe links wordt verkregen.</p>
+    <h2 class="text-xl font-semibold mt-8 mb-3">Haftung</h2>
+    <p class="mb-4">Wir übernehmen keine Haftung für direkte oder indirekte Schäden, die aus der Nutzung dieser Website oder aus Informationen entstehen, die über externe Links erhalten werden.</p>
 
-    <h2 class="text-xl font-semibold mt-8 mb-3">Affiliate-partnerships</h2>
-    <p class="mb-4">Deze website maakt gebruik van affiliate-links. Wanneer je via een link een aankoop doet, ontvangen wij mogelijk een commissie. Dit beïnvloedt de inhoud van onze aanbevelingen niet: deze zijn gebaseerd op onafhankelijke analyses en meningen.</p>
+    <h2 class="text-xl font-semibold mt-8 mb-3">Affiliate-Partnerschaften</h2>
+    <p class="mb-4">Diese Website verwendet Affiliate-Links. Wenn Sie über einen Link einen Kauf tätigen, erhalten wir möglicherweise eine Provision. Dies beeinflusst nicht den Inhalt unserer Empfehlungen: Diese basieren auf unabhängigen Analysen und Meinungen.</p>
 
-    <h2 class="text-xl font-semibold mt-8 mb-3">Externe links</h2>
-    <p class="mb-4">Deze website bevat links naar externe websites waar wij geen controle over hebben. Voor de inhoud en privacypraktijken van deze websites zijn wij niet verantwoordelijk.</p>
+    <h2 class="text-xl font-semibold mt-8 mb-3">Externe Links</h2>
+    <p class="mb-4">Diese Website enthält Links zu externen Websites, über die wir keine Kontrolle haben. Für den Inhalt und die Datenschutzpraktiken dieser Websites sind wir nicht verantwortlich.</p>
 
-    <h2 class="text-xl font-semibold mt-8 mb-3">Redactionele teamleden</h2>
-    <p class="mb-4">De reviews, vergelijkingen en blogs op deze website zijn geschreven door onze redactie. De teamleden die je op onze website ziet, zijn fictieve persona's die verschillende gebruikersperspectieven en expertises binnen ons redactieteam vertegenwoordigen. Alle content wordt geschreven vanuit redactioneel perspectief en gebaseerd op grondig product-onderzoek, specificatievergelijkingen en beschikbare gebruikerservaringen. De persona's claimen geen persoonlijke consumentenervaringen, maar representeren de verschillende invalshoeken waarmee wij producten beoordelen: gebruiksgemak, technische specificaties en duurzaamheid/design.</p>
+    <h2 class="text-xl font-semibold mt-8 mb-3">Redaktionelle Teammitglieder</h2>
+    <p class="mb-4">Die Testberichte, Vergleiche und Ratgeber auf dieser Website werden von unserer Redaktion verfasst. Die Teammitglieder, die Sie auf unserer Website sehen, sind fiktive Personas, die verschiedene Nutzerperspektiven und Fachkenntnisse innerhalb unseres Redaktionsteams repräsentieren. Alle Inhalte werden aus redaktioneller Sicht geschrieben und basieren auf gründlicher Produktrecherche, Spezifikationsvergleichen und verfügbaren Nutzererfahrungen. Die Personas erheben keinen Anspruch auf persönliche Verbrauchererfahrungen, sondern repräsentieren die verschiedenen Blickwinkel, mit denen wir Produkte bewerten: Benutzerfreundlichkeit, technische Spezifikationen und Nachhaltigkeit/Design.</p>
 </div>
 @endsection

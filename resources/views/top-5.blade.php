@@ -3,7 +3,7 @@
 {{-- Meta tags worden automatisch gegenereerd via layouts/app.blade.php --}}
 
 @section('breadcrumbs')
-    <x-breadcrumbs :items="['Top 5' => route('producten.top')]" />
+    <x-breadcrumbs :items="['Top 5' => route('produkte.top')]" />
 @endsection
 
 @section('content')
@@ -56,21 +56,21 @@
     <div class="max-w-7xl mx-auto px-6 sm:px-8">
         <div class="text-center max-w-4xl mx-auto space-y-4">
             <h1 class="text-4xl sm:text-5xl lg:text-6xl font-black leading-tight">
-                @if(hasStructuredContent('producten_top_hero_titel'))
-                    {!! getContent('producten_top_hero_titel.title', ['maand' => $huidigeMaand]) !!}
+                @if(hasStructuredContent('Produkte_top_hero_titel'))
+                    {!! getContent('Produkte_top_hero_titel.title', ['Monat' => $huidigeMaand]) !!}
                 @else
-                    {!! getContent('producten_top_hero_titel', ['maand' => $huidigeMaand, 'fallback' => 'Top 5 Selectie']) !!}
+                    {!! getContent('Produkte_top_hero_titel', ['Monat' => $huidigeMaand, 'fallback' => 'Top 5 Selectie']) !!}
                 @endif
             </h1>
 
             <p class="text-lg sm:text-xl text-gray-600">
-                Door experts geselecteerd op basis van prijs-kwaliteit en reviews
+                Door experts geselecteerd op basis van Preis-kwaliteit en Testberichte
             </p>
         </div>
     </div>
 </section>
 
-@if($producten->count())
+@if($products->count())
 <!-- TOP 5 LIST -->
 <section id="top5-products" class="w-full py-8 bg-white">
     <div class="max-w-7xl mx-auto px-6 sm:px-8">
@@ -84,7 +84,7 @@
         </div>
 
         <div class="space-y-4">
-            @foreach($producten as $index => $product)
+            @foreach($products as $index => $product)
                 @php
                     $affiliateLink = getBolAffiliateLink($product->url, $product->title);
                     $savings = ($product->strikethrough_price && $product->price)
@@ -156,20 +156,20 @@
                                     @endif
                                     <p class="text-gray-900 font-black text-lg">€{{ number_format($product->price ?? 0, 2, ',', '.') }}</p>
                                     @if($savings > 0)
-                                        <p class="text-green-600 font-bold text-xs">Bespaar €{{ number_format($savings, 2, ',', '.') }}</p>
+                                        <p class="text-green-600 font-bold text-xs">Sparen €{{ number_format($savings, 2, ',', '.') }}</p>
                                     @endif
                                 </div>
                             </div>
                         </div>
 
                         <div class="flex gap-2">
-                            <a href="{{ route('producten.show', $product->slug) }}"
+                            <a href="{{ route('produkte.show', $product->slug) }}"
                                class="flex-1 bg-white hover:bg-gray-50 text-gray-900 text-sm font-semibold py-3 px-4 rounded-xl text-center transition border-2 border-gray-200">
-                                Bekijk
+                                Ansehen
                             </a>
                             <a href="{{ $affiliateLink }}" target="_blank" rel="nofollow sponsored"
                                class="flex-1 cta-button text-white text-sm font-semibold py-3 px-4 rounded-xl text-center transition shadow-sm">
-                                Bekijk op bol.com
+                                Ansehen op bol.com
                             </a>
                         </div>
                     </div>
@@ -235,19 +235,19 @@
                             @endif
                             <p class="text-gray-900 font-black text-3xl">€{{ number_format($product->price ?? 0, 2, ',', '.') }}</p>
                             @if($savings > 0)
-                                <p class="text-green-600 font-bold text-base mt-2">Bespaar €{{ number_format($savings, 2, ',', '.') }}</p>
+                                <p class="text-green-600 font-bold text-base mt-2">Sparen €{{ number_format($savings, 2, ',', '.') }}</p>
                             @endif
                         </div>
 
                         <!-- Actions -->
                         <div class="col-span-3 flex gap-3">
-                            <a href="{{ route('producten.show', $product->slug) }}"
+                            <a href="{{ route('produkte.show', $product->slug) }}"
                                class="flex-1 bg-white hover:bg-gray-50 text-gray-900 text-sm font-semibold py-3 px-4 rounded-xl text-center transition border-2 border-gray-200">
-                                Bekijk
+                                Ansehen
                             </a>
                             <a href="{{ $affiliateLink }}" target="_blank" rel="nofollow sponsored"
                                class="flex-1 cta-button text-white text-sm font-semibold py-3 px-4 rounded-xl text-center transition shadow-sm">
-                                Bekijk op bol.com
+                                Ansehen op bol.com
                             </a>
                         </div>
                     </div>
@@ -259,42 +259,42 @@
 </section>
 @else
     <section class="w-full py-20 text-center text-gray-500 bg-white">
-        <p>Er zijn momenteel geen producten in de Top 5.</p>
+        <p>Er zijn momenteel geen Produkte in de Top 5.</p>
     </section>
 @endif
 
 <!-- SEO BLOK -->
 <section class="w-full py-16 px-6 sm:px-8 bg-white">
-    @if(hasStructuredContent('producten_top_seo_blok'))
+    @if(hasStructuredContent('Produkte_top_seo_blok'))
         {{-- STRUCTURED MODE: Two-column layout (text left, button right) --}}
         <div class="max-w-7xl mx-auto">
             <div class="grid lg:grid-cols-2 gap-12 items-center">
                 {{-- Tekst links --}}
                 <div>
-                    <h2 class="text-3xl sm:text-4xl font-bold mb-6 text-gray-900">{!! getContent('producten_top_seo_blok.title') !!}</h2>
-                    <p class="text-lg text-gray-700 mb-8">{!! getContent('producten_top_seo_blok.intro') !!}</p>
+                    <h2 class="text-3xl sm:text-4xl font-bold mb-6 text-gray-900">{!! getContent('Produkte_top_seo_blok.title') !!}</h2>
+                    <p class="text-lg text-gray-700 mb-8">{!! getContent('Produkte_top_seo_blok.intro') !!}</p>
 
                     <div class="space-y-6">
                         <div>
-                            <h3 class="text-xl font-bold mb-2 text-gray-900">{!! getContent('producten_top_seo_blok.section1_title') !!}</h3>
-                            <p class="text-gray-700">{!! getContent('producten_top_seo_blok.section1_text') !!}</p>
+                            <h3 class="text-xl font-bold mb-2 text-gray-900">{!! getContent('Produkte_top_seo_blok.section1_title') !!}</h3>
+                            <p class="text-gray-700">{!! getContent('Produkte_top_seo_blok.section1_text') !!}</p>
                         </div>
 
                         <div>
-                            <h3 class="text-xl font-bold mb-2 text-gray-900">{!! getContent('producten_top_seo_blok.section2_title') !!}</h3>
-                            <p class="text-gray-700">{!! getContent('producten_top_seo_blok.section2_text') !!}</p>
+                            <h3 class="text-xl font-bold mb-2 text-gray-900">{!! getContent('Produkte_top_seo_blok.section2_title') !!}</h3>
+                            <p class="text-gray-700">{!! getContent('Produkte_top_seo_blok.section2_text') !!}</p>
                         </div>
 
                         <div>
-                            <h3 class="text-xl font-bold mb-2 text-gray-900">{!! getContent('producten_top_seo_blok.section3_title') !!}</h3>
-                            <p class="text-gray-700">{!! getContent('producten_top_seo_blok.section3_text') !!}</p>
+                            <h3 class="text-xl font-bold mb-2 text-gray-900">{!! getContent('Produkte_top_seo_blok.section3_title') !!}</h3>
+                            <p class="text-gray-700">{!! getContent('Produkte_top_seo_blok.section3_text') !!}</p>
                         </div>
                     </div>
                 </div>
                 {{-- Button rechts --}}
                 <div class="flex justify-center lg:justify-end">
-                    <a href="{{ route('producten.index') }}" class="cta-button inline-block px-8 py-4 text-white font-semibold rounded-xl shadow-lg transition hover:scale-105">
-                        Bekijk alle {{ $niche }}
+                    <a href="{{ route('produkte.index') }}" class="cta-button inline-block px-8 py-4 text-white font-semibold rounded-xl shadow-lg transition hover:scale-105">
+                        Alle ansehen {{ $niche }}
                     </a>
                 </div>
             </div>
@@ -302,7 +302,7 @@
     @else
         {{-- FALLBACK: HTML MODE --}}
         <div class="max-w-4xl mx-auto prose prose-gray prose-lg">
-            {!! getContent('producten_top_seo_blok', ['fallback' => '<p>Hier komt tekst te staan.</p>']) !!}
+            {!! getContent('Produkte_top_seo_blok', ['fallback' => '<p>Hier komt tekst te staan.</p>']) !!}
         </div>
     @endif
 </section>

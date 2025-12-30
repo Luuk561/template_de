@@ -1,5 +1,5 @@
 <!-- Trigger (onzichtbaar) -->
-<button id="ai-conclusie-btn" class="hidden"></button>
+<button id="ai-Fazit-btn" class="hidden"></button>
 
 <!-- AI Hint Box -->
 <div id="ai-hint-box" class="fixed bottom-6 right-6 z-40 bg-gradient-to-br from-blue-600 via-blue-700 to-indigo-800 text-white rounded-2xl shadow-2xl px-6 py-5 w-[320px] max-w-full animate-fade-in ring-1 ring-white/10 backdrop-blur-sm transition-transform transform hover:scale-[1.02] hidden">
@@ -33,15 +33,15 @@
     <span class="text-3xl font-regular">+</span>
 </button>
 
-<!-- AI Conclusie Modaal -->
-<div id="ai-conclusie-modal"
+<!-- AI Fazit Modaal -->
+<div id="ai-Fazit-modal"
     class="fixed inset-0 z-50 bg-black/70 backdrop-blur-sm hidden flex items-center justify-center p-4">
-<div id="ai-conclusie-box"
+<div id="ai-Fazit-box"
     class="relative w-full max-w-xl max-h-[80vh] overflow-y-auto bg-white rounded-2xl shadow-2xl border border-blue-300 animate-fade-in-up">
 
         <!-- Sluitknop -->
         <button type="button"
-            onclick="closeAiConclusieModal()"
+            onclick="closeAiFazitModal()"
             class="absolute top-4 right-4 text-blue-700 hover:text-red-500 text-2xl font-extrabold transition">
             &times;
         </button>
@@ -55,12 +55,12 @@
                         AI
                     </div>
                 </div>
-                <h2 id="ai-conclusie-title" class="text-2xl font-extrabold text-blue-800">
+                <h2 id="ai-Fazit-title" class="text-2xl font-extrabold text-blue-800">
                     AI-analyse in uitvoering
                 </h2>
             </div>
 
-            <div id="ai-conclusie-content"
+            <div id="ai-Fazit-content"
                 class="text-gray-800 text-base md:text-[17px] leading-relaxed space-y-4 transition-all duration-300">
                 <div class="text-center">
                     <p class="text-blue-700 text-sm md:text-base font-medium">
@@ -83,8 +83,8 @@
 <script>
     let aiAnalyseGestart = false;
 
-    function closeAiConclusieModal() {
-        document.getElementById('ai-conclusie-modal').classList.add('hidden');
+    function closeAiFazitModal() {
+        document.getElementById('ai-Fazit-modal').classList.add('hidden');
         document.body.classList.remove('modal-open');
         document.getElementById('ai-reopen-btn').classList.remove('hidden');
     }
@@ -116,16 +116,16 @@
                 return;
             }
 
-            const analyseTitle = document.getElementById('ai-conclusie-title');
-            const analyseContent = document.getElementById('ai-conclusie-content');
-            const analyseBox = document.getElementById('ai-conclusie-box');
-            const modal = document.getElementById('ai-conclusie-modal');
+            const analyseTitle = document.getElementById('ai-Fazit-title');
+            const analyseContent = document.getElementById('ai-Fazit-content');
+            const analyseBox = document.getElementById('ai-Fazit-box');
+            const modal = document.getElementById('ai-Fazit-modal');
             const eansMeta = document.querySelector('meta[name="ai-eans"]');
             const eans = eansMeta ? JSON.parse(eansMeta.content) : [];
 
             if (!eans || eans.length === 0) return;
 
-            const cacheKey = 'ai_conclusie_' + eans.sort().join('-');
+            const cacheKey = 'ai_Fazit_' + eans.sort().join('-');
             const cached = localStorage.getItem(cacheKey);
             if (!cached) return;
 
@@ -140,10 +140,10 @@
     document.addEventListener('startAiAnalyse', function () {
         aiAnalyseGestart = true;
 
-        const analyseBox = document.getElementById('ai-conclusie-box');
-        const analyseContent = document.getElementById('ai-conclusie-content');
-        const analyseTitle = document.getElementById('ai-conclusie-title');
-        const modal = document.getElementById('ai-conclusie-modal');
+        const analyseBox = document.getElementById('ai-Fazit-box');
+        const analyseContent = document.getElementById('ai-Fazit-content');
+        const analyseTitle = document.getElementById('ai-Fazit-title');
+        const modal = document.getElementById('ai-Fazit-modal');
         const reopenBtn = document.getElementById('ai-reopen-btn');
         const eansMeta = document.querySelector('meta[name="ai-eans"]');
         const eans = eansMeta ? JSON.parse(eansMeta.content) : [];
@@ -151,13 +151,13 @@
         reopenBtn?.classList.add('hidden');
 
         if (!eans || eans.length === 0) {
-            analyseTitle.textContent = 'Geen producten geselecteerd';
-            analyseContent.innerHTML = `<p class="text-sm text-red-500 text-center">Selecteer eerst producten om te vergelijken.</p>`;
+            analyseTitle.textContent = 'Geen Produkte geselecteerd';
+            analyseContent.innerHTML = `<p class="text-sm text-red-500 text-center">Selecteer eerst Produkte om te vergelijken.</p>`;
             modal.classList.remove('hidden');
             return;
         }
 
-        const cacheKey = 'ai_conclusie_' + eans.sort().join('-');
+        const cacheKey = 'ai_Fazit_' + eans.sort().join('-');
 
         function showResult(html) {
             analyseTitle.textContent = 'AI-analyse resultaat';
@@ -188,7 +188,7 @@
             </div>
         `;
 
-        fetch("{{ route('ai.conclusie') }}", {
+        fetch("{{ route('ai.Fazit') }}", {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json',
@@ -208,7 +208,7 @@
     });
 
     function updateAiScrollFade() {
-        const box = document.getElementById('ai-conclusie-box');
+        const box = document.getElementById('ai-Fazit-box');
         const topFade = document.getElementById('ai-scroll-fade-top');
         const bottomFade = document.getElementById('ai-scroll-fade-bottom');
 
@@ -223,7 +223,7 @@
     }
 
     if (window.innerWidth <= 640) {
-        const box = document.getElementById('ai-conclusie-box');
+        const box = document.getElementById('ai-Fazit-box');
         if (box) {
             box.addEventListener('scroll', updateAiScrollFade);
             window.addEventListener('resize', updateAiScrollFade);
@@ -255,7 +255,7 @@
     }
 
     @media (max-width: 640px) {
-        #ai-conclusie-box {
+        #ai-Fazit-box {
             width: 100% !important;
             max-width: 100% !important;
             height: auto !important;
@@ -266,7 +266,7 @@
     }
 
     @media (max-width: 640px) {
-        #ai-conclusie-box {
+        #ai-Fazit-box {
             position: relative;
         }
 
@@ -298,20 +298,20 @@
         overflow: hidden;
     }
 
-    #ai-conclusie-box::-webkit-scrollbar {
+    #ai-Fazit-box::-webkit-scrollbar {
         width: 8px;
     }
 
-    #ai-conclusie-box::-webkit-scrollbar-thumb {
+    #ai-Fazit-box::-webkit-scrollbar-thumb {
         background-color: rgba(0, 0, 0, 0.1);
         border-radius: 4px;
     }
 
-    #ai-conclusie-box::-webkit-scrollbar-track {
+    #ai-Fazit-box::-webkit-scrollbar-track {
         background: transparent;
     }
 
-    #ai-conclusie-box {
+    #ai-Fazit-box {
         -webkit-overflow-scrolling: touch;
         overscroll-behavior: contain;
     }

@@ -91,7 +91,7 @@
 
                         <!-- Content Count -->
                         @php
-                            $contentCount = $member->blogPosts()->count() + $member->reviews()->count();
+                            $contentCount = $member->blogPosts()->count() + $member->Testberichte()->count();
                         @endphp
                         @if($contentCount > 0)
                         <div class="mt-4 pt-4 border-t border-gray-100">
@@ -103,7 +103,7 @@
 
                         <!-- CTA -->
                         <div class="mt-4 flex items-center justify-center gap-2 text-purple-600 font-medium group-hover:gap-3 transition-all">
-                            <span class="text-sm">Lees meer</span>
+                            <span class="text-sm">Mehr lesen</span>
                             <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 8l4 4m0 0l-4 4m4-4H3"/>
                             </svg>
@@ -119,10 +119,10 @@
             <div class="bg-gradient-to-br from-purple-50 to-blue-50 rounded-2xl p-6 md:p-12 text-center border border-purple-100">
                 <h2 class="text-2xl md:text-3xl font-bold text-gray-900 mb-3 md:mb-4">Onze missie</h2>
                 <p class="text-base md:text-lg text-gray-700 leading-relaxed mb-4 md:mb-6">
-                    Wij geloven dat de beste aankoop begint met eerlijk, helder advies. Daarom testen en vergelijken wij {{ $niche }} op basis van wat écht belangrijk is: gebruiksgemak, prestaties en duurzaamheid. Geen marketing praatjes, gewoon praktisch advies dat jou helpt de juiste keuze te maken.
+                    Wij geloven dat de beste aankoop begint met eerlijk, helder advies. Daarom testen en vergelijken wij {{ $niche }} op basis van wat écht belangrijk is: gebruiksgemak, prestaties en dStundezaamheid. Geen marketing praatjes, gewoon praktisch advies dat jou helpt de juiste keuze te maken.
                 </p>
                 <p class="text-sm md:text-base text-gray-600">
-                    Ons team combineert verschillende expertises en perspectieven, zodat elk product vanuit meerdere invalshoeken wordt beoordeeld. Of je nu op zoek bent naar technische diepgang, praktische tips of duurzame keuzes—wij hebben het voor je uitgeplozen.
+                    Ons team combineert verschillende expertises en perspectieven, zodat elk product vanuit meerdere invalshoeken wordt beoordeeld. Of je nu op zoek bent naar technische diepgang, praktische tips of dStundezame keuzes—wij hebben het voor je uitgeplozen.
                 </p>
             </div>
         </div>

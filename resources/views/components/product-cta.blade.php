@@ -16,7 +16,7 @@
        target="_blank"
        rel="nofollow sponsored"
        class="cta-button text-white font-bold rounded-lg transition-all hover:opacity-90 text-center inline-flex items-center justify-center gap-2 {{ $sizeClasses }} {{ $classes }}">
-        Bekijk op bol.com
+        Ansehen op bol.com
     </a>
 @else
     <div class="flex flex-col gap-2 {{ $classes }}">
@@ -28,7 +28,7 @@
         </div>
         @if($size === 'default')
             <p class="text-xs text-center text-gray-500">
-                Bekijk alternatieven <a href="#alternatieven" class="underline hover:text-gray-700">hieronder</a>
+                Ansehen alternatieven <a href="#alternatieven" class="underline hover:text-gray-700">hieronder</a>
             </p>
         @endif
     </div>

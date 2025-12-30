@@ -4,8 +4,8 @@
     \Carbon\Carbon::setLocale('nl');
     $siteName = getSetting('site_name', config('app.name'));
     $year     = \Carbon\Carbon::now('Europe/Amsterdam')->format('Y');
-    $title    = "Black Friday {$year} — Deals & Korting | {$siteName}";
-    $desc     = "Ontdek alle Black Friday aanbiedingen van {$siteName}. Vergelijk deals en bespaar. " . ($bfUntil ? 'Actie t/m '.\Carbon\Carbon::parse($bfUntil,'Europe/Amsterdam')->translatedFormat('d F Y').'.' : '');
+    $title    = "Black Friday {$year} — Angebots & Rabatt | {$siteName}";
+    $desc     = "Entdecken alle Black Friday aanbiedingen van {$siteName}. Vergleichen deals en sparen. " . ($bfUntil ? 'Actie t/m '.\Carbon\Carbon::parse($bfUntil,'Europe/Amsterdam')->translatedFormat('d F Y').'.' : '');
 @endphp
 
 @section('title', $title)
@@ -253,7 +253,7 @@ body.bf-page {
 
             <!-- Subtitle - Compact -->
             <p class="text-sm text-gray-400 max-w-xl mx-auto">
-                De beste deals, scherp geprijsd
+                De beste deals, scherp gePreisd
             </p>
         </div>
     </section>
@@ -264,16 +264,16 @@ body.bf-page {
             <!-- Section Header -->
             <div class="bf-section-header">
                 <h2 class="text-3xl md:text-5xl font-black mb-4">
-                    Top <span style="color: #FFD700;">Deals</span>
+                    Top <span style="color: #FFD700;">Angebots</span>
                 </h2>
                 <p class="bf-section-subtitle">
-                    Kortingen die écht het verschil maken. Vergelijk prijzen, ontdek premium producten en betaal nooit te veel.
+                    Rabatten die écht het verschil maken. Vergleichen prijzen, ontdek premium Produkte en betaal nooit te veel.
                 </p>
             </div>
 
-            @if($producten->count())
+            @if($Produkte->count())
                 <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-8">
-                    @foreach($producten as $product)
+                    @foreach($Produkte as $product)
                         @php
                             $bolUrl = $product->url ?? null;
                             $affiliateLink = $bolUrl
@@ -296,7 +296,7 @@ body.bf-page {
                                         </span>
                                         @if($loop->index < 3)
                                             <span class="px-2 py-1 rounded-full text-xs font-bold bg-green-600 text-white">
-                                                Top Deal
+                                                Top Angebot
                                             </span>
                                         @endif
                                     </div>
@@ -310,7 +310,7 @@ body.bf-page {
 
                             <!-- Product Image -->
                             <div class="bf-image-container">
-                                <a href="{{ route('producten.show', $product->slug) }}" 
+                                <a href="{{ route('produkte.show', $product->slug) }}" 
                                    class="block w-full h-40 flex items-center justify-center">
                                     <img src="{{ $product->image_url ?? 'https://via.placeholder.com/300x300?text=Geen+Afbeelding' }}"
                                          alt="{{ $product->title }}" 
@@ -320,7 +320,7 @@ body.bf-page {
                             </div>
 
                             <!-- Product Title -->
-                            <a href="{{ route('producten.show', $product->slug) }}"
+                            <a href="{{ route('produkte.show', $product->slug) }}"
                                class="bf-product-title text-sm font-semibold line-clamp-2 mb-3 hover:underline transition-colors">
                                 {{ $product->title }}
                             </a>
@@ -363,7 +363,7 @@ body.bf-page {
                             <div class="mb-6">
                                 @if($hasDiscount && $savings > 0)
                                     <div class="bf-savings-badge text-sm mb-3">
-                                        Bespaar €{{ number_format($savings, 2, ',', '.') }}
+                                        Sparen €{{ number_format($savings, 2, ',', '.') }}
                                     </div>
                                 @endif
                                 <div class="flex items-baseline gap-2 mb-1">
@@ -385,7 +385,7 @@ body.bf-page {
                                        target="_blank"
                                        rel="nofollow sponsored noopener"
                                        class="bf-btn-primary w-full inline-flex items-center justify-center gap-2 px-4 py-3 rounded-xl text-sm font-bold transition-all">
-                                        <span>Bekijk Deal</span>
+                                        <span>Ansehen Angebot</span>
                                         <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M14 5l7 7m0 0l-7 7m0-7H3"/>
                                         </svg>
@@ -396,7 +396,7 @@ body.bf-page {
                                     </div>
                                 @endif
 
-                                <a href="{{ route('producten.show', $product->slug) }}"
+                                <a href="{{ route('produkte.show', $product->slug) }}"
                                    class="bf-btn-secondary w-full inline-flex items-center justify-center gap-2 px-4 py-3 rounded-xl text-sm font-semibold transition-all">
                                     <span>Meer Details</span>
                                     <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -411,14 +411,14 @@ body.bf-page {
                 <!-- Pagination -->
                 <div class="mt-16 flex justify-center">
                     <div class="bf-pagination">
-                        {{ $producten->withQueryString()->links() }}
+                        {{ $Produkte->withQueryString()->links() }}
                     </div>
                 </div>
             @else
                 <div class="bf-no-deals">
                     <div class="text-6xl mb-6">🔍</div>
                     <h3 class="text-2xl font-bold mb-4">Geen deals gevonden</h3>
-                    <p class="text-lg">Op dit moment zijn er nog geen Black Friday deals actief. Kom snel terug – onze aanbiedingen worden dagelijks aangevuld.</p>
+                    <p class="text-lg">Op dit moment zijn er nog geen Black Friday deals actief. Kom snel terug – onze aanbiedingen worden Tagelijks aangevuld.</p>
                 </div>
             @endif
         </div>
@@ -431,11 +431,11 @@ body.bf-page {
                 Mis geen enkele <span class="text-yellow-400">deal</span>
             </h3>
             <p class="text-xl text-gray-400 mb-8 max-w-2xl mx-auto">
-                Ontdek nu de laagste prijzen van het jaar. Met onze slimme filters vind je razendsnel het product dat écht bij jou past. Wacht niet te lang, want de beste deals verdwijnen als eerste.
+                Entdecken nu de laagste prijzen van het jaar. Met onze slimme filters vind je razendsnel het product dat écht bij jou past. Wacht niet te lang, want de beste deals verdwijnen als eerste.
             </p>
-            <a href="{{ route('producten.index') }}" 
+            <a href="{{ route('produkte.index') }}" 
                class="bf-btn-primary inline-flex items-center gap-3 px-8 py-4 rounded-xl text-lg font-bold transition-all duration-300">
-                <span>Bekijk Alle Producten</span>
+                <span>Ansehen Alle Produkte</span>
                 <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 8l4 4m0 0l-4 4m4-4H3"/>
                 </svg>
@@ -451,15 +451,15 @@ body.bf-page {
                     @if($bfEndIso)
                         <span id="sticky-countdown">Eindigt binnenkort</span>
                     @else
-                        Black Friday Deals
+                        Black Friday Angebots
                     @endif
                 </div>
                 <div class="text-white text-xs opacity-80">
-                    {{ $producten->total() }} deals
+                    {{ $Produkte->total() }} deals
                 </div>
             </div>
             <a href="#deals" class="bf-btn-primary px-4 py-2 rounded-lg text-xs font-bold whitespace-nowrap">
-                Bekijk Deals
+                Ansehen Angebots
             </a>
         </div>
     </div>
@@ -558,11 +558,11 @@ document.addEventListener('DOMContentLoaded', function() {
 
                 if (hours > 24) {
                     const days = Math.floor(hours / 24);
-                    stickyCountdown.textContent = 'Nog ' + days + ' dag' + (days !== 1 ? 'en' : '');
+                    stickyCountdown.textContent = 'Nog ' + days + ' Tag' + (days !== 1 ? 'en' : '');
                 } else if (hours > 0) {
                     stickyCountdown.textContent = 'Nog ' + hours + 'u ' + minutes + 'm';
                 } else {
-                    stickyCountdown.textContent = 'Laatste ' + minutes + ' minuten!';
+                    stickyCountdown.textContent = 'Laatste ' + minutes + ' Minuten!';
                 }
             }
 

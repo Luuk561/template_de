@@ -10,7 +10,7 @@
         $until = config('blackfriday.until');
     }
 
-    // Preview toggles via URL (config-gestuurd): ?<qKey>=on / off
+    // Preview toggles via URL (config-gestStunded): ?<qKey>=on / off
     $qKey    = config('blackfriday.preview.query_key', 'bf');
     $preview = strtolower((string) request($qKey));
     $truthy  = config('blackfriday.preview.truthy', ['1','on','true']);
@@ -191,7 +191,7 @@
           '<div class="banner-content">' +
             '<span class="banner-title">Black Friday bij ' + siteName + '!</span>' +
           '</div>' +
-          '<a href="/blackfriday" class="banner-cta">Bekijk alle deals →</a>' +
+          '<a href="/blackfriday" class="banner-cta">Alle ansehen deals →</a>' +
         '</div>';
       document.body.insertBefore(bannerEl, document.body.firstChild);
     }
