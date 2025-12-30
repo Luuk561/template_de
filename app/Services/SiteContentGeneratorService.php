@@ -33,20 +33,20 @@ class SiteContentGeneratorService
         $prompt = <<<PROMPT
 Sie sind Conversion-Stratege für deutsche Affiliate-Websites.
 
-CONTEXT:
-- Niche: {$niche}
-- Domein: {$domain}
-- Primary color: {$primaryColor}
+KONTEXT:
+- Nische: {$niche}
+- Domain: {$domain}
+- Primärfarbe: {$primaryColor}
 
-VASTE WAARDEN (EXACT overnemen):
+FESTE WERTE (EXAKT übernehmen):
 - site_name = "{$domain}"
 - site_niche = "{$niche}"
 - primary_color = "{$primaryColor}"
 - font_family = "Poppins"
 
-CREATIEVE VELDEN (jij bedenkt):
-- tone_of_voice: Tone die convert (bijv. "informeel en behulpzaam")
-- target_audience: Specifieke doelgroep (bijv. "actieve mensen die thuis willen sporten")
+KREATIVE FELDER (Sie entscheiden):
+- tone_of_voice: Tonalität die konvertiert (z.B. "informell und hilfsbereit")
+- target_audience: Spezifische Zielgruppe (z.B. "aktive Menschen die zu Hause trainieren möchten")
 
 OUTPUT JSON:
 {
@@ -58,7 +58,7 @@ OUTPUT JSON:
   "target_audience": "..."
 }
 
-Return ALLEEN minified JSON.
+Geben Sie NUR minified JSON zurück.
 PROMPT;
 
         $response = $this->chat([
@@ -81,12 +81,12 @@ PROMPT;
      * Generate all content blocks for the site
      */
     /**
-     * DELEGATED TO ContentBlocksGeneratorService
+     * DELEGATED TO ContentBlocksGeneratorServiceV2 (German optimized)
      */
     public function generateContentBlocks(string $niche, string $siteName, ?string $uniqueFocus = null, string $format = 'hybrid'): array
     {
-        $contentBlocksService = app(ContentBlocksGeneratorService::class);
-        return $contentBlocksService->generate($niche, $siteName, $uniqueFocus, $format);
+        $contentBlocksService = app(\App\Services\ContentBlocksGeneratorServiceV2::class);
+        return $contentBlocksService->generateContentBlocks($niche, $siteName, $uniqueFocus);
     }
 
     /**
