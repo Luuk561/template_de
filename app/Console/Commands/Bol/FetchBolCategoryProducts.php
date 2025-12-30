@@ -10,7 +10,7 @@ use Illuminate\Support\Facades\Http;
 
 class FetchBolCategoryProducts extends Command
 {
-    protected $signature = 'app:fetch-bol-category-products {categoryId?} {--limit=250 : Maximum aantal producten om op te halen}';
+    protected $signature = 'app:fetch-bol-category-products {categoryId?} {--limit=50 : Maximum aantal producten om op te halen}';
 
     protected $description = 'Haal populaire producten op uit een categorie via de Bol API';
 

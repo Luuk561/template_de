@@ -47,7 +47,7 @@ class ContentBlocksGeneratorService
     private function generateHTML(string $niche, string $siteName, ?string $uniqueFocus = null): array
     {
         $currentYear = date('Y');
-        $currentMonth = \Carbon\Carbon::now('Europe/Amsterdam')->locale('nl')->translatedFormat('F');
+        $currentMonth = \Carbon\Carbon::now('Europe/Berlin')->locale('de')->translatedFormat('F');
 
         // Build unique focus instruction
         $uniqueFocusInstruction = '';
@@ -63,7 +63,7 @@ FOCUS;
         }
 
         $prompt = <<<PROMPT
-Je bent een WORLD-CLASS content strategist voor Nederlandse affiliate websites.
+Sie sind ein WORLD-CLASS Content-Stratege für deutsche Affiliate-Websites.
 Je taak: genereer 20 unieke content blocks voor {$siteName} (niche: {$niche}).
 {$uniqueFocusInstruction}
 
@@ -74,20 +74,20 @@ GLOBAL CONTEXT
 Site: {$siteName}
 Niche: {$niche}
 Jaar: {$currentYear}
-Doelgroep: Nederlandstalige consumenten die {$niche} willen kopen
+Zielgruppe: deutschsprachige Verbraucher die {$niche} willen kopen
 Tone: Informatief, behulpzaam, vertrouwenswaardig (geen hype)
 
 ═══════════════════════════════════════════════════════════════════════
-FUNNEL POLICY — NIET NEGEREN
+FUNNEL-POLITIK — NICHT IGNORIEREN
 ═══════════════════════════════════════════════════════════════════════
 
-HIËRARCHIE (decision flow):
-1. /producten = ENIGE KEUZEHUB (eindstation voor koopbeslissing)
-2. Homepage (/) = oriëntatie → stuur naar /producten
-3. /blogs = informeren (NOOIT eindstation) → stuur naar /producten
-4. /reviews = verdiepen (NOOIT eindstation) → stuur naar /producten
-5. /top-5 = shortcut (ondergeschikt aan /producten) → stuur naar /producten
-6. /beste-merken = merkfilter (ondersteunend) → stuur naar /producten
+HIERARCHIE (Entscheidungsfluss):
+1. /produkte = EINZIGER ENTSCHEIDUNGS-HUB (Endziel für Kaufentscheidung)
+2. Homepage (/) = Orientierung → führen zu /produkte
+3. /blogs = informieren (NIEMALS Endziel) → führen zu /produkte
+4. /reviews = vertiefen (NIEMALS Endziel) → führen zu /produkte
+5. /top-5 = Shortcut (untergeordnet aan /produkte) → führen zu /produkte
+6. /beste-marken = Markenfilter (unterstützend) → führen zu /produkte
 
 VERBODEN GEDRAG (dit mag NOOIT):
 ✗ Geen "of/of/of" menukaart-zinnen zoals: "Bekijk producten, Top 5, reviews of blogs"
@@ -98,7 +98,7 @@ VERBODEN GEDRAG (dit mag NOOIT):
 
 CTA-REGEL (keihard):
 ✓ Elk content block eindigt met EXACT 1 CTA-zin
-✓ CTA verwijst ALTIJD naar /producten (of /producten met filter voor merken-pagina)
+✓ CTA verwijst ALTIJD naar /produkte (of /produkte met filter voor merken-pagina)
 ✓ CTA mag GEEN tweede optie bevatten
 ✓ CTA moet natuurlijk eindigen, geen "PS:" of extra zinnen erna
 
@@ -120,32 +120,32 @@ PAGE BRIEFS
 
 HOMEPAGE (/)
 Role: Oriëntatie, trust building, richting geven
-Eindigt: ALTIJD naar /producten (nooit naar Top 5/reviews/blogs)
+Eindigt: ALTIJD naar /produkte (nooit naar Top 5/reviews/blogs)
 Mag NIET: Opties aanbieden, menukaart maken
 
-PRODUCTEN (/producten)
+PRODUCTEN (/produkte)
 Role: DECISION HUB — hier wordt gekozen
-Eindigt: Blijft op /producten (filters, vergelijken)
+Eindigt: Blijft op /produkte (filters, vergelijken)
 Mag NIET: Verwijzen naar Top 5/reviews/blogs als alternatieven
 
 TOP 5 (/top-5)
-Role: Shortcut (ondergeschikt), snelle keuze
-Eindigt: ALTIJD terug naar /producten voor volledige vergelijking
-Mag NIET: Concurreren met /producten als "beter" eindstation
+Role: Shortcut (untergeordnet), snelle keuze
+Eindigt: ALTIJD terug naar /produkte voor volledige vergelijking
+Mag NIET: Concurreren met /produkte als "beter" eindstation
 
-BESTE MERKEN (/beste-merken)
+BESTE MERKEN (/beste-marken)
 Role: Merkfilter ingang
-Eindigt: Naar /producten met merkfilter
+Eindigt: Naar /produkte met Markenfilter
 Mag NIET: Eindstation worden
 
 REVIEWS (/reviews)
 Role: Verdieping, expertise tonen (GEEN eindstation)
-Eindigt: ALTIJD naar /producten voor vergelijking
+Eindigt: ALTIJD naar /produkte voor vergelijking
 Mag NIET: "Lees meer reviews" als afsluiting
 
 BLOGS (/blogs)
 Role: Informeren, SEO, educatie (GEEN eindstation)
-Eindigt: ALTIJD naar /producten
+Eindigt: ALTIJD naar /produkte
 Mag NIET: Blijven hangen in blog-content
 
 
@@ -157,7 +157,7 @@ BLOCK BRIEFS (20 blocks — elk met unieke focus)
 BLOCK 1: homepage.hero
 ─────────────────────────────────────────────────────────────────────
 PAGE: Homepage (/)
-PAGE ROLE: Oriëntatie → stuur naar /producten
+PAGE ROLE: Oriëntatie → führen zu /produkte
 BLOCK ROLE: Framing + belofte (waarom hier zijn?)
 FOCUS TAG: "belofte-actueel"
 LENGTE: 60-80 tekens
@@ -175,7 +175,7 @@ CTA: Niet van toepassing (hero heeft geen CTA)
 BLOCK 2: homepage.info
 ─────────────────────────────────────────────────────────────────────
 PAGE: Homepage (/)
-PAGE ROLE: Oriëntatie → stuur naar /producten
+PAGE ROLE: Oriëntatie → führen zu /produkte
 BLOCK ROLE: Mental model (hoe denken over {$niche}?)
 FOCUS TAG: "types-wanneer-welk"
 LENGTE: 250-300 woorden
@@ -187,13 +187,13 @@ MUST INCLUDE:
 MUST AVOID:
 - Geen verwijzingen naar Top 5/reviews/blogs als opties
 - Geen "of/of/of" zinnen
-CTA (laatste zin): "Begin met vergelijken op <a href=\"/producten\" class=\"text-purple-700 underline\">onze productpagina</a>."
+CTA (laatste zin): "Begin met vergelijken op <a href=\"/produkte\" class=\"text-purple-700 underline\">onze Produktseite</a>."
 
 ─────────────────────────────────────────────────────────────────────
 BLOCK 3: homepage.seo1
 ─────────────────────────────────────────────────────────────────────
 PAGE: Homepage (/)
-PAGE ROLE: Oriëntatie → stuur naar /producten
+PAGE ROLE: Oriëntatie → führen zu /produkte
 BLOCK ROLE: WAAROM {$niche} (lifestyle focus, geen techniek)
 FOCUS TAG: "beslisvolgorde-doel-type-situatie"
 LENGTE: 800-1000 woorden
@@ -224,13 +224,13 @@ FORBIDDEN IN TEXT:
 - Geen inline links naar andere pagina's
 
 CTA TEMPLATE (kopieer exact, vervang alleen {$niche}):
-"Klaar om te vergelijken? Start op onze productpagina."
+"Klaar om te vergelijken? Starten Sie auf unserer Produktseite."
 
 ─────────────────────────────────────────────────────────────────────
 BLOCK 4: homepage.seo2
 ─────────────────────────────────────────────────────────────────────
 PAGE: Homepage (/)
-PAGE ROLE: Oriëntatie → stuur naar /producten
+PAGE ROLE: Oriëntatie → führen zu /produkte
 BLOCK ROLE: HOE KIEZEN (technische focus, geen lifestyle)
 FOCUS TAG: "aankoopfactoren-budget-geluid-gewicht"
 LENGTE: 800-1000 woorden
@@ -261,13 +261,13 @@ FORBIDDEN IN TEXT:
 - Geen inline links
 
 CTA TEMPLATE (kopieer exact):
-"Start je vergelijking op onze productpagina."
+"Start je vergelijking op onze Produktseite."
 
 ─────────────────────────────────────────────────────────────────────
 BLOCK 5: homepage.faq_1
 ─────────────────────────────────────────────────────────────────────
 PAGE: Homepage (/)
-PAGE ROLE: Oriëntatie → stuur naar /producten
+PAGE ROLE: Oriëntatie → führen zu /produkte
 BLOCK ROLE: Micro-bezwaar wegnemen (ruimte/opklapbaar)
 FOCUS TAG: "ruimte-opklapbaar-stabiliteit"
 
@@ -287,13 +287,13 @@ FORBIDDEN IN TEXT:
 - Geen inline links
 
 CTA TEMPLATE (kopieer exact):
-"Vergelijk alle opties op onze productpagina."
+"Vergleichen Sie alle Optionen op onze Produktseite."
 
 ─────────────────────────────────────────────────────────────────────
 BLOCK 6: homepage.faq_2
 ─────────────────────────────────────────────────────────────────────
 PAGE: Homepage (/)
-PAGE ROLE: Oriëntatie → stuur naar /producten
+PAGE ROLE: Oriëntatie → führen zu /produkte
 BLOCK ROLE: Micro-bezwaar wegnemen (andere hoek dan faq_1)
 FOCUS TAG: "gebruikssituatie-werkplek-veiligheid"
 
@@ -314,13 +314,13 @@ FORBIDDEN IN TEXT:
 - Geen inline links
 
 CTA TEMPLATE (kopieer exact):
-"Ontdek alle modellen op onze productpagina."
+"Ontdek alle modellen op onze Produktseite."
 
 ─────────────────────────────────────────────────────────────────────
 BLOCK 7: homepage.faq_3
 ───────────────────────��─────────────────────────────────────────────
 PAGE: Homepage (/)
-PAGE ROLE: Oriëntatie → stuur naar /producten
+PAGE ROLE: Oriëntatie → führen zu /produkte
 BLOCK ROLE: Micro-bezwaar wegnemen (derde unieke hoek)
 FOCUS TAG: "onderhoud-smeren-levensduur"
 
@@ -341,12 +341,12 @@ FORBIDDEN IN TEXT:
 - Geen inline links
 
 CTA TEMPLATE (kopieer exact):
-"Bekijk alle opties op onze productpagina."
+"Sehen Sie alle opties op onze Produktseite."
 
 ─────────────────────────────────────────────────────────────────────
 BLOCK 8: producten_index_hero_titel
 ─────────────────────────────────────────────────────────────────────
-PAGE: Producten (/producten)
+PAGE: Producten (/produkte)
 PAGE ROLE: DECISION HUB (eindstation)
 BLOCK ROLE: Pagina framing
 FOCUS TAG: "vergelijk-overzicht"
@@ -361,7 +361,7 @@ CTA: Niet van toepassing
 ─────────────────────────────────────────────────────────────────────
 BLOCK 9: producten_index_info_blok_1
 ─────────────────────────────────────────────────────────────────────
-PAGE: Producten (/producten)
+PAGE: Producten (/produkte)
 PAGE ROLE: DECISION HUB (eindstation)
 BLOCK ROLE: Waarom vergelijken cruciaal is
 FOCUS TAG: "prijsverschillen-specs-besparen"
@@ -380,7 +380,7 @@ CTA (laatste zin): "Gebruik de filters hierboven om jouw ideale {$niche} te vind
 ─────────────────────────────────────────────────────────────────────
 BLOCK 10: producten_index_info_blok_2
 ─────────────────────────────────────────────────────────────────────
-PAGE: Producten (/producten)
+PAGE: Producten (/produkte)
 PAGE ROLE: DECISION HUB (eindstation)
 BLOCK ROLE: Hoe filters gebruiken (ANDERS dan blok 1!)
 FOCUS TAG: "filters-budget-merken-ratings"
@@ -410,7 +410,7 @@ CTA TEMPLATE (kopieer exact):
 BLOCK 11: producten_top_hero_titel
 ─────────────────────────────────────────────────────────────────────
 PAGE: Top 5 (/top-5)
-PAGE ROLE: Shortcut (ondergeschikt aan /producten)
+PAGE ROLE: Shortcut (untergeordnet aan /produkte)
 BLOCK ROLE: Pagina framing
 FOCUS TAG: "top5-actueel"
 LENGTE: 50-70 tekens
@@ -426,7 +426,7 @@ CTA: Niet van toepassing
 BLOCK 12: producten_top_seo_blok
 ─────────────────────────────────────────────────────────────────────
 PAGE: Top 5 (/top-5)
-PAGE ROLE: Shortcut (ondergeschikt aan /producten)
+PAGE ROLE: Shortcut (untergeordnet aan /produkte)
 BLOCK ROLE: Selectieproces uitleggen
 FOCUS TAG: "selectiecriteria-methodiek"
 LENGTE: 800-1000 woorden
@@ -438,15 +438,15 @@ MUST INCLUDE:
 - H3 sub 2: "Voor wie is welk model?" → Algemeen per positie (1-2, 3, 4-5), GEEN productnamen
 - H3 sub 3: "Vergelijkingstabel gebruiken" → Praktische tips
 MUST AVOID:
-- Geen promotie van Top 5 als "beter" dan /producten
+- Geen promotie van Top 5 als "beter" dan /produkte
 - Geen "of/of/of"
-CTA (laatste zin): "Wil je meer opties? Bekijk <a href=\"/producten\" class=\"text-purple-700 underline\">alle {$niche}</a> voor volledige vergelijking."
+CTA (laatste zin): "Wil je meer opties? Bekijk <a href=\"/produkte\" class=\"text-purple-700 underline\">alle {$niche}</a> voor volledige vergelijking."
 
 ─────────────────────────────────────────────────────────────────────
 BLOCK 13: merken_index_hero_titel
 ─────────────────────────────────────────────────────────────────────
-PAGE: Beste merken (/beste-merken)
-PAGE ROLE: Merkfilter ingang → /producten
+PAGE: Beste merken (/beste-marken)
+PAGE ROLE: Merkfilter ingang → /produkte
 BLOCK ROLE: Pagina framing
 FOCUS TAG: "merken-vergelijk"
 LENGTE: 50-70 tekens
@@ -459,8 +459,8 @@ CTA: Niet van toepassing
 ─────────────────────────────────────────────────────────────────────
 BLOCK 14: merken_index_info_blok
 ─────────────────────────────────────────────────────────────────────
-PAGE: Beste merken (/beste-merken)
-PAGE ROLE: Merkfilter ingang → /producten
+PAGE: Beste merken (/beste-marken)
+PAGE ROLE: Merkfilter ingang → /produkte
 BLOCK ROLE: Merkpositionering uitleggen
 FOCUS TAG: "merkwaarde-garantie-service"
 LENGTE: 800-1000 woorden
@@ -474,13 +474,13 @@ MUST INCLUDE:
 MUST AVOID:
 - Geen "[Merk 1]" placeholders — gebruik ECHTE merknamen
 - Geen Top 5/reviews/blogs promotie
-CTA (laatste zin): "Filter op jouw favoriete merk op <a href=\"/producten\" class=\"text-purple-700 underline\">onze productpagina</a>."
+CTA (laatste zin): "Filter op jouw favoriete merk op <a href=\"/produkte\" class=\"text-purple-700 underline\">onze Produktseite</a>."
 
 ─────────────────────────────────────────────────────────────────────
 BLOCK 15: reviews.hero
 ─────────────────────────────────────────────────────���───────────────
 PAGE: Reviews (/reviews)
-PAGE ROLE: Verdieping (GEEN eindstation) → /producten
+PAGE ROLE: Verdieping (GEEN eindstation) → /produkte
 BLOCK ROLE: Pagina framing + waarde uitleggen
 FOCUS TAG: "expertbeoordelingen"
 
@@ -509,7 +509,7 @@ CTA: Niet van toepassing (hero)
 BLOCK 16: reviews_index_intro
 ─────────────────────────────────────────────────────────────────────
 PAGE: Reviews (/reviews)
-PAGE ROLE: Verdieping (GEEN eindstation) → /producten
+PAGE ROLE: Verdieping (GEEN eindstation) → /produkte
 BLOCK ROLE: Waarom reviews waardevol (compact intro)
 FOCUS TAG: "review-aanpak-transparant"
 
@@ -534,13 +534,13 @@ FORBIDDEN IN TEXT:
 - Geen inline links
 
 CTA TEMPLATE (kopieer exact):
-"Klaar om te kiezen? Vergelijk alle modellen op onze productpagina."
+"Klaar om te kiezen? Vergelijk alle modellen op onze Produktseite."
 
 ─────────────────────────────────────────────────────────────────────
 BLOCK 17: reviews_index_seo_blok
 ─────────────────────────────────────────────────────────────────────
 PAGE: Reviews (/reviews)
-PAGE ROLE: Verdieping (GEEN eindstation) → /producten
+PAGE ROLE: Verdieping (GEEN eindstation) → /produkte
 BLOCK ROLE: Review proces uitleggen
 FOCUS TAG: "reviewproces-criteria-objectiviteit"
 
@@ -566,13 +566,13 @@ FORBIDDEN IN TEXT:
 - Geen inline links
 
 CTA TEMPLATE (kopieer exact):
-"Klaar om te vergelijken? Ga naar onze productpagina."
+"Klaar om te vergelijken? Ga naar onze Produktseite."
 
 ─────────────────────────────────────────────────────────────────────
 BLOCK 18: blogs.hero
 ─────────────────────────────────────────────────────────────────────
 PAGE: Blogs (/blogs)
-PAGE ROLE: Informeren (GEEN eindstation) → /producten
+PAGE ROLE: Informeren (GEEN eindstation) → /produkte
 BLOCK ROLE: Pagina framing + waarde
 FOCUS TAG: "gidsen-tips"
 
@@ -597,7 +597,7 @@ CTA: Niet van toepassing (hero)
 BLOCK 19: blogs.intro
 ─────────────────────────────────────────────────────────────────────
 PAGE: Blogs (/blogs)
-PAGE ROLE: Informeren (GEEN eindstation) → /producten
+PAGE ROLE: Informeren (GEEN eindstation) → /produkte
 BLOCK ROLE: Welkom + wat vind je hier (compact)
 FOCUS TAG: "educatie-voorbereiding"
 
@@ -617,13 +617,13 @@ FORBIDDEN IN TEXT:
 - Geen inline links
 
 CTA TEMPLATE (kopieer exact):
-"Klaar om te kiezen? Vergelijk alle modellen op onze productpagina."
+"Klaar om te kiezen? Vergelijk alle modellen op onze Produktseite."
 
 ─────────────────────────────────────────────────────────────────────
 BLOCK 20: blogs.seo
 ─────────────────────────────────────────────────────────────────────
 PAGE: Blogs (/blogs)
-PAGE ROLE: Informeren (GEEN eindstation) → /producten
+PAGE ROLE: Informeren (GEEN eindstation) → /produkte
 BLOCK ROLE: Waarom blogs nuttig zijn vóór je koopt
 FOCUS TAG: "educatie-waarde-voorbereiding"
 
@@ -640,12 +640,12 @@ LENGTE: 250-300 woorden
 STRUCTUUR: H2 + doorlopende tekst
 
 FORBIDDEN IN TEXT:
-- Geen interne links naar andere hubs (GEEN <a href="/beste-merken"> of /reviews of /top-5)
+- Geen interne links naar andere hubs (GEEN <a href="/beste-marken"> of /reviews of /top-5)
 - Geen "lees ook reviews/top5" opties
 - Geen inline links
 
 CTA TEMPLATE (kopieer exact):
-"Begin met vergelijken op onze productpagina."
+"Begin met vergelijken op onze Produktseite."
 
 ═══════════════════════════════════════════════════════════════════════
 FINAL CHECKLIST (model moet intern checken vóór output)
@@ -804,7 +804,7 @@ PROMPT;
     private function generateStructuredOLD(string $niche, string $siteName, ?string $uniqueFocus = null): array
     {
         $currentYear = date('Y');
-        $currentMonth = \Carbon\Carbon::now('Europe/Amsterdam')->locale('nl')->translatedFormat('F');
+        $currentMonth = \Carbon\Carbon::now('Europe/Berlin')->locale('de')->translatedFormat('F');
 
         // Build unique focus instruction
         $uniqueFocusInstruction = '';
@@ -820,7 +820,7 @@ FOCUS;
         }
 
         $prompt = <<<PROMPT
-Je bent een WORLD-CLASS content strategist voor Nederlandse affiliate websites.
+Sie sind ein WORLD-CLASS Content-Stratege für deutsche Affiliate-Websites.
 Je taak: genereer structured content units voor {$siteName} (niche: {$niche}).
 {$uniqueFocusInstruction}
 
@@ -831,7 +831,7 @@ GLOBAL CONTEXT
 Site: {$siteName}
 Niche: {$niche}
 Jaar: {$currentYear}
-Doelgroep: Nederlandstalige consumenten die {$niche} willen kopen
+Zielgruppe: deutschsprachige Verbraucher die {$niche} willen kopen
 Tone: Informatief, behulpzaam, vertrouwenswaardig (geen hype)
 
 ═══════════════════════════════════════════════════════════════════════
@@ -851,16 +851,16 @@ UNIT TYPES:
 - FAQ: question + answer + cta
 
 ═══════════════════════════════════════════════════════════════════════
-FUNNEL POLICY — NIET NEGEREN
+FUNNEL-POLITIK — NICHT IGNORIEREN
 ═══════════════════════════════════════════════════════════════════════
 
-HIËRARCHIE (decision flow):
-1. /producten = ENIGE KEUZEHUB (eindstation voor koopbeslissing)
-2. Homepage (/) = oriëntatie → stuur naar /producten
-3. /blogs = informeren (NOOIT eindstation) → stuur naar /producten
-4. /reviews = verdiepen (NOOIT eindstation) → stuur naar /producten
-5. /top-5 = shortcut (ondergeschikt aan /producten) → stuur naar /producten
-6. /beste-merken = merkfilter (ondersteunend) → stuur naar /producten
+HIERARCHIE (Entscheidungsfluss):
+1. /produkte = EINZIGER ENTSCHEIDUNGS-HUB (Endziel für Kaufentscheidung)
+2. Homepage (/) = Orientierung → führen zu /produkte
+3. /blogs = informieren (NIEMALS Endziel) → führen zu /produkte
+4. /reviews = vertiefen (NIEMALS Endziel) → führen zu /produkte
+5. /top-5 = Shortcut (untergeordnet aan /produkte) → führen zu /produkte
+6. /beste-marken = Markenfilter (unterstützend) → führen zu /produkte
 
 VERBODEN GEDRAG (dit mag NOOIT):
 ✗ Geen "of/of/of" menukaart-zinnen zoals: "Bekijk producten, Top 5, reviews of blogs"
@@ -870,7 +870,7 @@ VERBODEN GEDRAG (dit mag NOOIT):
 ✗ Geen herhaling van dezelfde angles (motorvermogen/loopvlak) in meerdere blocks
 
 CTA-REGEL (keihard):
-→ ALLEEN: "Bekijk alle {$niche}" of "Start met vergelijken" → /producten
+→ ALLEEN: "Sehen Sie alle {$niche}" of "Start met vergelijken" → /produkte
 → NOOIT: "Lees ook onze reviews" of "Bekijk de Top 5"
 
 ═══════════════════════════════════════════════════════════════════════
@@ -960,7 +960,7 @@ TYPE: HERO
 UNITS: title, subtitle
 
 PAGE: Homepage (/)
-PAGE ROLE: Oriëntatiepunt → /producten
+PAGE ROLE: Oriëntatiepunt → /produkte
 BLOCK ROLE: Eerste indruk + immediate waarde communiceren
 FOCUS TAG: "actueel-vergelijk-bespaar"
 
@@ -992,7 +992,7 @@ TYPE: INFO
 UNITS: title, text, cta
 
 PAGE: Homepage (/)
-PAGE ROLE: Oriëntatiepunt → /producten
+PAGE ROLE: Oriëntatiepunt → /produkte
 BLOCK ROLE: Site-waarde uitleggen (waarom deze site gebruiken?)
 FOCUS TAG: "transparantie-snelheid-volledigheid"
 
@@ -1028,14 +1028,14 @@ TYPE: SEO
 UNITS: title, intro, section1_title, section1_text, section2_title, section2_text, section3_title, section3_text, cta
 
 PAGE: Homepage (/)
-PAGE ROLE: Oriëntatiepunt → /producten
+PAGE ROLE: Oriëntatiepunt → /produkte
 BLOCK ROLE: Waarom {$niche}? (categorie-waarde aantonen)
 FOCUS TAG: "waarom-voordelen-toepassingen"
 
 FORBIDDEN TOPICS:
 ✗ Geen "hoe kies je?" → dat is homepage.seo2
-✗ Geen productadvies/kooptips → dat is /producten
-✗ Geen merkenvergelijking → dat is /beste-merken
+✗ Geen productadvies/kooptips → dat is /produkte
+✗ Geen merkenvergelijking → dat is /beste-marken
 
 MUST TREAT:
 1. TITLE: Waarom {$niche}? (H2, 40-60 tekens)
@@ -1083,14 +1083,14 @@ TYPE: SEO
 UNITS: title, intro, section1_title, section1_text, section2_title, section2_text, section3_title, section3_text, cta
 
 PAGE: Homepage (/)
-PAGE ROLE: Oriëntatiepunt → /producten
+PAGE ROLE: Oriëntatiepunt → /produkte
 BLOCK ROLE: Hoe kies je? (koopproces voorbereiden)
 FOCUS TAG: "keuzeproces-specificaties-budget"
 
 FORBIDDEN TOPICS:
 ✗ Geen herhaling "waarom {$niche}" → dat was homepage.seo1
-✗ Geen concrete productadvies → dat is /producten
-✗ Geen merkenvergelijking → dat is /beste-merken
+✗ Geen concrete productadvies → dat is /produkte
+✗ Geen merkenvergelijking → dat is /beste-marken
 
 MUST TREAT:
 1. TITLE: Hoe kies je de juiste {$niche}? (H2, 40-60 tekens)
@@ -1135,7 +1135,7 @@ FOCUS TAG: "faq-quick-answers"
 
 FORBIDDEN TOPICS:
 ✗ Geen productspecifieke vragen → dat is product detail pages
-✗ Geen "welk merk is beste?" → dat is /beste-merken
+✗ Geen "welk merk is beste?" → dat is /beste-marken
 ✗ Geen "wat zijn beste modellen?" → dat is /top-5
 
 MUST TREAT (3 FAQ's):
@@ -1163,7 +1163,7 @@ BLOCK 8: producten_index_hero_titel
 TYPE: HERO (title only)
 UNITS: title
 
-PAGE: Productoverzicht (/producten)
+PAGE: Productoverzicht (/produkte)
 PAGE ROLE: Beslissingscentrum (ENIGE EINDSTATION)
 BLOCK ROLE: Pagina framing
 FOCUS TAG: "volledig-overzicht"
@@ -1187,7 +1187,7 @@ BLOCK 9: producten_index_info_blok_1
 TYPE: INFO
 UNITS: title, text, cta
 
-PAGE: Productoverzicht (/producten)
+PAGE: Productoverzicht (/produkte)
 PAGE ROLE: Beslissingscentrum (ENIGE EINDSTATION)
 BLOCK ROLE: Filterwaarde uitleggen
 FOCUS TAG: "filter-specificaties-vergelijk"
@@ -1208,7 +1208,7 @@ LENGTES:
 - title: 40-60 tekens
 - text: 300-400 woorden
 
-NOTE: Geen CTA nodig - /producten is eindstation, producten staan erboven
+NOTE: Geen CTA nodig - /produkte is eindstation, producten staan erboven
 
 OUTPUT KEYS:
 - producten_index_info_blok_1.title
@@ -1220,14 +1220,14 @@ BLOCK 10: producten_index_info_blok_2
 TYPE: INFO
 UNITS: title, text, cta
 
-PAGE: Productoverzicht (/producten)
+PAGE: Productoverzicht (/produkte)
 PAGE ROLE: Beslissingscentrum (ENIGE EINDSTATION)
 BLOCK ROLE: Prijs/waarde positionering
 FOCUS TAG: "prijsklassen-waarde-besparen"
 
 FORBIDDEN TOPICS:
 ✗ Geen herhaling van filter-uitleg → dat was info_blok_1
-✗ Geen merkenvergelijking → dat is /beste-merken
+✗ Geen merkenvergelijking → dat is /beste-marken
 ✗ Geen "deze is beste" → laat gebruiker kiezen
 
 MUST TREAT:
@@ -1241,7 +1241,7 @@ LENGTES:
 - title: 40-60 tekens
 - text: 300-400 woorden
 
-NOTE: Geen CTA nodig - /producten is eindstation, producten staan erboven
+NOTE: Geen CTA nodig - /produkte is eindstation, producten staan erboven
 
 OUTPUT KEYS:
 - producten_index_info_blok_2.title
@@ -1254,7 +1254,7 @@ TYPE: HERO (title only)
 UNITS: title
 
 PAGE: Top 5 (/top-5)
-PAGE ROLE: Shortcut (ondergeschikt aan /producten)
+PAGE ROLE: Shortcut (untergeordnet aan /produkte)
 BLOCK ROLE: Pagina framing
 FOCUS TAG: "top5-actueel"
 
@@ -1278,12 +1278,12 @@ TYPE: SEO
 UNITS: title, intro, section1_title, section1_text, section2_title, section2_text, section3_title, section3_text, cta
 
 PAGE: Top 5 (/top-5)
-PAGE ROLE: Shortcut (ondergeschikt aan /producten)
+PAGE ROLE: Shortcut (untergeordnet aan /produkte)
 BLOCK ROLE: Selectieproces uitleggen
 FOCUS TAG: "selectiecriteria-methodiek"
 
 FORBIDDEN TOPICS:
-✗ Geen promotie van Top 5 als "beter" dan /producten
+✗ Geen promotie van Top 5 als "beter" dan /produkte
 ✗ Geen "of/of/of" navigatie
 ✗ Geen concrete productnamen in tekst
 
@@ -1328,8 +1328,8 @@ BLOCK 13: merken_index_hero_titel
 TYPE: HERO (title + subtitle)
 UNITS: title, subtitle
 
-PAGE: Beste merken (/beste-merken)
-PAGE ROLE: Merkfilter ingang → /producten
+PAGE: Beste merken (/beste-marken)
+PAGE ROLE: Merkfilter ingang → /produkte
 BLOCK ROLE: Pagina framing
 FOCUS TAG: "merken-vergelijk"
 
@@ -1351,13 +1351,13 @@ BLOCK 14: merken_index_info_blok
 TYPE: SEO
 UNITS: title, intro, section1_title, section1_text, section2_title, section2_text, section3_title, section3_text, cta
 
-PAGE: Beste merken (/beste-merken)
-PAGE ROLE: Merkfilter ingang → /producten
+PAGE: Beste merken (/beste-marken)
+PAGE ROLE: Merkfilter ingang → /produkte
 BLOCK ROLE: Merkpositionering uitleggen
 FOCUS TAG: "merkwaarde-garantie-service"
 
 FORBIDDEN TOPICS:
-✗ Geen productspecifieke tips → dat is /producten
+✗ Geen productspecifieke tips → dat is /produkte
 ✗ Geen Top 5/reviews/blogs promotie
 
 MUST TREAT:
@@ -1402,7 +1402,7 @@ TYPE: HERO
 UNITS: title, subtitle
 
 PAGE: Reviews (/reviews)
-PAGE ROLE: Verdieping (GEEN eindstation) → /producten
+PAGE ROLE: Verdieping (GEEN eindstation) → /produkte
 BLOCK ROLE: Pagina framing + waarde uitleggen
 FOCUS TAG: "expertbeoordelingen"
 
@@ -1433,20 +1433,20 @@ TYPE: INFO
 UNITS: title, text, cta
 
 PAGE: Reviews (/reviews)
-PAGE ROLE: Verdieping (GEEN eindstation) → /producten
+PAGE ROLE: Verdieping (GEEN eindstation) → /produkte
 BLOCK ROLE: Waarom reviews waardevol?
 FOCUS TAG: "review-waarde-betrouwbaarheid"
 
 FORBIDDEN TOPICS:
 ✗ Geen reviewproces uitleg → dat is reviews_index_seo_blok
-✗ Geen productadvies → dat is /producten
+✗ Geen productadvies → dat is /produkte
 
 MUST TREAT:
 1. TITLE: Waarom reviews lezen? (40-60 tekens)
 2. TEXT: Waarde van reviews (200-300 woorden)
    - Wat bieden reviews?
    - Hoe gebruiken?
-   - Transitie naar /producten
+   - Transitie naar /produkte
 
 LENGTES:
 - title: 40-60 tekens
@@ -1465,13 +1465,13 @@ TYPE: SEO
 UNITS: title, intro, section1_title, section1_text, section2_title, section2_text, section3_title, section3_text, cta
 
 PAGE: Reviews (/reviews)
-PAGE ROLE: Verdieping (GEEN eindstation) → /producten
+PAGE ROLE: Verdieping (GEEN eindstation) → /produkte
 BLOCK ROLE: Reviewproces + methodiek uitleggen
 FOCUS TAG: "review-methodiek-criteria"
 
 FORBIDDEN TOPICS:
 ✗ Geen "waarom reviews waardevol" → dat was reviews_index_intro
-✗ Geen productadvies → dat is /producten
+✗ Geen productadvies → dat is /produkte
 
 MUST TREAT:
 1. TITLE: Hoe beoordelen wij {$niche}? (40-60 tekens)
@@ -1515,7 +1515,7 @@ TYPE: HERO
 UNITS: title, subtitle
 
 PAGE: Blogs (/blogs)
-PAGE ROLE: Informeren (GEEN eindstation) → /producten
+PAGE ROLE: Informeren (GEEN eindstation) → /produkte
 BLOCK ROLE: Pagina framing
 FOCUS TAG: "tips-trends-achtergrond"
 
@@ -1538,19 +1538,19 @@ TYPE: INFO
 UNITS: title, text, cta
 
 PAGE: Blogs (/blogs)
-PAGE ROLE: Informeren (GEEN eindstation) → /producten
+PAGE ROLE: Informeren (GEEN eindstation) → /produkte
 BLOCK ROLE: Waarom blogs waardevol?
 FOCUS TAG: "inspiratie-kennis-achtergrond"
 
 FORBIDDEN TOPICS:
 ✗ Geen SEO-achtige content → dat is blogs.seo
-✗ Geen productadvies → dat is /producten
+✗ Geen productadvies → dat is /produkte
 
 MUST TREAT:
 1. TITLE: Waarom onze blogs? (40-60 tekens)
 2. TEXT: Waarde van blogs (200-300 woorden)
    - Inspiratie + kennis
-   - Transitie naar /producten
+   - Transitie naar /produkte
 
 LENGTES:
 - title: 40-60 tekens
@@ -1569,13 +1569,13 @@ TYPE: SEO
 UNITS: title, intro, section1_title, section1_text, section2_title, section2_text, section3_title, section3_text, cta
 
 PAGE: Blogs (/blogs)
-PAGE ROLE: Informeren (GEEN eindstation) → /producten
+PAGE ROLE: Informeren (GEEN eindstation) → /produkte
 BLOCK ROLE: Diepere context over {$niche} categorie
 FOCUS TAG: "categorie-ontwikkeling-trends"
 
 FORBIDDEN TOPICS:
 ✗ Geen "waarom blogs waardevol" → dat was blogs.intro
-✗ Geen productadvies → dat is /producten
+✗ Geen productadvies → dat is /produkte
 ✗ Geen kooptips → dat is homepage.seo2
 
 MUST TREAT:
@@ -1710,7 +1710,7 @@ REGELS:
 - Genereer content-ONDERDELEN, geen tekstblokken
 - Elk onderdeel = 1 functie
 - Geen HTML, geen Markdown, plain text
-- FUNNEL: /producten = ENIGE eindstation, NOOIT "of/of/of"
+- FUNNEL: /produkte = ENIGE eindstation, NOOIT "of/of/of"
 - CLAIM: NOOIT "wij testen", WEL "beoordelen/analyseren"
 
 OUTPUT STRUCTUUR:
@@ -1783,7 +1783,7 @@ PROMPT;
 
         return [
             'homepage.hero' => "De beste {$niche} van {$currentMonth} {$currentYear} – Vergelijk en bespaar",
-            'homepage.info' => "<h2>Welkom bij {$siteName}</h2><p>Vind de perfecte {$niche} voor jouw situatie. Wij vergelijken specificaties, prijzen en reviews zodat jij de beste keuze kunt maken.</p><p>Start met vergelijken op onze productpagina.</p>",
+            'homepage.info' => "<h2>Welkom bij {$siteName}</h2><p>Vind de perfecte {$niche} voor jouw situatie. Wij vergelijken specificaties, prijzen en reviews zodat jij de beste keuze kunt maken.</p><p>Start met vergelijken op onze Produktseite.</p>",
             'homepage.seo1' => "<h2>Waarom kiezen voor {$niche}?</h2><p>Ontdek de voordelen en mogelijkheden.</p>",
             'homepage.seo2' => "<h2>Hoe kies je de juiste {$niche}?</h2><p>Let op deze belangrijke factoren bij je aankoop.</p>",
             // ... etc
@@ -1806,7 +1806,7 @@ PROMPT;
     private function generateSingleBlock(string $blockKey, string $niche, string $siteName, ?string $uniqueFocus = null, array $previousContext = []): array
     {
         $currentYear = date('Y');
-        $currentMonth = \Carbon\Carbon::now('Europe/Amsterdam')->locale('nl')->translatedFormat('F');
+        $currentMonth = \Carbon\Carbon::now('Europe/Berlin')->locale('de')->translatedFormat('F');
 
         // Get block definition
         $blockDef = $this->getBlockDefinition($blockKey, $niche, $siteName, $currentMonth, $currentYear, $uniqueFocus);
@@ -2071,7 +2071,7 @@ FIX;
                 'role' => 'Waarom {niche}? (voordelen, waarom mensen kopen)',
                 'page_role' => 'awareness',
                 'cta_rule' => 'optional',
-                'cta_target' => '/producten',
+                'cta_target' => '/produkte',
                 'max_cijfers' => 0,
                 'focus_tag' => 'voordelen-waarom',
                 'forbidden' => [
@@ -2101,7 +2101,7 @@ FIX;
                 'role' => 'Wat doet deze site? (vergelijken specs/ervaringen)',
                 'page_role' => 'awareness',
                 'cta_rule' => 'optional',
-                'cta_target' => '/producten',
+                'cta_target' => '/produkte',
                 'max_cijfers' => 0,
                 'focus_tag' => 'site-waarde-vergelijken',
                 'forbidden' => [
@@ -2127,7 +2127,7 @@ FIX;
                 'role' => 'Hoe kies je? (keuzehulp: gebruik, budget, capaciteit)',
                 'page_role' => 'keuze',
                 'cta_rule' => 'optional',
-                'cta_target' => '/producten',
+                'cta_target' => '/produkte',
                 'max_cijfers' => 0,
                 'focus_tag' => 'keuzehulp-beslissen',
                 'forbidden' => [
@@ -2341,7 +2341,7 @@ FIX;
                 'role' => 'Merken overzicht hero',
                 'page_role' => 'verdieping',
                 'cta_rule' => 'optional',
-                'cta_target' => '/producten',
+                'cta_target' => '/produkte',
                 'max_cijfers' => 0,
                 'focus_tag' => 'merkenvergelijking',
                 'forbidden' => [
@@ -2359,7 +2359,7 @@ FIX;
                 'role' => 'Waarom merk belangrijk?',
                 'page_role' => 'verdieping',
                 'cta_rule' => 'required',
-                'cta_target' => '/producten',
+                'cta_target' => '/produkte',
                 'max_cijfers' => 1,
                 'focus_tag' => 'merkverschillen-kwaliteit',
                 'forbidden' => [
@@ -2413,7 +2413,7 @@ FIX;
                 'role' => 'Waarom reviews lezen?',
                 'page_role' => 'verdieping',
                 'cta_rule' => 'optional',
-                'cta_target' => '/producten',
+                'cta_target' => '/produkte',
                 'max_cijfers' => 0,
                 'focus_tag' => 'waarde-reviews',
                 'forbidden' => [
@@ -2431,7 +2431,7 @@ FIX;
                 'role' => 'Wat kijken we naar in reviews?',
                 'page_role' => 'verdieping',
                 'cta_rule' => 'optional',
-                'cta_target' => '/producten',
+                'cta_target' => '/produkte',
                 'max_cijfers' => 1,
                 'focus_tag' => 'reviewcriteria-objectiviteit',
                 'forbidden' => [
@@ -2641,8 +2641,8 @@ FIX;
         $ctaInstruction = '';
         if ($blockDef['cta_rule'] === 'required') {
             $ctaInstruction = "CTA VERPLICHT: Eindig met exact 1 zin die richting geeft naar {$blockDef['cta_target']}
-   → Voorbeeld: \"Klaar om te vergelijken? <a href=\\\"{$blockDef['cta_target']}\\\">Bekijk alle modellen</a>.\"
-   → GEBRUIK ALTIJD een <a href> link, NOOIT platte tekst zoals 'op /producten'
+   → Voorbeeld: \"Klaar om te vergelijken? <a href=\\\"{$blockDef['cta_target']}\\\">Sehen Sie alle modellen</a>.\"
+   → GEBRUIK ALTIJD een <a href> link, NOOIT platte tekst zoals 'op /produkte'
    → GEEN dubbele CTA's, geen \"of bekijk blogs/reviews\"";
         } elseif ($blockDef['cta_rule'] === 'optional') {
             $ctaInstruction = "CTA OPTIONEEL: Mag eindigen met subtiele verwijzing naar {$blockDef['cta_target']} (1 zin max)

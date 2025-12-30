@@ -10,20 +10,20 @@ use Illuminate\Support\Facades\Artisan;
 class GenerateSite extends Command
 {
     protected $signature = 'site:generate
-                            {--niche= : Site niche (e.g., "airfryers met dubbele compartimenten")}
-                            {--unique-focus= : Optional unique focus/USP (e.g., "geschikt voor zowel koelen als verwarmen")}
-                            {--domain= : Site domain (e.g., "airfryerxpert.nl")}
+                            {--niche= : Site niche (z.B., "Heißluftfritteusen mit doppeltem Korb")}
+                            {--unique-focus= : Optional unique focus/USP (z.B., "ideal für Familien mit großem Kochbedarf")}
+                            {--domain= : Site domain (z.B., "airfryer-test.de")}
                             {--primary-color= : Primary color hex (default: #7c3aed)}
-                            {--bol-site-id= : Bol.com affiliate site ID}
-                            {--bol-category-id= : Bol.com category ID for product fetching}
+                            {--bol-site-id= : Bol.com affiliate site ID (temporary for demo)}
+                            {--bol-category-id= : Bol.com category ID for product fetching (temporary)}
                             {--deploy-to-forge : Automatically deploy site to Laravel Forge}
                             {--force : Overwrite existing content (DANGEROUS!)}
                             {--skip-team : Skip team generation}
                             {--skip-favicon : Skip favicon generation}
                             {--skip-seed-blogs : Skip seed blog post generation}
-                            {--fetch-products : Fetch products from Bol.com after setup}';
+                            {--fetch-products : Fetch ~50 products from Bol.com after setup}';
 
-    protected $description = 'Generate complete site setup: settings, content blocks, team, favicon, and optionally seed content';
+    protected $description = 'Generiert komplette Deutsche Affiliate-Site: Einstellungen, Content-Blöcke, Team, Favicon und Seed-Content';
 
     protected SiteGeneratorService $generator;
     protected ?ForgeService $forgeService = null;
@@ -47,7 +47,7 @@ class GenerateSite extends Command
     public function handle()
     {
         $this->info('========================================');
-        $this->info('  AFFILIATE SITE GENERATOR');
+        $this->info('  DEUTSCHE AFFILIATE SITE GENERATOR');
         $this->info('========================================');
         $this->newLine();
 

@@ -555,34 +555,34 @@ SVG;
 
     private function buildInformationTopicsPrompt(string $niche, ?string $uniqueFocus = null): string
     {
-        $uniqueFocusSection = $uniqueFocus ? "\n\nUNIEKE FOCUS: {$uniqueFocus} (gebruik spaarzaam waar relevant)" : '';
+        $uniqueFocusSection = $uniqueFocus ? "\n\nEINZIGARTIGER FOKUS: {$uniqueFocus} (verwenden Sie sparsam, wo relevant)" : '';
 
         return <<<PROMPT
-Je bent een SEO-expert voor Nederlandse affiliate websites over {$niche}.{$uniqueFocusSection}
+Sie sind ein SEO-Experte für deutsche Affiliate-Websites über {$niche}.{$uniqueFocusSection}
 
-DOEL: Genereer 5-7 informatie pagina onderwerpen die keuze-vragen beantwoorden tijdens het koopproces.
+ZIEL: Generieren Sie 5-7 Informationsseiten-Themen, die Auswahlfragen während des Kaufprozesses beantworten.
 
-BELANGRIJKE CRITERIA:
-1. Beantwoord vragen die mensen ECHT hebben tijdens vergelijken
-2. Focus op praktische koopoverwegingen
-3. Specifiek voor {$niche}
-4. Moet natuurlijk leiden naar productvergelijking
+WICHTIGE KRITERIEN:
+1. Beantworten Sie Fragen, die Menschen WIRKLICH beim Vergleichen haben
+2. Fokus auf praktische Kaufüberlegungen
+3. Spezifisch für {$niche}
+4. Muss natürlich zur Produktvergleichung führen
 
-SUCCESVOLLE PATRONEN:
-1. VERGELIJKING: "Enkele of dubbele lade?"
-2. SPECIFICATIE: "Welke maat past bij jou?"
-3. PRAKTISCH: "Hoeveel ruimte neemt het in?"
-4. FUNCTIE: "Belangrijkste functies"
-5. PRIJS: "Wat kost een goede {$niche}?"
-6. FOUTEN: "Veelgemaakte fouten bij kopen"
+ERFOLGREICHE MUSTER:
+1. VERGLEICH: "Einzelner oder doppelter Korb?"
+2. SPEZIFIKATION: "Welche Größe passt zu Ihnen?"
+3. PRAKTISCH: "Wie viel Platz nimmt es ein?"
+4. FUNKTION: "Wichtigste Funktionen"
+5. PREIS: "Was kostet ein gutes {$niche}?"
+6. FEHLER: "Häufige Fehler beim Kauf"
 
-TAALGEBRUIK:
-- menu_title: 30-45 karakters, natuurlijk Nederlands met lidwoorden
-- article_title: 50-70 karakters, kan context toevoegen
+SPRACHGEBRAUCH:
+- menu_title: 30-45 karakters, natürliches Deutsch mit Artikeln
+- article_title: 50-70 karakters, kann Kontext hinzufügen
 - slug: URL-friendly
 - meta_description: 150-155 karakters
 
-Return ALLEEN een JSON array:
+Geben Sie NUR ein JSON-Array zurück:
 [
   {
     "menu_title": "...",
@@ -597,30 +597,30 @@ PROMPT;
     private function buildInformationOutlinePrompt(string $title, string $niche): string
     {
         return <<<PROMPT
-Je bent een expert content strategist voor Nederlandse affiliate websites over {$niche}.
+Sie sind ein Experte Content-Stratege für deutsche Affiliate-Websites über {$niche}.
 
-OPDRACHT: Maak een gedetailleerde outline voor: "{$title}"
+AUFGABE: Erstellen Sie eine detaillierte Gliederung für: "{$title}"
 
-VEREISTEN:
-- 4-6 H2 hoofdsecties
-- Elke sectie: 2-4 key points
-- Logische opbouw
+ANFORDERUNGEN:
+- 4-6 H2 Hauptabschnitte
+- Jeder Abschnitt: 2-4 Kernpunkte
+- Logischer Aufbau
 
 OUTPUT FORMAT (JSON):
 {
-  "intro_summary": "Wat de intro moet behandelen (50 woorden)",
+  "intro_summary": "Was die Intro behandeln muss (50 Wörter)",
   "sections": [
     {
       "h2_title": "Titel",
-      "purpose": "Waarom deze sectie belangrijk is",
-      "key_points": ["Punt 1", "Punt 2", "Punt 3"],
+      "purpose": "Warum dieser Abschnitt wichtig ist",
+      "key_points": ["Punkt 1", "Punkt 2", "Punkt 3"],
       "suggested_elements": ["table", "list", "blockquote"]
     }
   ],
-  "conclusion_summary": "Wat de conclusie moet bevatten (50 woorden)"
+  "conclusion_summary": "Was die Schlussfolgerung enthalten muss (50 Wörter)"
 }
 
-Return ALLEEN valid JSON.
+Geben Sie NUR gültiges JSON zurück.
 PROMPT;
     }
 
@@ -628,16 +628,16 @@ PROMPT;
     {
         $introSummary = $outline['intro_summary'] ?? '';
         return <<<PROMPT
-Schrijf een pakkende intro voor: "{$title}" over {$niche}.
+Schreiben Sie eine packende Einleitung für: "{$title}" über {$niche}.
 
-INTRO MOET BEVATTEN: {$introSummary}
+DIE EINLEITUNG MUSS ENTHALTEN: {$introSummary}
 
-VEREISTEN:
-- 150-200 woorden
-- Hook direct
-- Professioneel maar toegankelijk
+ANFORDERUNGEN:
+- 150-200 Wörter
+- Direkter Hook
+- Professionell aber zugänglich
 
-Return ALLEEN HTML (<p> tags).
+Geben Sie NUR HTML zurück (<p> tags).
 PROMPT;
     }
 
@@ -648,20 +648,20 @@ PROMPT;
         $keyPoints = isset($sectionOutline['key_points']) ? implode("\n- ", $sectionOutline['key_points']) : '';
 
         return <<<PROMPT
-Schrijf de sectie "{$h2Title}" voor "{$title}" over {$niche}.
+Schreiben Sie den Abschnitt "{$h2Title}" für "{$title}" über {$niche}.
 
-DOEL: {$purpose}
+ZIEL: {$purpose}
 
-KEY POINTS:
+KERNPUNKTE:
 - {$keyPoints}
 
-VEREISTEN:
-- Begin met <h2>{$h2Title}</h2>
-- 250-400 woorden
-- 2-4 H3 subsecties
-- Concrete cijfers en voorbeelden
+ANFORDERUNGEN:
+- Beginnen Sie mit <h2>{$h2Title}</h2>
+- 250-400 Wörter
+- 2-4 H3 Unterabschnitte
+- Konkrete Zahlen und Beispiele
 
-Return ALLEEN HTML (start met <h2>).
+Geben Sie NUR HTML zurück (beginnen Sie mit <h2>).
 PROMPT;
     }
 
@@ -669,28 +669,28 @@ PROMPT;
     {
         $conclusionSummary = $outline['conclusion_summary'] ?? '';
         return <<<PROMPT
-Schrijf de conclusie voor: "{$title}" over {$niche}.
+Schreiben Sie die Schlussfolgerung für: "{$title}" über {$niche}.
 
-CONCLUSIE MOET BEVATTEN: {$conclusionSummary}
+DIE SCHLUSSFOLGERUNG MUSS ENTHALTEN: {$conclusionSummary}
 
-VEREISTEN:
-- Begin met <h2>Conclusie</h2>
-- 200-300 woorden
-- Decision framework
-- Praktische next step
+ANFORDERUNGEN:
+- Beginnen Sie mit <h2>Fazit</h2>
+- 200-300 Wörter
+- Entscheidungsrahmen
+- Praktischer nächster Schritt
 
-Return ALLEEN HTML (start met <h2>).
+Geben Sie NUR HTML zurück (beginnen Sie mit <h2>).
 PROMPT;
     }
 
     private function buildInformationExcerptPrompt(string $title, string $content): string
     {
         return <<<PROMPT
-Schrijf een korte samenvatting van maximaal 200 karakters voor: {$title}
+Schreiben Sie eine kurze Zusammenfassung von maximal 200 Zeichen für: {$title}
 
-Max 200 karakters, pakkend en informatief, Nederlandse taal.
+Max 200 Zeichen, packend und informativ, deutsche Sprache.
 
-Alleen de excerpt tekst, geen extra uitleg.
+Nur der Auszugstext, keine zusätzliche Erklärung.
 PROMPT;
     }
 }

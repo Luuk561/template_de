@@ -93,7 +93,7 @@ class ContentBlocksGeneratorServiceV2
 
         // Make 1 OpenAI call for this block
         $response = $this->openAI->chat([
-            ['role' => 'system', 'content' => 'You are a Dutch SEO copywriter. Return ONLY valid JSON.'],
+            ['role' => 'system', 'content' => 'Sie sind ein deutscher SEO-Texter. Geben Sie NUR gültiges JSON zurück.'],
             ['role' => 'user', 'content' => $fullPrompt],
         ], 'gpt-4o', 0.7, 4000);
 
@@ -114,49 +114,49 @@ class ContentBlocksGeneratorServiceV2
      */
     private function getStandardPrompt(string $niche, string $siteName, ?string $uniqueFocus): string
     {
-        $currentMonth = now()->locale('nl')->translatedFormat('F');
+        $currentMonth = now()->locale('de')->translatedFormat('F');
         $currentYear = now()->year;
 
         $uniqueFocusContext = $uniqueFocus
-            ? "UNIQUE FOCUS: {$uniqueFocus} (verwerk subtiel in content)"
+            ? "EINZIGARTIGER FOKUS: {$uniqueFocus} (subtil in den Inhalt einarbeiten)"
             : '';
 
         // Fetch active informatie artikelen for internal linking
         $infoPages = InformationPage::active()->ordered()->get(['title', 'slug']);
         $infoLinksContext = '';
         if ($infoPages->isNotEmpty()) {
-            $linksList = $infoPages->map(fn($page) => "- <a href=\"/informatie/{$page->slug}\">{$page->title}</a>")->join("\n");
-            $infoLinksContext = "\n\nINTERNE LINKS (gebruik max 1-2 per SEO block als HTML <a> tags):\n{$linksList}\nVoorbeeld: <a href=\"/informatie/voorbeeld\">Anchor tekst</a>";
+            $linksList = $infoPages->map(fn($page) => "- <a href=\"/informationen/{$page->slug}\">{$page->title}</a>")->join("\n");
+            $infoLinksContext = "\n\nINTERNE LINKS (verwenden Sie maximal 1-2 pro SEO-Block als HTML <a> Tags):\n{$linksList}\nBeispiel: <a href=\"/informationen/beispiel\">Ankertext</a>";
         }
 
         return <<<PROMPT
-SEO COPYWRITER VOOR: {$siteName}
+SEO-TEXTER FÜR: {$siteName}
 NICHE: {$niche}
 {$uniqueFocusContext}
 DATUM: {$currentMonth} {$currentYear}{$infoLinksContext}
 
-SCHRIJFSTIJL (altijd)
-- Schrijf alsof je het aan één persoon uitlegt: "je/jij"
-- Korte zinnen. Geen brochuretaal. Geen marketingjargon
-- Elke alinea bevat minstens 1 concreet detail (situatie, beperking, keuze-criterium of voorbeeld)
+SCHREIBSTIL (immer)
+- Schreiben Sie, als würden Sie es einer Person erklären: "Sie/du"
+- Kurze Sätze. Keine Broschürensprache. Kein Marketingjargon
+- Jeder Absatz enthält mindestens 1 konkretes Detail (Situation, Einschränkung, Auswahlkriterium oder Beispiel)
 
-VERMIJD (niet gebruiken)
-- Woorden: ideaal, handig, perfect, uitstekend, geweldig, optimaal, essentieel, cruciaal
-- Zinnen: "na een lange werkdag", "voor veel mensen", "voor velen"
-- Testclaims: "wij hebben getest", "onze testresultaten"
+VERMEIDEN (nicht verwenden)
+- Wörter: ideal, praktisch, perfekt, ausgezeichnet, großartig, optimal, essenziell, entscheidend
+- Sätze: "nach einem langen Arbeitstag", "für viele Menschen", "für viele"
+- Testbehauptungen: "wir haben getestet", "unsere Testergebnisse"
 
-WEL DOEN
-- Concreet benoemen wat iemand merkt/ervaart of waar iemand op let
-- Normale productspecificaties/voorbeelden zijn prima (bijv. "12-16 km/u", "1,5m loopvlak", "voor gezin van 4")
-- Geen percentages of 'onderzoek zegt'-claims
+MACHEN SIE
+- Konkret benennen, was jemand bemerkt/erfährt oder worauf jemand achtet
+- Normale Produktspezifikationen/Beispiele sind in Ordnung (z.B. "12-16 km/h", "1,5m Lauffläche", "für Familie mit 4 Personen")
+- Keine Prozentsätze oder 'Forschung sagt'-Behauptungen
 
-FUNNEL (alleen als het block een CTA vraagt)
-- Eindig met verwijzing naar /producten
-- Geen verwijzing naar blogs/reviews/top5 als eindbestemming
+FUNNEL (nur wenn der Block einen CTA erfordert)
+- Enden Sie mit Verweis auf /produkte
+- Kein Verweis auf Blogs/Reviews/Top5 als Endziel
 
 OUTPUT
-- Return ONLY valid JSON
-- Exact de gevraagde keys, geen extra tekst, geen Markdown, geen HTML
+- Geben Sie NUR gültiges JSON zurück
+- Genau die angeforderten Keys, kein zusätzlicher Text, kein Markdown, kein HTML
 
 PROMPT;
     }
@@ -168,8 +168,8 @@ PROMPT;
     {
         $units = implode(', ', $config['units']);
         $role = $config['role'];
-        $forbidden = isset($config['forbidden']) ? '- ' . implode("\n- ", $config['forbidden']) : 'Geen extra beperkingen';
-        $mustTreat = isset($config['must_treat']) ? '- ' . implode("\n- ", $config['must_treat']) : 'Geen verplichte elementen';
+        $forbidden = isset($config['forbidden']) ? '- ' . implode("\n- ", $config['forbidden']) : 'Keine zusätzlichen Einschränkungen';
+        $mustTreat = isset($config['must_treat']) ? '- ' . implode("\n- ", $config['must_treat']) : 'Keine verpflichtenden Elemente';
 
         $lengthInstructions = '';
         if (isset($config['lengths'])) {
@@ -180,37 +180,37 @@ PROMPT;
 
         return <<<PROMPT
 ═══════════════════════════════════════════════════════════════════
-BLOCK OPDRACHT
+BLOCK-AUFTRAG
 ═══════════════════════════════════════════════════════════════════
 
-ROL: {$role}
+ROLLE: {$role}
 NICHE: {$niche}
 
-VERPLICHTE BEHANDELING:
+VERPFLICHTENDE BEHANDLUNG:
 {$mustTreat}
 
-VERBODEN IN DIT BLOK:
+VERBOTEN IN DIESEM BLOCK:
 {$forbidden}
 
-LENGTES:
+LÄNGEN:
 {$lengthInstructions}
 
-STIJL: {$config['style']}
+STIL: {$config['style']}
 
 ═══════════════════════════════════════════════════════════════════
 OUTPUT
 ═══════════════════════════════════════════════════════════════════
 
-Return JSON met keys: {$units}
-Elke key = plain text (geen HTML/Markdown)
+Geben Sie JSON mit Keys zurück: {$units}
+Jeder Key = plain text (kein HTML/Markdown)
 
-Voorbeeld:
+Beispiel:
 {
-  "title": "Jouw titel hier",
-  "text": "Jouw tekst hier"
+  "title": "Ihr Titel hier",
+  "text": "Ihr Text hier"
 }
 
-Genereer NU de content:
+Generieren Sie JETZT den Inhalt:
 PROMPT;
     }
 
@@ -243,7 +243,7 @@ PROMPT;
     {
         $fallback = [];
         foreach ($units as $unit) {
-            $fallback[$unit] = "[Content generatie mislukt - vul handmatig aan]";
+            $fallback[$unit] = "[Inhaltsgenerierung fehlgeschlagen - bitte manuell ausfüllen]";
         }
         return $fallback;
     }
@@ -256,43 +256,43 @@ PROMPT;
         return [
             'homepage.hero' => [
                 'units' => ['title', 'subtitle'],
-                'role' => 'Homepage hero: positionering + belofte + verwachting',
+                'role' => 'Homepage Hero: Positionierung + Versprechen + Erwartung',
                 'forbidden' => [
-                    'GEEN "De beste X van [maand] [jaar]"',
-                    'GEEN absolute claims ("beste", "nummer 1")',
-                    'GEEN vage marketingwoorden zonder context',
+                    'KEINE "Die besten X von [Monat] [Jahr]"',
+                    'KEINE absoluten Behauptungen ("beste", "Nummer 1")',
+                    'KEINE vagen Marketingwörter ohne Kontext',
                 ],
                 'must_treat' => [
-                    'TITLE: Actie + {niche}. Focus op vergelijken/vinden, niet op claimen.',
-                    'SUBTITLE: Leg concreet uit WAT je hier vergelijkt en WAAROP (specs, ervaringen, verschillen).',
-                    'Subtitle voegt nieuwe informatie toe t.o.v. title.',
+                    'TITLE: Aktion + {niche}. Fokus auf Vergleichen/Finden, nicht auf Behauptungen.',
+                    'SUBTITLE: Erklären Sie konkret, WAS Sie hier vergleichen und WORAUF (Specs, Erfahrungen, Unterschiede).',
+                    'Subtitle fügt neue Informationen zum Titel hinzu.',
                 ],
                 'lengths' => [
-                    'title' => '60-80 tekens',
-                    'subtitle' => '80-120 tekens',
+                    'title' => '60-80 Zeichen',
+                    'subtitle' => '80-120 Zeichen',
                 ],
-                'style' => 'Duidelijk, inhoudelijk, geen hype. Focus op keuze maken.',
+                'style' => 'Klar, inhaltlich, kein Hype. Fokus auf Entscheidung treffen.',
             ],
 
 
             'homepage.info' => [
                 'units' => ['title', 'text'],
-                'role' => 'Wat doet deze site en hoe helpt dat bij kiezen?',
+                'role' => 'Was macht diese Seite und wie hilft das beim Auswählen?',
                 'forbidden' => [
-                    'GEEN productvoordelen of claims',
-                    'GEEN koopaanbevelingen of “beste keuze”-uitspraken',
-                    'GEEN testclaims',
+                    'KEINE Produktvorteile oder Behauptungen',
+                    'KEINE Kaufempfehlungen oder "beste Wahl"-Aussagen',
+                    'KEINE Testbehauptungen',
                 ],
                 'must_treat' => [
-                    'TITLE: Benoem dat de site helpt bij vergelijken en kiezen in {niche} (20–40 tekens).',
-                    'TEXT: Leg uit dat de site inzicht en richting geeft door specificaties, verschillen en ervaringen te bundelen.',
-                    'TEXT: Benadruk dat de gebruiker zélf kiest, met hulp van overzicht en context.',
+                    'TITLE: Benennen Sie, dass die Seite beim Vergleichen und Auswählen in {niche} hilft (20–40 Zeichen).',
+                    'TEXT: Erklären Sie, dass die Seite Einblick und Richtung gibt, indem Spezifikationen, Unterschiede und Erfahrungen gebündelt werden.',
+                    'TEXT: Betonen Sie, dass der Benutzer selbst wählt, mit Hilfe von Übersicht und Kontext.',
                 ],
                 'lengths' => [
-                    'title' => '20-40 tekens',
-                    'text' => '80-100 woorden',
+                    'title' => '20-40 Zeichen',
+                    'text' => '80-100 Wörter',
                 ],
-                'style' => 'Helpend en richtinggevend. Informatief zonder te verkopen.',
+                'style' => 'Hilfreich und richtungsweisend. Informativ ohne zu verkaufen.',
             ],
 
             'homepage.seo1' => [
@@ -306,31 +306,31 @@ PROMPT;
                     'section3_title',
                     'section3_text',
                 ],
-                'role' => 'Waarom mensen kiezen voor {niche} (context + situaties)',
+                'role' => 'Warum Menschen sich für {niche} entscheiden (Kontext + Situationen)',
                 'forbidden' => [
-                    'GEEN keuzeadvies of koopadvies',
-                    'GEEN vergelijkingen tussen modellen',
-                    'GEEN claims of testuitspraken',
-                    'GEEN superlatieven of marketingtaal',
+                    'KEINE Auswahlberatung oder Kaufberatung',
+                    'KEINE Vergleiche zwischen Modellen',
+                    'KEINE Behauptungen oder Testaussagen',
+                    'KEINE Superlative oder Marketingsprache',
                 ],
                 'must_treat' => [
-                    'TITLE: Benoem de rol of waarde van {niche} in een concrete context (thuis/dagelijks leven/situatie). Vermijd "waarom mensen X gebruiken" voor obvious producten. (30–50 tekens)',
-                    'INTRO: Beschrijf het probleem of de situatie die leidt tot gebruik van {niche}, zonder voordelen op te sommen.',
-                    'SECTION 1: Situatiegedreven voordeel. Beschrijf een concrete gebruikssituatie en welk probleem dit product daarin oplost. Voeg 1-2 relevante interne links toe uit de INTERNE LINKS lijst als het past bij de context.',
-                    'SECTION 2: Praktisch mechanisme. Leg uit WAT het product mogelijk maakt dat zonder dit product lastig is. Voeg 1-2 relevante interne links toe uit de INTERNE LINKS lijst als het past bij de context.',
-                    'SECTION 3: Beperkingen wegnemen. Beschrijf welk veelvoorkomend bezwaar of probleem door dit type product wordt verminderd. Voeg 1-2 relevante interne links toe uit de INTERNE LINKS lijst als het past bij de context.',
+                    'TITLE: Benennen Sie die Rolle oder den Wert von {niche} in einem konkreten Kontext (zu Hause/Alltag/Situation). Vermeiden Sie "warum Menschen X verwenden" für offensichtliche Produkte. (30–50 Zeichen)',
+                    'INTRO: Beschreiben Sie das Problem oder die Situation, die zur Verwendung von {niche} führt, ohne Vorteile aufzuzählen.',
+                    'SECTION 1: Situationsgetriebener Vorteil. Beschreiben Sie eine konkrete Nutzungssituation und welches Problem dieses Produkt darin löst. Fügen Sie 1-2 relevante interne Links aus der INTERNE LINKS Liste hinzu, wenn es zum Kontext passt.',
+                    'SECTION 2: Praktischer Mechanismus. Erklären Sie, WAS das Produkt ermöglicht, was ohne dieses Produkt schwierig ist. Fügen Sie 1-2 relevante interne Links aus der INTERNE LINKS Liste hinzu, wenn es zum Kontext passt.',
+                    'SECTION 3: Einschränkungen beseitigen. Beschreiben Sie, welcher häufige Einwand oder welches Problem durch diesen Produkttyp verringert wird. Fügen Sie 1-2 relevante interne Links aus der INTERNE LINKS Liste hinzu, wenn es zum Kontext passt.',
                 ],
                 'lengths' => [
-                    'title' => '30-50 tekens',
-                    'intro' => '60-80 woorden',
-                    'section1_title' => '20-40 tekens',
-                    'section1_text' => '180-200 woorden',
-                    'section2_title' => '20-40 tekens',
-                    'section2_text' => '180-200 woorden',
-                    'section3_title' => '20-40 tekens',
-                    'section3_text' => '180-200 woorden',
+                    'title' => '30-50 Zeichen',
+                    'intro' => '60-80 Wörter',
+                    'section1_title' => '20-40 Zeichen',
+                    'section1_text' => '180-200 Wörter',
+                    'section2_title' => '20-40 Zeichen',
+                    'section2_text' => '180-200 Wörter',
+                    'section3_title' => '20-40 Zeichen',
+                    'section3_text' => '180-200 Wörter',
                 ],
-                'style' => 'Contextueel en concreet. Geen voordelenlijst, maar situaties, oorzaken en effecten.',
+                'style' => 'Kontextuell und konkret. Keine Vorteilsliste, sondern Situationen, Ursachen und Effekte.',
             ],
 
 
@@ -347,174 +347,174 @@ PROMPT;
                     'section4_title',
                     'section4_text',
                 ],
-                'role' => 'Keuzehulp: hoe bepaal je welk type {niche} bij je past?',
+                'role' => 'Auswahlhilfe: Wie bestimmen Sie, welcher Typ {niche} zu Ihnen passt?',
                 'forbidden' => [
-                    'GEEN productvoordelen of pluspunten',
-                    'GEEN merk- of modelnamen',
-                    'GEEN aanbevelingen of rankings',
-                    'GEEN test- of reviewclaims',
+                    'KEINE Produktvorteile oder Pluspunkte',
+                    'KEINE Marken- oder Modellnamen',
+                    'KEINE Empfehlungen oder Rankings',
+                    'KEINE Test- oder Bewertungsbehauptungen',
                 ],
                 'must_treat' => [
-                    'TITLE: Hoe kies je een {niche}? (30–50 tekens)',
-                    'INTRO: Leg uit dat verschillende situaties andere eisen stellen (30–40 woorden).',
-                    'SECTION 1: Gebruikssituatie. Beschrijf hoe gebruiksfrequentie en manier van gebruik invloed hebben op de keuze. Voeg 1-2 relevante interne links toe uit de INTERNE LINKS lijst als het past bij de context.',
-                    'SECTION 2: Ruimte en omgeving. Leg uit hoe beschikbare ruimte, plaatsing en omgeving meespelen. Voeg 1-2 relevante interne links toe uit de INTERNE LINKS lijst als het past bij de context.',
-                    'SECTION 3: Belastbaarheid of capaciteit. Beschrijf welk type gebruiker of gebruiksniveau bepalend is. Voeg 1-2 relevante interne links toe uit de INTERNE LINKS lijst als het past bij de context.',
-                    'SECTION 4: Budget en verwachtingen. Leg uit hoe prijs samenhangt met gebruik, zonder bedragen te noemen. Voeg 1-2 relevante interne links toe uit de INTERNE LINKS lijst als het past bij de context.',
+                    'TITLE: Wie wählen Sie ein {niche}? (30–50 Zeichen)',
+                    'INTRO: Erklären Sie, dass verschiedene Situationen unterschiedliche Anforderungen stellen (30–40 Wörter).',
+                    'SECTION 1: Nutzungssituation. Beschreiben Sie, wie Nutzungsfrequenz und Art der Nutzung die Wahl beeinflussen. Fügen Sie 1-2 relevante interne Links aus der INTERNE LINKS Liste hinzu, wenn es zum Kontext passt.',
+                    'SECTION 2: Raum und Umgebung. Erklären Sie, wie verfügbarer Raum, Platzierung und Umgebung eine Rolle spielen. Fügen Sie 1-2 relevante interne Links aus der INTERNE LINKS Liste hinzu, wenn es zum Kontext passt.',
+                    'SECTION 3: Belastbarkeit oder Kapazität. Beschreiben Sie, welcher Benutzertyp oder welches Nutzungsniveau entscheidend ist. Fügen Sie 1-2 relevante interne Links aus der INTERNE LINKS Liste hinzu, wenn es zum Kontext passt.',
+                    'SECTION 4: Budget und Erwartungen. Erklären Sie, wie Preis mit Nutzung zusammenhängt, ohne Beträge zu nennen. Fügen Sie 1-2 relevante interne Links aus der INTERNE LINKS Liste hinzu, wenn es zum Kontext passt.',
                 ],
                 'lengths' => [
-                    'title' => '30-50 tekens',
-                    'intro' => '50-70 woorden',
-                    'section1_title' => '20-40 tekens',
-                    'section1_text' => '180-200 woorden',
-                    'section2_title' => '20-40 tekens',
-                    'section2_text' => '180-200 woorden',
-                    'section3_title' => '20-40 tekens',
-                    'section3_text' => '180-200 woorden',
-                    'section4_title' => '20-40 tekens',
-                    'section4_text' => '180-200 woorden',
+                    'title' => '30-50 Zeichen',
+                    'intro' => '50-70 Wörter',
+                    'section1_title' => '20-40 Zeichen',
+                    'section1_text' => '180-200 Wörter',
+                    'section2_title' => '20-40 Zeichen',
+                    'section2_text' => '180-200 Wörter',
+                    'section3_title' => '20-40 Zeichen',
+                    'section3_text' => '180-200 Wörter',
+                    'section4_title' => '20-40 Zeichen',
+                    'section4_text' => '180-200 Wörter',
                 ],
-                'style' => 'Beslisgericht en neutraal. Schrijf in “als-dan”-logica zonder oordeel.',
+                'style' => 'Entscheidungsorientiert und neutral. Schreiben Sie in "Wenn-Dann"-Logik ohne Urteil.',
             ],
 
 
             'homepage.faq_1' => [
                 'units' => ['question', 'answer'],
-                'role' => 'FAQ: Voor wie is {niche} geschikt?',
+                'role' => 'FAQ: Für wen ist {niche} geeignet?',
                 'forbidden' => [
-                    'GEEN onderhoud, installatie of techniek',
-                    'GEEN gebruikstoepassingen',
-                    'GEEN koopadvies of aanbevelingen',
+                    'KEINE Wartung, Installation oder Technik',
+                    'KEINE Nutzungsanwendungen',
+                    'KEINE Kaufberatung oder Empfehlungen',
                 ],
                 'must_treat' => [
-                    'QUESTION: Voor welke situaties of gebruikers is {niche} bedoeld?',
-                    'ANSWER: Beschrijf concrete situaties waarin dit type product logisch is om te overwegen.',
-                    'ANSWER: Gebruik herkenbare context (ruimte, huishouden, ervaring, frequentie), geen oordeel.',
+                    'QUESTION: Für welche Situationen oder Benutzer ist {niche} gedacht?',
+                    'ANSWER: Beschreiben Sie konkrete Situationen, in denen dieser Produkttyp logisch in Betracht zu ziehen ist.',
+                    'ANSWER: Verwenden Sie erkennbaren Kontext (Raum, Haushalt, Erfahrung, Häufigkeit), kein Urteil.',
                 ],
                 'lengths' => [
-                    'question' => '60-100 tekens',
-                    'answer' => '60-80 woorden',
+                    'question' => '60-100 Zeichen',
+                    'answer' => '60-80 Wörter',
                 ],
-                'style' => 'Verhelderend en feitelijk. Beschrijvend, niet overtuigend.',
+                'style' => 'Aufklärend und sachlich. Beschreibend, nicht überzeugend.',
             ],
 
 
             'homepage.faq_2' => [
                 'units' => ['question', 'answer'],
-                'role' => 'FAQ: Onderhoud en praktische zorg',
+                'role' => 'FAQ: Wartung und praktische Pflege',
                 'forbidden' => [
-                    'GEEN geschiktheid of doelgroep',
-                    'GEEN gebruikssituaties',
-                    'GEEN marketingtaal',
+                    'KEINE Eignung oder Zielgruppe',
+                    'KEINE Nutzungssituationen',
+                    'KEINE Marketingsprache',
                 ],
                 'must_treat' => [
-                    'QUESTION: Hoe onderhoud je {niche} in de praktijk?',
-                    'ANSWER: Beschrijf terugkerende onderhoudshandelingen en aandachtspunten.',
-                    'ANSWER: Benoem acties met tijdsaanduiding (dagelijks, wekelijks, periodiek) zonder cijfers of schema’s.',
+                    'QUESTION: Wie warten Sie {niche} in der Praxis?',
+                    'ANSWER: Beschreiben Sie wiederkehrende Wartungsarbeiten und Aufmerksamkeitspunkte.',
+                    'ANSWER: Benennen Sie Aktionen mit Zeitangabe (täglich, wöchentlich, periodisch) ohne Zahlen oder Schemata.',
                 ],
                 'lengths' => [
-                    'question' => '60-100 tekens',
-                    'answer' => '60-80 woorden',
+                    'question' => '60-100 Zeichen',
+                    'answer' => '60-80 Wörter',
                 ],
-                'style' => 'Praktisch en technisch, maar laagdrempelig.',
+                'style' => 'Praktisch und technisch, aber zugänglich.',
             ],
 
 
             'homepage.faq_3' => [
                 'units' => ['question', 'answer'],
-                'role' => 'FAQ: Toepassingen en gebruik',
+                'role' => 'FAQ: Anwendungen und Verwendung',
                 'forbidden' => [
-                    'GEEN geschiktheid of doelgroep',
-                    'GEEN onderhoud of techniek',
-                    'GEEN voordelen of pluspunten',
+                    'KEINE Eignung oder Zielgruppe',
+                    'KEINE Wartung oder Technik',
+                    'KEINE Vorteile oder Pluspunkte',
                 ],
                 'must_treat' => [
-                    'QUESTION: Waarvoor wordt {niche} meestal gebruikt?',
-                    'ANSWER: Geef meerdere concrete gebruiksscenario’s of toepassingen.',
-                    'ANSWER: Focus op wat mensen ermee doen, niet waarom het beter is.',
+                    'QUESTION: Wofür wird {niche} normalerweise verwendet?',
+                    'ANSWER: Geben Sie mehrere konkrete Nutzungsszenarien oder Anwendungen.',
+                    'ANSWER: Fokus auf das, was Menschen damit tun, nicht warum es besser ist.',
                 ],
                 'lengths' => [
-                    'question' => '60-100 tekens',
-                    'answer' => '60-80 woorden',
+                    'question' => '60-100 Zeichen',
+                    'answer' => '60-80 Wörter',
                 ],
-                'style' => 'Beschrijvend en concreet. Voorbeelden zonder oordeel.',
+                'style' => 'Beschreibend und konkret. Beispiele ohne Urteil.',
             ],
 
-            // PRODUCTEN BLOCKS
+            // PRODUKTE BLOCKS
             'producten_index_hero_titel' => [
                 'units' => ['title'],
-                'role' => 'Productenoverzicht: positionering + actie',
+                'role' => 'Produktübersicht: Positionierung + Aktion',
                 'forbidden' => [
-                    'GEEN superlatieven of rankings',
-                    'GEEN tijdsgebonden claims',
-                    'GEEN koopadvies of aanbevelingen',
+                    'KEINE Superlative oder Rankings',
+                    'KEINE zeitgebundenen Behauptungen',
+                    'KEINE Kaufberatung oder Empfehlungen',
                 ],
                 'must_treat' => [
-                    'TITLE: Actiegericht overzicht van {niche}, met nadruk op vergelijken en overzicht.',
-                    'TITLE: Gebruik een werkwoord (Vergelijk / Bekijk / Ontdek) en benoem expliciet {niche}.',
+                    'TITLE: Aktionsorientierte Übersicht von {niche}, mit Schwerpunkt auf Vergleichen und Überblick.',
+                    'TITLE: Verwenden Sie ein Verb (Vergleichen / Ansehen / Entdecken) und benennen Sie explizit {niche}.',
                 ],
                 'lengths' => [
-                    'title' => '40-60 tekens',
+                    'title' => '40-60 Zeichen',
                 ],
-                'style' => 'Functioneel en duidelijk. Geen marketingtaal, puur overzicht.',
+                'style' => 'Funktional und klar. Keine Marketingsprache, reine Übersicht.',
             ],
-        
+
             'producten_index_info_blok_1' => [
                 'units' => ['title', 'text'],
-                'role' => 'Waarom deze pagina gebruiken om te vergelijken?',
+                'role' => 'Warum diese Seite zum Vergleichen verwenden?',
                 'forbidden' => [
-                    'GEEN productvoordelen of eigenschappen',
-                    'GEEN koopadvies of aanbevelingen',
-                    'GEEN test- of reviewclaims',
+                    'KEINE Produktvorteile oder Eigenschaften',
+                    'KEINE Kaufberatung oder Empfehlungen',
+                    'KEINE Test- oder Bewertungsbehauptungen',
                 ],
                 'must_treat' => [
-                    'TITLE: Benoem waarom deze pagina geschikt is om {niche} te vergelijken (30–50 tekens).',
-                    'TEXT: Leg uit HOE de pagina werkt: filters, sortering, specificaties naast elkaar.',
-                    'TEXT: Beschrijf het proces (bekijken, filteren, vergelijken), niet het resultaat.',
+                    'TITLE: Benennen Sie, warum diese Seite geeignet ist, um {niche} zu vergleichen (30–50 Zeichen).',
+                    'TEXT: Erklären Sie, WIE die Seite funktioniert: Filter, Sortierung, Spezifikationen nebeneinander.',
+                    'TEXT: Beschreiben Sie den Prozess (ansehen, filtern, vergleichen), nicht das Ergebnis.',
                 ],
                 'lengths' => [
-                    'title' => '30-50 tekens',
-                    'text' => '70-90 woorden',
+                    'title' => '30-50 Zeichen',
+                    'text' => '70-90 Wörter',
                 ],
-                'style' => 'Uitleggend en neutraal. Focus op functionaliteit, niet op overtuigen.',
+                'style' => 'Erklärend und neutral. Fokus auf Funktionalität, nicht auf Überzeugen.',
             ],
 
             'producten_index_info_blok_2' => [
                 'units' => ['title', 'text'],
-                'role' => 'Vergelijkcriteria: waar let je op bij {niche}?',
+                'role' => 'Vergleichskriterien: Worauf achten Sie bei {niche}?',
                 'forbidden' => [
-                    'GEEN productvoordelen of aanbevelingen',
-                    'GEEN specifieke merken of modellen',
-                    'GEEN koopadvies',
+                    'KEINE Produktvorteile oder Empfehlungen',
+                    'KEINE spezifischen Marken oder Modelle',
+                    'KEINE Kaufberatung',
                 ],
                 'must_treat' => [
-                    'TITLE: Benoem dat dit gaat over aandachtspunten bij het vergelijken (30–50 tekens).',
-                    'TEXT: Beschrijf objectieve criteria waarop {niche} van elkaar verschillen.',
-                    'TEXT: Focus op meetbare of observeerbare aspecten (gebruik, ruimte, capaciteit, uitvoering), zonder oordeel.',
+                    'TITLE: Benennen Sie, dass es um Aufmerksamkeitspunkte beim Vergleichen geht (30–50 Zeichen).',
+                    'TEXT: Beschreiben Sie objektive Kriterien, in denen sich {niche} voneinander unterscheiden.',
+                    'TEXT: Fokus auf messbare oder beobachtbare Aspekte (Nutzung, Raum, Kapazität, Ausführung), ohne Urteil.',
                 ],
                 'lengths' => [
-                    'title' => '30-50 tekens',
-                    'text' => '70-90 woorden',
+                    'title' => '30-50 Zeichen',
+                    'text' => '70-90 Wörter',
                 ],
-                'style' => 'Praktisch en informatief. Helpt structureren, niet beslissen.',
+                'style' => 'Praktisch und informativ. Hilft strukturieren, nicht entscheiden.',
             ],
 
             'producten_top_hero_titel' => [
                 'units' => ['title'],
-                'role' => 'Topselectie overzicht: actuele context + afbakening',
+                'role' => 'Top-Auswahl Übersicht: aktueller Kontext + Abgrenzung',
                 'forbidden' => [
-                    'GEEN superlatieven buiten de rangorde (geen “beste ooit”, “nummer 1 keuze”)',
-                    'GEEN koopbelofte of aanbevelingstaal',
+                    'KEINE Superlative außerhalb der Rangfolge (keine "besten überhaupt", "Nummer 1 Wahl")',
+                    'KEINE Kaufversprechen oder Empfehlungssprache',
                 ],
                 'must_treat' => [
-                    'TITLE: Benoem dat het om een Top 5 selectie van {niche} gaat.',
-                    'TITLE: Voeg maand en jaar toe voor actualiteit en context.',
-                    'TITLE: Houd het beschrijvend en feitelijk, geen claimende formulering.',
+                    'TITLE: Benennen Sie, dass es um eine Top 5 Auswahl von {niche} geht.',
+                    'TITLE: Fügen Sie Monat und Jahr für Aktualität und Kontext hinzu.',
+                    'TITLE: Halten Sie es beschreibend und sachlich, keine behauptende Formulierung.',
                 ],
                 'lengths' => [
-                    'title' => '50-70 tekens',
+                    'title' => '50-70 Zeichen',
                 ],
-                'style' => 'Zakelijk en actueel. Geeft context, geen oordeel.',
+                'style' => 'Geschäftlich und aktuell. Gibt Kontext, kein Urteil.',
             ],
 
             'producten_top_seo_blok' => [
@@ -528,54 +528,54 @@ PROMPT;
                     'section3_title',
                     'section3_text',
                 ],
-                'role' => 'Uitleg selectie: op basis waarvan deze Top 5 is samengesteld',
+                'role' => 'Auswahl-Erklärung: Auf welcher Basis diese Top 5 zusammengestellt wurde',
                 'forbidden' => [
-                    'GEEN test-, meet- of reviewclaims',
-                    'GEEN aanbevelingen of koopadvies',
-                    'GEEN superlatieven of waarderingen',
-                    'GEEN merk- of modelvoorkeur uitspreken',
+                    'KEINE Test-, Mess- oder Bewertungsbehauptungen',
+                    'KEINE Empfehlungen oder Kaufberatung',
+                    'KEINE Superlative oder Bewertungen',
+                    'KEINE Marken- oder Modellpräferenz aussprechen',
                 ],
                 'must_treat' => [
-                    'TITLE: Leg uit dat dit blok de selectiecriteria van de Top 5 beschrijft (30–50 tekens).',
-                    'INTRO: Beschrijf in algemene zin hoe een selectie tot stand komt (bronnen, vergelijking, afbakening), zonder claims.',
-                    'SECTION 1: Objectief criterium 1 dat relevant is voor het vergelijken van {niche}. Voeg 1-2 relevante interne links toe uit de INTERNE LINKS lijst als het past bij de context.',
-                    'SECTION 2: Objectief criterium 2 dat invloed heeft op de samenstelling van de Top 5. Voeg 1-2 relevante interne links toe uit de INTERNE LINKS lijst als het past bij de context.',
-                    'SECTION 3: Objectief criterium 3 dat zorgt voor balans binnen de selectie. Voeg 1-2 relevante interne links toe uit de INTERNE LINKS lijst als het past bij de context.',
+                    'TITLE: Erklären Sie, dass dieser Block die Auswahlkriterien der Top 5 beschreibt (30–50 Zeichen).',
+                    'INTRO: Beschreiben Sie allgemein, wie eine Auswahl zustande kommt (Quellen, Vergleich, Abgrenzung), ohne Behauptungen.',
+                    'SECTION 1: Objektives Kriterium 1, das relevant für den Vergleich von {niche} ist. Fügen Sie 1-2 relevante interne Links aus der INTERNE LINKS Liste hinzu, wenn es zum Kontext passt.',
+                    'SECTION 2: Objektives Kriterium 2, das Einfluss auf die Zusammensetzung der Top 5 hat. Fügen Sie 1-2 relevante interne Links aus der INTERNE LINKS Liste hinzu, wenn es zum Kontext passt.',
+                    'SECTION 3: Objektives Kriterium 3, das für Balance innerhalb der Auswahl sorgt. Fügen Sie 1-2 relevante interne Links aus der INTERNE LINKS Liste hinzu, wenn es zum Kontext passt.',
                 ],
                 'lengths' => [
-                    'title' => '30-50 tekens',
-                    'intro' => '60-80 woorden',
-                    'section1_title' => '30-50 tekens',
-                    'section1_text' => '180-200 woorden',
-                    'section2_title' => '30-50 tekens',
-                    'section2_text' => '180-200 woorden',
-                    'section3_title' => '30-50 tekens',
-                    'section3_text' => '180-200 woorden',
+                    'title' => '30-50 Zeichen',
+                    'intro' => '60-80 Wörter',
+                    'section1_title' => '30-50 Zeichen',
+                    'section1_text' => '180-200 Wörter',
+                    'section2_title' => '30-50 Zeichen',
+                    'section2_text' => '180-200 Wörter',
+                    'section3_title' => '30-50 Zeichen',
+                    'section3_text' => '180-200 Wörter',
                 ],
-                'style' => 'Transparant en beschrijvend. Leg het selectieproces uit zonder oordeel of aanbeveling.',
+                'style' => 'Transparent und beschreibend. Erklären Sie den Auswahlprozess ohne Urteil oder Empfehlung.',
             ],
 
 
-            // MERKEN BLOCKS
+            // MARKEN BLOCKS
             'merken_index_hero_titel' => [
                 'units' => ['title', 'subtitle'],
-                'role' => 'Merkenoverzicht: positionering + uitleg',
+                'role' => 'Markenübersicht: Positionierung + Erklärung',
                 'forbidden' => [
-                    'GEEN superlatieven of aanbevelingen',
-                    'GEEN koopadvies of voorkeuren',
-                    'GEEN marketingtaal',
+                    'KEINE Superlative oder Empfehlungen',
+                    'KEINE Kaufberatung oder Präferenzen',
+                    'KEINE Marketingsprache',
                 ],
                 'must_treat' => [
-                    'TITLE: Benoem dat deze pagina merken binnen {niche} vergelijkt.',
-                    'TITLE: Gebruik een actiegericht werkwoord (Vergelijk / Bekijk) en expliciet {niche}.',
-                    'SUBTITLE: Leg uit waarom merken vergelijken zinvol is binnen deze productcategorie.',
-                    'SUBTITLE: Focus op verschillen tussen merken, niet op kwaliteitsoordelen.',
+                    'TITLE: Benennen Sie, dass diese Seite Marken innerhalb {niche} vergleicht.',
+                    'TITLE: Verwenden Sie ein aktionsorientiertes Verb (Vergleichen / Ansehen) und explizit {niche}.',
+                    'SUBTITLE: Erklären Sie, warum Marken vergleichen sinnvoll ist innerhalb dieser Produktkategorie.',
+                    'SUBTITLE: Fokus auf Unterschiede zwischen Marken, nicht auf Qualitätsurteile.',
                 ],
                 'lengths' => [
-                    'title' => '40-60 tekens',
-                    'subtitle' => '100-150 tekens',
+                    'title' => '40-60 Zeichen',
+                    'subtitle' => '100-150 Zeichen',
                 ],
-                'style' => 'Functioneel en neutraal. Gericht op overzicht en inzicht.',
+                'style' => 'Funktional und neutral. Fokus auf Übersicht und Einblick.',
             ],
 
 
@@ -590,70 +590,70 @@ PROMPT;
                     'section3_title',
                     'section3_text',
                 ],
-                'role' => 'Uitleg: welke rol speelt merk bij {niche}?',
+                'role' => 'Erklärung: Welche Rolle spielt die Marke bei {niche}?',
                 'forbidden' => [
-                    'GEEN aanbevelingen of voorkeuren',
-                    'GEEN kwaliteitsclaims of waarderingen',
-                    'GEEN koopadvies',
+                    'KEINE Empfehlungen oder Präferenzen',
+                    'KEINE Qualitätsbehauptungen oder Bewertungen',
+                    'KEINE Kaufberatung',
                 ],
                 'must_treat' => [
-                    'TITLE: Introduceer het thema merkverschillen binnen {niche} (30–50 tekens).',
-                    'INTRO: Leg uit dat merken binnen deze categorie verschillen in focus en aanpak.',
-                    'SECTION 1: Aspect 1 waarin merken zich onderscheiden (bijv. positionering of doelgroep). Voeg 1-2 relevante interne links toe uit de INTERNE LINKS lijst als het past bij de context.',
-                    'SECTION 2: Aspect 2 waarin merken structureel verschillen (bijv. aanbod of lijnbreedte). Voeg 1-2 relevante interne links toe uit de INTERNE LINKS lijst als het past bij de context.',
-                    'SECTION 3: Aspect 3 dat invloed heeft op de ervaring of verwachting bij het kiezen van een merk. Voeg 1-2 relevante interne links toe uit de INTERNE LINKS lijst als het past bij de context.',
+                    'TITLE: Führen Sie das Thema Markenunterschiede innerhalb {niche} ein (30–50 Zeichen).',
+                    'INTRO: Erklären Sie, dass Marken innerhalb dieser Kategorie sich in Fokus und Ansatz unterscheiden.',
+                    'SECTION 1: Aspekt 1, in dem sich Marken unterscheiden (z.B. Positionierung oder Zielgruppe). Fügen Sie 1-2 relevante interne Links aus der INTERNE LINKS Liste hinzu, wenn es zum Kontext passt.',
+                    'SECTION 2: Aspekt 2, in dem Marken strukturell unterscheiden (z.B. Angebot oder Linienbreite). Fügen Sie 1-2 relevante interne Links aus der INTERNE LINKS Liste hinzu, wenn es zum Kontext passt.',
+                    'SECTION 3: Aspekt 3, der Einfluss auf die Erfahrung oder Erwartung bei der Wahl einer Marke hat. Fügen Sie 1-2 relevante interne Links aus der INTERNE LINKS Liste hinzu, wenn es zum Kontext passt.',
                 ],
                 'lengths' => [
-                    'title' => '30-50 tekens',
-                    'intro' => '60-80 woorden',
-                    'section1_title' => '30-50 tekens',
-                    'section1_text' => '180-200 woorden',
-                    'section2_title' => '30-50 tekens',
-                    'section2_text' => '180-200 woorden',
-                    'section3_title' => '30-50 tekens',
-                    'section3_text' => '180-200 woorden',
+                    'title' => '30-50 Zeichen',
+                    'intro' => '60-80 Wörter',
+                    'section1_title' => '30-50 Zeichen',
+                    'section1_text' => '180-200 Wörter',
+                    'section2_title' => '30-50 Zeichen',
+                    'section2_text' => '180-200 Wörter',
+                    'section3_title' => '30-50 Zeichen',
+                    'section3_text' => '180-200 Wörter',
                 ],
-                'style' => 'Objectief en beschrijvend. Vergelijkend zonder oordeel.',
+                'style' => 'Objektiv und beschreibend. Vergleichend ohne Urteil.',
             ],
 
-            // REVIEWS BLOCKS
+            // BEWERTUNGEN BLOCKS
             'reviews.hero' => [
                 'units' => ['title', 'subtitle'],
-                'role' => 'Reviewsoverzicht: context + verwachting',
+                'role' => 'Bewertungsübersicht: Kontext + Erwartung',
                 'forbidden' => [
-                    'GEEN aanbevelingen of rankings',
-                    'GEEN superlatieven',
-                    'GEEN koopadvies',
+                    'KEINE Empfehlungen oder Rankings',
+                    'KEINE Superlative',
+                    'KEINE Kaufberatung',
                 ],
                 'must_treat' => [
-                    'TITLE: Benoem dat dit een overzicht is van reviews binnen {niche}.',
-                    'SUBTITLE: Leg uit wat iemand uit reviews haalt (ervaringen, aandachtspunten, verschillen), zonder oordeel.',
+                    'TITLE: Benennen Sie, dass dies eine Übersicht von Bewertungen innerhalb {niche} ist.',
+                    'SUBTITLE: Erklären Sie, was jemand aus Bewertungen herausholt (Erfahrungen, Aufmerksamkeitspunkte, Unterschiede), ohne Urteil.',
                 ],
                 'lengths' => [
-                    'title' => '40-60 tekens',
-                    'subtitle' => '100-150 tekens',
+                    'title' => '40-60 Zeichen',
+                    'subtitle' => '100-150 Zeichen',
                 ],
-                'style' => 'Toegankelijk en informatief. Verwachtingsmanagement, geen verkoop.',
+                'style' => 'Zugänglich und informativ. Erwartungsmanagement, kein Verkauf.',
             ],
 
 
             'reviews_index_intro' => [
                 'units' => ['title', 'text'],
-                'role' => 'Waarom reviews lezen?',
+                'role' => 'Warum Bewertungen lesen?',
                 'forbidden' => [
-                    'GEEN testclaims',
-                    'GEEN koopadvies',
-                    'GEEN productvoordelen',
+                    'KEINE Testbehauptungen',
+                    'KEINE Kaufberatung',
+                    'KEINE Produktvorteile',
                 ],
                 'must_treat' => [
-                    'TITLE: Introduceer het nut van reviews bij het oriënteren (30–50 tekens).',
-                    'TEXT: Leg uit welke inzichten reviews geven (ervaring, gebruik, beperkingen), zonder aanbeveling.',
+                    'TITLE: Führen Sie den Nutzen von Bewertungen beim Orientieren ein (30–50 Zeichen).',
+                    'TEXT: Erklären Sie, welche Einblicke Bewertungen geben (Erfahrung, Verwendung, Einschränkungen), ohne Empfehlung.',
                 ],
                 'lengths' => [
-                    'title' => '30-50 tekens',
-                    'text' => '80-100 woorden',
+                    'title' => '30-50 Zeichen',
+                    'text' => '80-100 Wörter',
                 ],
-                'style' => 'Nuttig en neutraal. Helpt begrijpen, niet kiezen.',
+                'style' => 'Nützlich und neutral. Hilft verstehen, nicht wählen.',
             ],
 
 
@@ -668,70 +668,70 @@ PROMPT;
                     'section3_title',
                     'section3_text',
                 ],
-                'role' => 'Uitleg beoordelingskader voor reviews',
+                'role' => 'Erklärung Bewertungsrahmen für Reviews',
                 'forbidden' => [
-                    'GEEN test- of meetclaims',
-                    'GEEN aanbevelingen of voorkeuren',
-                    'GEEN merk- of modelvergelijkingen',
+                    'KEINE Test- oder Messbehauptungen',
+                    'KEINE Empfehlungen oder Präferenzen',
+                    'KEINE Marken- oder Modellvergleiche',
                 ],
                 'must_treat' => [
-                    'TITLE: Leg uit dat dit blok beschrijft waarop reviews zijn gebaseerd (30–50 tekens).',
-                    'INTRO: Beschrijf in algemene zin welke aspecten terugkomen in reviews, zonder claims.',
-                    'SECTION 1: Aspect 1 dat vaak terugkomt in gebruikerservaringen. Voeg 1-2 relevante interne links toe uit de INTERNE LINKS lijst als het past bij de context.',
-                    'SECTION 2: Aspect 2 dat invloed heeft op dagelijks gebruik. Voeg 1-2 relevante interne links toe uit de INTERNE LINKS lijst als het past bij de context.',
-                    'SECTION 3: Aspect 3 dat verwachtingen en praktijk met elkaar verbindt. Voeg 1-2 relevante interne links toe uit de INTERNE LINKS lijst als het past bij de context.',
+                    'TITLE: Erklären Sie, dass dieser Block beschreibt, worauf Bewertungen basieren (30–50 Zeichen).',
+                    'INTRO: Beschreiben Sie allgemein, welche Aspekte in Bewertungen zurückkommen, ohne Behauptungen.',
+                    'SECTION 1: Aspekt 1, der häufig in Benutzererfahrungen zurückkommt. Fügen Sie 1-2 relevante interne Links aus der INTERNE LINKS Liste hinzu, wenn es zum Kontext passt.',
+                    'SECTION 2: Aspekt 2, der Einfluss auf die tägliche Verwendung hat. Fügen Sie 1-2 relevante interne Links aus der INTERNE LINKS Liste hinzu, wenn es zum Kontext passt.',
+                    'SECTION 3: Aspekt 3, der Erwartungen und Praxis miteinander verbindet. Fügen Sie 1-2 relevante interne Links aus der INTERNE LINKS Liste hinzu, wenn es zum Kontext passt.',
                 ],
                 'lengths' => [
-                    'title' => '30-50 tekens',
-                    'intro' => '60-80 woorden',
-                    'section1_title' => '30-50 tekens',
-                    'section1_text' => '180-200 woorden',
-                    'section2_title' => '30-50 tekens',
-                    'section2_text' => '180-200 woorden',
-                    'section3_title' => '30-50 tekens',
-                    'section3_text' => '180-200 woorden',
+                    'title' => '30-50 Zeichen',
+                    'intro' => '60-80 Wörter',
+                    'section1_title' => '30-50 Zeichen',
+                    'section1_text' => '180-200 Wörter',
+                    'section2_title' => '30-50 Zeichen',
+                    'section2_text' => '180-200 Wörter',
+                    'section3_title' => '30-50 Zeichen',
+                    'section3_text' => '180-200 Wörter',
                 ],
-                'style' => 'Transparant en beschrijvend. Objectief kader, geen oordeel.',
+                'style' => 'Transparent und beschreibend. Objektiver Rahmen, kein Urteil.',
             ],
 
             // BLOGS BLOCKS
             'blogs.hero' => [
                 'units' => ['title', 'subtitle'],
-                'role' => 'Blogoverzicht: educatie + context',
+                'role' => 'Blog-Übersicht: Bildung + Kontext',
                 'forbidden' => [
-                    'GEEN koopadvies of aanbevelingen',
-                    'GEEN superlatieven of claims',
-                    'GEEN marketingtaal',
+                    'KEINE Kaufberatung oder Empfehlungen',
+                    'KEINE Superlative oder Behauptungen',
+                    'KEINE Marketingsprache',
                 ],
                 'must_treat' => [
-                    'TITLE: Benoem dat dit een overzicht is van blogs over {niche}.',
-                    'SUBTITLE: Leg uit welk type kennis en inzichten blogs bieden (uitleg, verdieping, context).',
+                    'TITLE: Benennen Sie, dass dies eine Übersicht von Blogs über {niche} ist.',
+                    'SUBTITLE: Erklären Sie, welche Art von Wissen und Einblicken Blogs bieten (Erklärung, Vertiefung, Kontext).',
                 ],
                 'lengths' => [
-                    'title' => '40-60 tekens',
-                    'subtitle' => '100-180 tekens',
+                    'title' => '40-60 Zeichen',
+                    'subtitle' => '100-180 Zeichen',
                 ],
-                'style' => 'Informatief en uitnodigend. Focus op leren, niet verkopen.',
+                'style' => 'Informativ und einladend. Fokus auf Lernen, nicht Verkaufen.',
             ],
 
 
             'blogs.intro' => [
                 'units' => ['title', 'text'],
-                'role' => 'Waarom blogs lezen binnen deze niche?',
+                'role' => 'Warum Blogs lesen innerhalb dieser Nische?',
                 'forbidden' => [
-                    'GEEN koopadvies',
-                    'GEEN productvoordelen',
-                    'GEEN testclaims',
+                    'KEINE Kaufberatung',
+                    'KEINE Produktvorteile',
+                    'KEINE Testbehauptungen',
                 ],
                 'must_treat' => [
-                    'TITLE: Introduceer het doel van blogs in één korte zin (20–40 tekens).',
-                    'TEXT: Leg uit welke rol blogs spelen bij oriënteren en begrijpen, zonder richting te geven.',
+                    'TITLE: Führen Sie das Ziel von Blogs in einem kurzen Satz ein (20–40 Zeichen).',
+                    'TEXT: Erklären Sie, welche Rolle Blogs beim Orientieren und Verstehen spielen, ohne Richtung zu geben.',
                 ],
                 'lengths' => [
-                    'title' => '20-40 tekens',
-                    'text' => '70-90 woorden',
+                    'title' => '20-40 Zeichen',
+                    'text' => '70-90 Wörter',
                 ],
-                'style' => 'Toegankelijk en verhelderend. Neutraal van toon.',
+                'style' => 'Zugänglich und aufklärend. Neutraler Ton.',
             ],
 
 
@@ -746,30 +746,30 @@ PROMPT;
                     'section3_title',
                     'section3_text',
                 ],
-                'role' => 'Overzicht van blogonderwerpen binnen {niche}',
+                'role' => 'Übersicht der Blog-Themen innerhalb {niche}',
                 'forbidden' => [
-                    'GEEN koopadvies of aanbevelingen',
-                    'GEEN merk- of modelvoorkeuren',
-                    'GEEN test- of reviewclaims',
+                    'KEINE Kaufberatung oder Empfehlungen',
+                    'KEINE Marken- oder Modellpräferenzen',
+                    'KEINE Test- oder Bewertungsbehauptungen',
                 ],
                 'must_treat' => [
-                    'TITLE: Leg uit dat dit blok beschrijft welke onderwerpen aan bod komen (30-50 tekens).',
-                    'INTRO: Beschrijf in algemene zin welke kennisgebieden of themas terugkomen in blogs.',
-                    'SECTION 1: Thema 1 dat verdieping geeft in gebruik of achtergrond. Voeg 1-2 relevante interne links toe uit de INTERNE LINKS lijst als het past bij de context.',
-                    'SECTION 2: Thema 2 dat inzicht geeft in verschillen of aandachtspunten. Voeg 1-2 relevante interne links toe uit de INTERNE LINKS lijst als het past bij de context.',
-                    'SECTION 3: Thema 3 dat helpt bij begrijpen of oriënteren. Voeg 1-2 relevante interne links toe uit de INTERNE LINKS lijst als het past bij de context.',
+                    'TITLE: Erklären Sie, dass dieser Block beschreibt, welche Themen behandelt werden (30-50 Zeichen).',
+                    'INTRO: Beschreiben Sie allgemein, welche Wissensgebiete oder Themen in Blogs zurückkommen.',
+                    'SECTION 1: Thema 1, das Vertiefung in Verwendung oder Hintergrund gibt. Fügen Sie 1-2 relevante interne Links aus der INTERNE LINKS Liste hinzu, wenn es zum Kontext passt.',
+                    'SECTION 2: Thema 2, das Einblick in Unterschiede oder Aufmerksamkeitspunkte gibt. Fügen Sie 1-2 relevante interne Links aus der INTERNE LINKS Liste hinzu, wenn es zum Kontext passt.',
+                    'SECTION 3: Thema 3, das beim Verstehen oder Orientieren hilft. Fügen Sie 1-2 relevante interne Links aus der INTERNE LINKS Liste hinzu, wenn es zum Kontext passt.',
                 ],
                 'lengths' => [
-                    'title' => '30-50 tekens',
-                    'intro' => '60-80 woorden',
-                    'section1_title' => '30-50 tekens',
-                    'section1_text' => '180-200 woorden',
-                    'section2_title' => '30-50 tekens',
-                    'section2_text' => '180-200 woorden',
-                    'section3_title' => '30-50 tekens',
-                    'section3_text' => '180-200 woorden',
+                    'title' => '30-50 Zeichen',
+                    'intro' => '60-80 Wörter',
+                    'section1_title' => '30-50 Zeichen',
+                    'section1_text' => '180-200 Wörter',
+                    'section2_title' => '30-50 Zeichen',
+                    'section2_text' => '180-200 Wörter',
+                    'section3_title' => '30-50 Zeichen',
+                    'section3_text' => '180-200 Wörter',
                 ],
-                'style' => 'Informatief en gestructureerd. Overzicht zonder oordeel.',
+                'style' => 'Informativ und strukturiert. Übersicht ohne Urteil.',
             ],
 
         ];

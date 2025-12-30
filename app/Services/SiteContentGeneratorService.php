@@ -31,7 +31,7 @@ class SiteContentGeneratorService
         $primaryColor = $input['primary_color'] ?? '#7c3aed';
 
         $prompt = <<<PROMPT
-Je bent conversion-strategist voor Nederlandse affiliate websites.
+Sie sind Conversion-Stratege für deutsche Affiliate-Websites.
 
 CONTEXT:
 - Niche: {$niche}
@@ -83,7 +83,7 @@ PROMPT;
     /**
      * DELEGATED TO ContentBlocksGeneratorService
      */
-    public function generateContentBlocks(string $niche, string $siteName, ?string $uniqueFocus = null, string $format = 'html'): array
+    public function generateContentBlocks(string $niche, string $siteName, ?string $uniqueFocus = null, string $format = 'hybrid'): array
     {
         $contentBlocksService = app(ContentBlocksGeneratorService::class);
         return $contentBlocksService->generate($niche, $siteName, $uniqueFocus, $format);
@@ -93,7 +93,7 @@ PROMPT;
      * OLD METHOD - DELETE LATER
      * Keeping temporarily for reference
      */
-    private function OLD_generateContentBlocks_DEPRECATED(string $niche, string $siteName, ?string $uniqueFocus = null, string $format = 'html'): array
+    private function OLD_generateContentBlocks_DEPRECATED(string $niche, string $siteName, ?string $uniqueFocus = null, string $format = 'hybrid'): array
     {
         $currentYear = date('Y');
         $currentMonth = \Carbon\Carbon::now('Europe/Amsterdam')->locale('nl')->translatedFormat('F');
