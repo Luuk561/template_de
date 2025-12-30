@@ -441,7 +441,7 @@ PROMPT;
             ],
 
             // PRODUKTE BLOCKS
-            'producten_index_hero_titel' => [
+            'Produkte_index_hero_titel' => [
                 'units' => ['title'],
                 'role' => 'Produktübersicht: Positionierung + Aktion',
                 'forbidden' => [
@@ -459,7 +459,7 @@ PROMPT;
                 'style' => 'Funktional und klar. Keine Marketingsprache, reine Übersicht.',
             ],
 
-            'producten_index_info_blok_1' => [
+            'Produkte_index_info_blok_1' => [
                 'units' => ['title', 'text'],
                 'role' => 'Warum diese Seite zum Vergleichen verwenden?',
                 'forbidden' => [
@@ -479,7 +479,7 @@ PROMPT;
                 'style' => 'Erklärend und neutral. Fokus auf Funktionalität, nicht auf Überzeugen.',
             ],
 
-            'producten_index_info_blok_2' => [
+            'Produkte_index_info_blok_2' => [
                 'units' => ['title', 'text'],
                 'role' => 'Vergleichskriterien: Worauf achten Sie bei {niche}?',
                 'forbidden' => [
@@ -499,7 +499,7 @@ PROMPT;
                 'style' => 'Praktisch und informativ. Hilft strukturieren, nicht entscheiden.',
             ],
 
-            'producten_top_hero_titel' => [
+            'Produkte_top_hero_titel' => [
                 'units' => ['title'],
                 'role' => 'Top-Auswahl Übersicht: aktueller Kontext + Abgrenzung',
                 'forbidden' => [
@@ -517,7 +517,7 @@ PROMPT;
                 'style' => 'Geschäftlich und aktuell. Gibt Kontext, kein Urteil.',
             ],
 
-            'producten_top_seo_blok' => [
+            'Produkte_top_seo_blok' => [
                 'units' => [
                     'title',
                     'intro',
