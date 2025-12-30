@@ -557,7 +557,7 @@ PROMPT;
 
 
             // MARKEN BLOCKS
-            'merken_index_hero_titel' => [
+            'Marken_index_hero_titel' => [
                 'units' => ['title', 'subtitle'],
                 'role' => 'Markenübersicht: Positionierung + Erklärung',
                 'forbidden' => [
@@ -579,7 +579,7 @@ PROMPT;
             ],
 
 
-            'merken_index_info_blok' => [
+            'Marken_index_info_blok' => [
                 'units' => [
                     'title',
                     'intro',
@@ -617,7 +617,7 @@ PROMPT;
             ],
 
             // BEWERTUNGEN BLOCKS
-            'reviews.hero' => [
+            'Testberichte.hero' => [
                 'units' => ['title', 'subtitle'],
                 'role' => 'Bewertungsübersicht: Kontext + Erwartung',
                 'forbidden' => [
@@ -637,7 +637,7 @@ PROMPT;
             ],
 
 
-            'reviews_index_intro' => [
+            'Testberichte_index_intro' => [
                 'units' => ['title', 'text'],
                 'role' => 'Warum Bewertungen lesen?',
                 'forbidden' => [
@@ -657,7 +657,7 @@ PROMPT;
             ],
 
 
-            'reviews_index_seo_blok' => [
+            'Testberichte_index_seo_blok' => [
                 'units' => [
                     'title',
                     'intro',
@@ -695,7 +695,7 @@ PROMPT;
             ],
 
             // BLOGS BLOCKS
-            'blogs.hero' => [
+            'Ratgeber.hero' => [
                 'units' => ['title', 'subtitle'],
                 'role' => 'Blog-Übersicht: Bildung + Kontext',
                 'forbidden' => [
@@ -715,7 +715,7 @@ PROMPT;
             ],
 
 
-            'blogs.intro' => [
+            'Ratgeber.intro' => [
                 'units' => ['title', 'text'],
                 'role' => 'Warum Blogs lesen innerhalb dieser Nische?',
                 'forbidden' => [
@@ -735,7 +735,7 @@ PROMPT;
             ],
 
 
-            'blogs.seo' => [
+            'Ratgeber.seo' => [
                 'units' => [
                     'title',
                     'intro',
