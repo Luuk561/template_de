@@ -1,21 +1,14 @@
-@props(['product' => null, 'text' => 'Ansehen op bol.com', 'classes' => ''])
+@props(['product' => null, 'text' => 'Preis prüfen auf Amazon', 'classes' => ''])
 
-@if($product && $product->url)
+@if($product)
   @php
-    $sid = env('BOL_SITE_ID', 'fallback_id');
-    $affiliateLink = 'https://partner.bol.com/click/click?p=2&t=url&s=' . $sid . '&f=TXL&url=' . urlencode($product->url) . '&name=' . urlencode($product->title ?? '');
+    $affiliateLink = getProductAffiliateLink($product);
   @endphp
 
   <div class="border border-gray-200 rounded-3xl p-8 {{ $classes }}">
     <div class="text-center">
-      <h3 class="text-xl font-light text-gray-900 mb-4">{{ $product->title ?? 'Product' }}</h3>
-      
-      @if($product->price)
-        <p class="text-3xl font-light text-gray-900 mb-6">
-          €{{ number_format($product->price, 2, ',', '.') }}
-        </p>
-      @endif
-      
+      <h3 class="text-xl font-light text-gray-900 mb-6">{{ $product->title ?? 'Product' }}</h3>
+
       <a href="{{ $affiliateLink }}"
          target="_blank"
          rel="nofollow sponsored"

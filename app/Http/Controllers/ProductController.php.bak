@@ -48,6 +48,7 @@ class ProductController extends Controller
         $products = $query->paginate(20);
 
         $merken = Product::whereNotNull('brand')
+            ->where('price', '>=', 25)
             ->select('brand')
             ->distinct()
             ->orderBy('brand')
@@ -65,6 +66,7 @@ class ProductController extends Controller
         // Get related products: same brand, exclude current product
         $relatedProducts = Product::where('id', '!=', $product->id)
             ->where('is_available', true) // Only available products
+            ->where('price', '>=', 25) // Minimaal €25
             ->when($product->brand, function($query) use ($product) {
                 // Prefer same brand
                 $query->where('brand', $product->brand);
@@ -103,6 +105,7 @@ class ProductController extends Controller
         // Final fallback: just get best rated products
         if ($products->count() < 5) {
             $products = Product::with(['review', 'blogPosts'])
+                ->where('price', '>=', 25)
                 ->where('rating_average', '>=', 3.5)
                 ->orderByDesc('rating_average')
                 ->limit(5)
@@ -127,6 +130,7 @@ class ProductController extends Controller
 
         // Get candidate products sorted by popularity score from Bol.com
         return Product::with(['review', 'blogPosts'])
+            ->where('price', '>=', 25)
             ->whereNotIn('id', $excludeIds)
             ->where('rating_average', '>=', 4.0)
             ->where('rating_count', '>=', 3)
@@ -141,6 +145,7 @@ class ProductController extends Controller
     {
         // No exclusions, just get best products
         return Product::with(['review', 'blogPosts'])
+            ->where('price', '>=', 25)
             ->where('rating_average', '>=', 3.5)
             ->orderByDesc('popularity_score')
             ->orderByDesc('rating_average')
@@ -153,6 +158,7 @@ class ProductController extends Controller
     {
         $merken = Product::select('brand', DB::raw('COUNT(*) as aantal'), DB::raw('AVG(rating_average) as gemiddelde_rating'))
             ->whereNotNull('brand')
+            ->where('price', '>=', 25)
             ->groupBy('brand')
             ->having('aantal', '>=', 3)
             ->orderByDesc('gemiddelde_rating')
@@ -167,6 +173,7 @@ class ProductController extends Controller
 
         // 1. Beste rating (4.5+ sterren)
         $bestRated = Product::where('rating_average', '>=', 4.5)
+            ->where('price', '>=', 25)
             ->orderBy('rating_average', 'desc')
             ->orderBy('rating_count', 'desc')
             ->first();
@@ -177,6 +184,7 @@ class ProductController extends Controller
 
         // 2. Most popular (highest rating count)
         $mostPopular = Product::where('rating_count', '>=', 10)
+            ->where('price', '>=', 25)
             ->whereNotIn('id', $picks->pluck('id'))
             ->orderBy('rating_count', 'desc')
             ->first();
@@ -187,6 +195,7 @@ class ProductController extends Controller
 
         // 3. Nieuwste toevoeging (< 14 dagen)
         $newest = Product::where('created_at', '>=', now()->subDays(14))
+            ->where('price', '>=', 25)
             ->whereNotIn('id', $picks->pluck('id'))
             ->orderBy('created_at', 'desc')
             ->first();
@@ -198,6 +207,7 @@ class ProductController extends Controller
         // 4. Fallback: random goed product
         while ($picks->count() < 4) {
             $fallback = Product::where('rating_average', '>=', 3.5)
+                ->where('price', '>=', 25)
                 ->whereNotIn('id', $picks->pluck('id'))
                 ->inRandomOrder()
                 ->first();

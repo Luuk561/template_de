@@ -1,7 +1,7 @@
 @props(['product', 'size' => 'default', 'classes' => ''])
 
 @php
-    $affiliateLink = getBolAffiliateLink($product->url, $product->title);
+    $affiliateLink = getProductAffiliateLink($product);
     $isAvailable = $product->is_available ?? true;
 
     $sizeClasses = match($size) {
@@ -16,7 +16,7 @@
        target="_blank"
        rel="nofollow sponsored"
        class="cta-button text-white font-bold rounded-lg transition-all hover:opacity-90 text-center inline-flex items-center justify-center gap-2 {{ $sizeClasses }} {{ $classes }}">
-        Ansehen op bol.com
+        Preis prüfen auf Amazon
     </a>
 @else
     <div class="flex flex-col gap-2 {{ $classes }}">

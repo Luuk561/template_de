@@ -59,6 +59,36 @@ if (! function_exists('getAmazonDeAffiliateLink')) {
     }
 }
 
+if (! function_exists('getProductAffiliateLink')) {
+    /**
+     * Get the affiliate link for a product
+     * Prioritizes the amazon_affiliate_link from database, falls back to Bol.com
+     *
+     * @param \App\Models\Product $product
+     * @return string Affiliate link
+     */
+    function getProductAffiliateLink(\App\Models\Product $product): string
+    {
+        // If product has Amazon affiliate link in database, use that
+        if (!empty($product->amazon_affiliate_link)) {
+            return $product->amazon_affiliate_link;
+        }
+
+        // Fallback to Bol.com (temporary for demo)
+        if (!empty($product->product_url)) {
+            return getBolAffiliateLink($product->product_url, $product->title);
+        }
+
+        // Last resort: generate Amazon link from ASIN
+        if (!empty($product->asin)) {
+            return getAmazonDeAffiliateLink($product->asin, $product->title);
+        }
+
+        // No link available
+        return '#';
+    }
+}
+
 if (! function_exists('formatPrice')) {
     function formatPrice(?float $price): string
     {
@@ -150,7 +180,7 @@ if (! function_exists('linkProductMentions')) {
                 // Replace only first occurrence with preview-enabled link
                 $link = sprintf(
                     '<a href="%s" class="product-link text-blue-600 hover:text-blue-800 underline font-medium relative" %s>%s</a>',
-                    route('producten.show', $product->slug),
+                    route('produkte.show', $product->slug),
                     $dataAttrs,
                     $matched
                 );

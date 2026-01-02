@@ -275,10 +275,7 @@ body.bf-page {
                 <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-8">
                     @foreach($Produkte as $product)
                         @php
-                            $bolUrl = $product->url ?? null;
-                            $affiliateLink = $bolUrl
-                                ? getBolAffiliateLink($bolUrl, $product->title)
-                                : null;
+                            $affiliateLink = getProductAffiliateLink($product);
                             $hasDiscount = $product->strikethrough_price && $product->price < $product->strikethrough_price;
                             $discountPct = $hasDiscount
                                 ? round(100 - ($product->price / $product->strikethrough_price * 100))
@@ -312,7 +309,7 @@ body.bf-page {
                             <div class="bf-image-container">
                                 <a href="{{ route('produkte.show', $product->slug) }}" 
                                    class="block w-full h-40 flex items-center justify-center">
-                                    <img src="{{ $product->image_url ?? 'https://via.placeholder.com/300x300?text=Geen+Afbeelding' }}"
+                                    <img src="{{ $product->image_url ?? 'https://via.placeholder.com/300x300?text=Kein+Bild' }}"
                                          alt="{{ $product->title }}" 
                                          class="max-h-full max-w-full object-contain" 
                                          loading="lazy">

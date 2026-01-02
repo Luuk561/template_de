@@ -24,6 +24,7 @@ class HomeController extends Controller
     {
         // Eerst: producten met popularity scores EN goede rating (populair op Bol.com + betrouwbaar)
         $popularProducts = Product::with(['review', 'blogPosts'])
+            ->where('price', '>=', 25)
             ->where('rating_average', '>=', 4.0)
             ->where('popularity_score', '>', 0)
             ->orderByDesc('popularity_score')
@@ -38,6 +39,7 @@ class HomeController extends Controller
             $excludeIds = $popularProducts->pluck('id')->toArray();
 
             $fillProducts = Product::with(['review', 'blogPosts'])
+                ->where('price', '>=', 25)
                 ->where('rating_average', '>=', 4.0)
                 ->whereNotIn('id', $excludeIds)
                 ->orderByDesc('rating_average')

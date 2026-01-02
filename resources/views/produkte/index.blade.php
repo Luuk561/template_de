@@ -134,7 +134,7 @@
 
                 <!-- Alle Filter rechtsboven -->
                 <div class="lg:w-3/4">
-                    <div class="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-5 gap-3 mb-4">
+                    <div class="grid grid-cols-2 sm:grid-cols-3 gap-3 mb-4">
                         <!-- Zoekveld -->
                         <div>
                             <input type="text" name="search" id="search" value="{{ request('search') }}" placeholder="Suchen..."
@@ -146,11 +146,10 @@
                         <div>
                             <select name="sort" id="sort"
                                 class="w-full border border-gray-300 rounded-lg shadow-sm focus:ring focus:ring-opacity-50 px-4 py-2 text-sm">
-                                <option value="">Sortieren op...</option>
-                                <option value="popular" {{ request('sort') == 'popular' ? 'selected' : '' }}>Beliebtste</option>
-                                <option value="price_asc" {{ request('sort') == 'price_asc' ? 'selected' : '' }}>Preis: Laag → Hoog</option>
-                                <option value="price_desc" {{ request('sort') == 'price_desc' ? 'selected' : '' }}>Preis: Hoog → Laag</option>
-                                <option value="rating" {{ request('sort') == 'rating' ? 'selected' : '' }}>Hoogste beoordeling</option>
+                                <option value="">Sortieren nach...</option>
+                                <option value="popular" {{ request('sort') == 'popular' ? 'selected' : '' }}>Beliebteste</option>
+                                <option value="rating" {{ request('sort') == 'rating' ? 'selected' : '' }}>Beste Bewertung</option>
+                                <option value="newest" {{ request('sort') == 'newest' ? 'selected' : '' }}>Neueste</option>
                             </select>
                         </div>
 
@@ -158,44 +157,25 @@
                         <div>
                             <select name="brand" id="brand"
                                 class="w-full border border-gray-300 rounded-lg shadow-sm focus:ring focus:ring-opacity-50 px-4 py-2 text-sm">
-                                <option value="">Alle merken</option>
+                                <option value="">Alle Marken</option>
                                 @foreach($merken as $merk)
                                     <option value="{{ $merk }}" {{ request('brand') == $merk ? 'selected' : '' }}>{{ $merk }}</option>
                                 @endforeach
                             </select>
                         </div>
-
-                        <!-- Min Preis -->
-                        <div>
-                            <input type="number" name="min_price" id="min_price" value="{{ request('min_price') }}" min="0" placeholder="Min Preis (€)"
-                                class="w-full border border-gray-300 rounded-lg shadow-sm focus:ring focus:ring-opacity-50 px-4 py-2 text-sm">
-                        </div>
-
-                        <!-- Max Preis -->
-                        <div>
-                            <input type="number" name="max_price" id="max_price" value="{{ request('max_price') }}" min="0" placeholder="Max Preis (€)"
-                                class="w-full border border-gray-300 rounded-lg shadow-sm focus:ring focus:ring-opacity-50 px-4 py-2 text-sm">
-                        </div>
                     </div>
 
                     <!-- Buttons + Checkbox onder de filters -->
                     <div class="flex flex-wrap items-center gap-4">
-                        <label class="inline-flex items-center space-x-2">
-                            <input type="checkbox" name="discount" value="1" {{ request('discount') ? 'checked' : '' }}
-                                class="border-gray-300 rounded w-4 h-4"
-                                style="accent-color: var(--primary-color);">
-                            <span class="text-sm font-medium text-gray-700">Alleen aanbiedingen</span>
-                        </label>
-
                         <button type="submit"
                             class="cta-primary text-white font-semibold py-2 px-6 rounded-lg shadow-sm hover:shadow-md transition-all duration-200 text-sm">
-                            Toepassen
+                            Filter anwenden
                         </button>
 
                         <a href="{{ route('produkte.index') }}#filters"
                            class="text-sm font-medium hover:underline transition-colors"
                            style="color: var(--primary-color);">
-                            Wis filters
+                            Filter zurücksetzen
                         </a>
                     </div>
                 </div>
@@ -213,7 +193,7 @@
             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z"/>
         </svg>
         <p class="text-sm sm:text-base text-gray-800 font-semibold">
-            Twijfel tussen meerdere opties? <span class="text-blue-700">Vink 2-3 Produkte aan</span> om ze naast elkaar te vergelijken
+            Unentschlossen zwischen mehreren Optionen? <span class="text-blue-700">Wählen Sie 2-3 Produkte aus</span>, um sie nebeneinander zu vergleichen
         </p>
     </div>
 </section>
@@ -223,13 +203,10 @@
     <div class="grid grid-cols-1 min-[480px]:grid-cols-2 md:grid-cols-3 xl:grid-cols-4 gap-4 sm:gap-6">
         @forelse($products as $product)
             @php
-                $affiliateLink = getBolAffiliateLink($product->url, $product->title);
+                $affiliateLink = getProductAffiliateLink($product);
             @endphp
 
             @php
-                $savings = ($product->strikethrough_price && $product->price) 
-                    ? $product->strikethrough_price - $product->price 
-                    : 0;
                 $rating = $product->rating_average ?? 0;
                 $fullStars = floor($rating);
                 $hasHalfStar = ($rating - $fullStars) >= 0.5;
@@ -237,29 +214,16 @@
 
             <div class="product-card p-6 flex flex-col h-full relative transition-all duration-200">
                 <!-- ✅ Checkbox rechtsboven -->
-                <input type="checkbox" 
+                <input type="checkbox"
                         class="compare-checkbox absolute top-3 right-3 w-6 h-6 sm:w-5 sm:h-5 accent-blue-600 rounded z-10"
-                        data-ean="{{ $product->ean }}" 
-                        title="Vergleichen dit product"
-                        aria-label="Vink aan om {{ $product->title }} te vergelijken" />
-
-                @if($savings > 0)
-                    @if($bfActive)
-                        <span class="absolute top-3 left-3 rounded-lg px-2.5 py-1 text-[10px] font-bold shadow-md text-black border border-yellow-500"
-                            style="background: linear-gradient(135deg,#fff7cc 0%,#ffe38f 25%,#ffd766 50%,#e9b22d 75%,#fff7cc 100%);">
-                            Black Friday
-                        </span>
-                    @else
-                        <span class="absolute top-3 left-3 bg-red-600 text-white text-[10px] px-2.5 py-1 rounded-lg font-bold shadow-md">
-                            Angebot
-                        </span>
-                    @endif
-                @endif
+                        data-ean="{{ $product->ean }}"
+                        title="Produkt vergleichen"
+                        aria-label="Zum Vergleichen von {{ $product->title }} auswählen" />
 
                 <!-- Afbeelding -->
                 <div class="w-full h-28 sm:h-36 flex items-center justify-center mb-4">
-                    <img src="{{ $product->image_url ?? 'https://via.placeholder.com/300x300?text=Geen+Afbeelding' }}"
-                         alt="{{ $product->title }} - {{ $product->brand ?? 'Product' }} - €{{ number_format($product->price ?? 0, 2, ',', '.') }}"
+                    <img src="{{ $product->image_url ?? 'https://via.placeholder.com/300x300?text=Kein+Bild' }}"
+                         alt="{{ $product->title }} - {{ $product->brand ?? 'Product' }} Test und Vergleich"
                          class="max-h-full max-w-full object-contain" loading="lazy">
                 </div>
 
@@ -279,47 +243,32 @@
                 @endif
 
                 <!-- Labels -->
-                <div class="flex justify-center flex-wrap gap-1.5 text-[10px] mb-3">
+                <div class="flex justify-center flex-wrap gap-1.5 text-[10px] mb-4">
                     @if($product->review)
-                        <span class="bg-emerald-100 text-emerald-700 px-2.5 py-1 rounded-full font-semibold border border-emerald-200">Review</span>
+                        <span class="bg-emerald-100 text-emerald-700 px-2.5 py-1 rounded-full font-semibold border border-emerald-200">Testbericht</span>
                     @endif
                     @if($product->blogPosts->isNotEmpty())
-                        <span class="bg-blue-100 text-blue-700 px-2.5 py-1 rounded-full font-semibold border border-blue-200">Blog</span>
+                        <span class="bg-blue-100 text-blue-700 px-2.5 py-1 rounded-full font-semibold border border-blue-200">Ratgeber</span>
                     @endif
-                </div>
-
-                <!-- Preis -->
-                <div class="text-center mb-4">
-                    @if($savings > 0)
-                        <div class="inline-block text-white px-3 py-1.5 rounded-lg font-bold text-xs mb-2" style="background: linear-gradient(135deg, #22c55e 0%, #16a34a 100%); box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);">
-                            Sparen €{{ number_format($savings, 2, ',', '.') }}
-                        </div>
-                    @endif
-                    <div class="flex items-baseline justify-center gap-2">
-                        <p class="text-gray-900 font-black text-xl">€{{ number_format($product->price ?? 0, 2, ',', '.') }}</p>
-                        @if($savings > 0)
-                            <p class="text-gray-400 text-sm line-through">€{{ number_format($product->strikethrough_price, 2, ',', '.') }}</p>
-                        @endif
-                    </div>
                 </div>
 
                 <!-- Knoppen -->
                 <div class="mt-auto flex flex-col gap-2">
                     <a href="{{ $affiliateLink }}" target="_blank" rel="nofollow sponsored noopener"
                        class="cta-primary text-white text-sm font-semibold py-3 px-4 rounded-xl text-center transition-all duration-200 shadow-sm">
-                        Ansehen op bol.com
+                        Preis prüfen auf Amazon
                     </a>
                     <a href="{{ route('produkte.show', $product->slug) }}"
                        class="bg-white hover:bg-gray-50 text-gray-900 text-sm font-semibold py-3 px-4 rounded-xl text-center transition-all duration-200 border-2 border-gray-200 hover:border-gray-300 no-underline">
-                        Ansehen product
+                        Details ansehen
                     </a>
                 </div>
             </div>
         @empty
             <div class="col-span-full text-center py-16">
                 <img src="https://media.giphy.com/media/3og0IPxMM0erATueVW/giphy.gif" alt="Niks gevonden" class="mx-auto mb-6 w-48 h-auto">
-                <h3 class="text-2xl font-bold text-gray-800 mb-2">Geen Produkte gevonden</h3>
-                <p class="text-gray-600 max-w-xl mx-auto">Geen resultaat. Wis filters of probeer andere zoektermen.</p>
+                <h3 class="text-2xl font-bold text-gray-800 mb-2">Keine Produkte gefunden</h3>
+                <p class="text-gray-600 max-w-xl mx-auto">Kein Ergebnis. Löschen Sie die Filter oder versuchen Sie andere Suchbegriffe.</p>
             </div>
         @endforelse
     </div>
@@ -343,7 +292,7 @@
                 </div>
             @else
                 <div class="prose prose-gray prose-lg">
-                    {!! getContent('Produkte_index_info_blok_1', ['fallback' => '<p>Informatie volgt binnenkort.</p>']) !!}
+                    {!! getContent('Produkte_index_info_blok_1', ['fallback' => '<p>Informationen folgen in Kürze.</p>']) !!}
                 </div>
             @endif
         </div>
@@ -357,7 +306,7 @@
                 </div>
             @else
                 <div class="prose prose-gray prose-lg">
-                    {!! getContent('Produkte_index_info_blok_2', ['fallback' => '<p>Meer info wordt aangevuld.</p>']) !!}
+                    {!! getContent('Produkte_index_info_blok_2', ['fallback' => '<p>Weitere Informationen werden ergänzt.</p>']) !!}
                 </div>
             @endif
         </div>
@@ -387,9 +336,9 @@
             id="clear-selection"
             class="bg-red-600 hover:bg-red-700 text-white text-sm font-semibold py-2 px-4 rounded-full shadow transition focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-red-500"
             type="button"
-            title="Wis alle geselecteerde Produkte"
+            title="Alle ausgewählten Produkte löschen"
         >
-            Wis selectie
+            Auswahl löschen
         </button>
     </div>
 </div>
@@ -445,7 +394,7 @@
                 const selected = [...checkboxes].filter(cb => cb.checked);
                 if (selected.length > 3) {
                     cb.checked = false;
-                    alert('Je kunt maximaal 3 Produkte vergelijken.');
+                    alert('Sie können maximal 3 Produkte vergleichen.');
                     return;
                 }
                 updateBar();
@@ -463,14 +412,14 @@
 
             // ✅ Corrigeer dubbele telling door uniek te houden
             if (combined.length > 3) {
-                alert('Je kunt maximaal 3 Produkte vergelijken.');
+                alert('Sie können maximal 3 Produkte vergleichen.');
                 return;
             }
 
             if (combined.length >= 2) {
-                window.location.href = `/vergelijken?eans=${combined.join(',')}`;
+                window.location.href = `/vergleichen?eans=${combined.join(',')}`;
             } else {
-                alert('Selecteer minimaal twee Produkte om te vergelijken.');
+                alert('Wählen Sie mindestens zwei Produkte zum Vergleichen aus.');
             }
         });
 
@@ -503,7 +452,7 @@
     "@context": "https://schema.org",
     "@type": "CollectionPage",
     "name": "{{ getSetting('site_niche', 'Produkte') }} - {{ getSetting('site_name') }}",
-    "description": "Vergleichen en koop de beste {{ getSetting('site_niche', 'Produkte') }}. Filter op Preis, merk en Merkmale.",
+    "description": "Vergleichen Sie die besten {{ getSetting('site_niche', 'Produkte') }} und kaufen Sie smart. Filtern Sie nach Preis, Marke und Eigenschaften.",
     "mainEntity": {
         "@type": "ItemList",
         "numberOfItems": {{ $products->total() }},
@@ -525,9 +474,6 @@
                     @endif
                     "offers": {
                         "@type": "Offer",
-                        "price": "{{ $product->price }}",
-                        "priceCurrency": "EUR",
-                        "availability": "https://schema.org/InStock",
                         "url": "{{ $product->url }}"
                     },
                     @if($product->rating_average)

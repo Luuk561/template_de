@@ -12,7 +12,7 @@
 
 @section('content')
 @php
-    $affiliateLink = getBolAffiliateLink($product->url, $product->title);
+    $affiliateLink = getProductAffiliateLink($product);
 
     $defaultImage = '/images/fallback.jpg';
     $activeImage = $product->images->first()->image_url ?? $defaultImage;
@@ -130,24 +130,9 @@
                             </div>
                         @endif
 
-                        <!-- Price + CTA in header -->
+                        <!-- CTA in header -->
                         <div class="flex flex-col sm:flex-row sm:items-center gap-4" itemprop="offers" itemscope itemtype="https://schema.org/Offer">
-                            <div class="flex-1">
-                                <p class="text-3xl sm:text-4xl font-black text-gray-900">
-                                    €{{ number_format($product->price, 2, ',', '.') }}
-                                    <meta itemprop="price" content="{{ number_format($product->price, 2, '.', '') }}" />
-                                    <meta itemprop="priceCurrency" content="EUR" />
-                                    @if($product->strikethrough_price)
-                                        <span class="text-xl text-gray-400 line-through ml-3">
-                                            €{{ number_format($product->strikethrough_price, 2, ',', '.') }}
-                                        </span>
-                                    @endif
-                                </p>
-                                @if($product->strikethrough_price)
-                                    @php $savings = $product->strikethrough_price - $product->price; @endphp
-                                    <p class="text-sm font-bold text-green-600 mt-1">Sparen €{{ number_format($savings, 2, ',', '.') }}</p>
-                                @endif
-                            </div>
+                            <meta itemprop="url" content="{{ $product->url }}" />
                             <div class="flex flex-col gap-2">
                                 <x-product-cta :product="$product" classes="whitespace-nowrap" />
                                 @if(($product->is_available ?? true) && $product->delivery_time && (
@@ -174,12 +159,6 @@
                             </div>
                         </div>
                     </div>
-                    @if($product->strikethrough_price)
-                        @php $percentage = round((($product->strikethrough_price - $product->price) / $product->strikethrough_price) * 100); @endphp
-                        <div class="bg-red-600 text-white px-3 py-1 rounded-lg font-bold text-sm h-fit">
-                            -{{ $percentage }}%
-                        </div>
-                    @endif
                 </div>
             </div>
         </section>
@@ -220,7 +199,7 @@
                                     :class="selectedIndex === {{ $index }} ? 'ring-2' : 'ring-0'"
                                     style="--tw-ring-color: {{ $primaryColor }};"
                                     class="w-14 h-14 object-cover border border-gray-200 rounded cursor-pointer hover:opacity-75 transition"
-                                    alt="Afbeelding {{ $loop->iteration }}"
+                                    alt="Bild {{ $loop->iteration }}"
                                 >
                             @endforeach
                         </div>
@@ -376,11 +355,7 @@
     }
 
     $offers = Schema::offer()
-        ->price(number_format($product->price ?? 0, 2, '.', ''))
-        ->priceCurrency('EUR')
-        ->url($product->url)
-        ->availability(Schema::itemAvailability()->setProperty('@id', $availabilityUrl))
-        ->priceValidUntil(now()->addDays(30));
+        ->url($product->url);
 
     $structuredProduct = Schema::product()
         ->name($product->title)
@@ -422,11 +397,7 @@
     <div class="px-4 py-2.5">
         <div class="flex items-center justify-between gap-3">
             <div class="flex-1">
-                <p class="text-xl font-black text-gray-900">€{{ number_format($product->price, 2, ',', '.') }}</p>
-                @if($product->strikethrough_price)
-                    @php $savings = $product->strikethrough_price - $product->price; @endphp
-                    <p class="text-xs font-semibold text-green-600">-€{{ number_format($savings, 2, ',', '.') }}</p>
-                @endif
+                <p class="text-sm font-semibold text-gray-900">{{ Str::limit($product->title, 30) }}</p>
             </div>
             <x-product-cta :product="$product" classes="flex-shrink-0" />
         </div>
@@ -482,7 +453,7 @@
         @if(!($product->is_available ?? true))
             <div class="mb-6">
                 <h2 class="text-2xl font-bold text-gray-900 mb-1">Vergleichenbare Produkte</h2>
-                <p class="text-sm text-gray-600">Ansehen deze beschikbare alternatieven</p>
+                <p class="text-sm text-gray-600">Sehen Sie sich diese verfügbaren Alternativen an</p>
             </div>
         @else
             <h2 class="text-2xl font-bold text-gray-900 mb-6">Vergleichenbare Produkte</h2>
@@ -491,14 +462,14 @@
         <div class="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 gap-4">
             @foreach($relatedProducts as $relatedProduct)
                 @php
-                    $relatedAffiliateLink = getBolAffiliateLink($relatedProduct->url, $relatedProduct->title);
+                    $relatedAffiliateLink = getProductAffiliateLink($relatedProduct);
                     $relatedRating = $relatedProduct->rating_average ?? 0;
                 @endphp
 
                 <div class="bg-white rounded-lg border border-gray-200 hover:border-gray-300 p-4 flex flex-col h-full transition-all hover:shadow-sm">
                     <!-- Image -->
                     <div class="h-32 flex items-center justify-center mb-3">
-                        <img src="{{ $relatedProduct->image_url ?? 'https://via.placeholder.com/300x300?text=Geen+Afbeelding' }}"
+                        <img src="{{ $relatedProduct->image_url ?? 'https://via.placeholder.com/300x300?text=Kein+Bild' }}"
                              alt="{{ $relatedProduct->title }}"
                              class="max-h-full max-w-full object-contain" loading="lazy">
                     </div>
@@ -515,9 +486,6 @@
                             <span class="text-xs text-gray-500">{{ number_format($relatedRating, 1) }}</span>
                         </div>
                     @endif
-
-                    <!-- Price -->
-                    <p class="text-gray-900 font-black text-lg mb-3">€{{ number_format($relatedProduct->price ?? 0, 2, ',', '.') }}</p>
 
                     <!-- Buttons -->
                     <div class="mt-auto flex flex-col gap-2">

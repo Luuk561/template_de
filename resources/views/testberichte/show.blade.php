@@ -33,8 +33,8 @@
             // Custom affiliate product (e.g., Moovv)
             $affiliateLink = $customAffiliate['link'];
         } else {
-            // Regular bol.com product
-            $affiliateLink = getBolAffiliateLink($product->url, $product->title);
+            // Regular product
+            $affiliateLink = getProductAffiliateLink($product);
         }
     @endphp
 
@@ -62,11 +62,6 @@
                         <img src="{{ $review->image_url ?? $product->image_url }}"
                              alt="{{ Str::limit($customAffiliate['product_name'] ?? $product->title, 80) }}"
                              class="w-80 h-80 object-contain mx-auto">
-                        @if($product?->price)
-                            <p class="text-3xl font-light text-gray-600 mt-6">
-                                €{{ number_format($product->price, 2, ',', '.') }}
-                            </p>
-                        @endif
                     </div>
                 @endif
                 
@@ -178,7 +173,7 @@
                                                 <path fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clip-rule="evenodd" />
                                             </svg>
                                         </div>
-                                        <h3 class="text-xl font-bold text-gray-900 mb-4">Perfect als je:</h3>
+                                        <h3 class="text-xl font-bold text-gray-900 mb-4">Perfekt, wenn Sie:</h3>
                                         <ul class="space-y-3 text-lg text-gray-600 font-light">
                                             @foreach($json['verdict']['buy_if'] as $reason)
                                                 <li>{{ $reason }}</li>
@@ -194,7 +189,7 @@
                                                 <path fill-rule="evenodd" d="M8.257 3.099c.765-1.36 2.722-1.36 3.486 0l5.58 9.92c.75 1.334-.213 2.98-1.742 2.98H4.42c-1.53 0-2.493-1.646-1.743-2.98l5.58-9.92zM11 13a1 1 0 11-2 0 1 1 0 012 0zm-1-8a1 1 0 00-1 1v3a1 1 0 002 0V6a1 1 0 00-1-1z" clip-rule="evenodd" />
                                             </svg>
                                         </div>
-                                        <h3 class="text-xl font-bold text-gray-900 mb-4">Sla over als:</h3>
+                                        <h3 class="text-xl font-bold text-gray-900 mb-4">Überspringen, wenn Sie:</h3>
                                         <ul class="space-y-3 text-lg text-gray-600 font-light">
                                             @foreach($json['verdict']['skip_if'] as $reason)
                                                 <li>{{ $reason }}</li>
@@ -286,7 +281,7 @@
 
                         <a href="{{ $affiliateLink }}" target="_blank" rel="nofollow sponsored"
                            class="inline-block bg-yellow-400 hover:bg-yellow-500 text-black font-semibold py-2 px-4 rounded-full transition">
-                            Ansehen op bol
+                            Preis prüfen auf Amazon
                         </a>
                     </div>
                 </div>
@@ -449,7 +444,7 @@
 
                         <a href="{{ $affiliateLink }}" target="_blank" rel="nofollow sponsored"
                            class="inline-block bg-yellow-400 hover:bg-yellow-500 text-black font-semibold py-2 px-4 rounded-full transition">
-                            Ansehen op bol
+                            Preis prüfen auf Amazon
                         </a>
                     </div>
                 </div>
@@ -497,12 +492,37 @@
         </div>
     @endif
 
-    <!-- CTA onderaan -->
+    @if($isV3)
+    <!-- Modern CTA for V3 reviews -->
+    @php
+        $niche = getSetting('site_niche', 'Produkte');
+    @endphp
+    <div class="w-full bg-gray-50 py-16">
+        <div class="max-w-4xl mx-auto px-6 text-center">
+            <h2 class="text-2xl md:text-3xl font-bold text-gray-900 mb-4">
+                Weitere {{ $niche }} entdecken
+            </h2>
+            <p class="text-lg text-gray-600 mb-8 max-w-2xl mx-auto">
+                Vergleichen Sie verschiedene Modelle und finden Sie das perfekte Produkt für Ihre Bedürfnisse
+            </p>
+            <a href="{{ route('produkte.index') }}"
+               class="inline-flex items-center bg-gray-900 hover:bg-gray-800 text-white font-medium px-8 py-4 rounded-full transition-all duration-300 shadow-lg hover:shadow-xl transform hover:-translate-y-1">
+                Alle {{ $niche }} ansehen
+                <svg class="w-5 h-5 ml-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 8l4 4m0 0l-4 4m4-4H3" />
+                </svg>
+            </a>
+        </div>
+    </div>
+    @endif
+
+    @if(!($isV3))
+    <!-- CTA onderaan - Only for old reviews -->
     <div class="max-w-7xl mx-auto px-4">
         <section class="bg-gradient-to-r from-blue-600 to-blue-800 text-white rounded-xl shadow-lg p-6 sm:p-8 mb-16 text-center">
-            <h2 class="text-2xl sm:text-3xl font-bold mb-4">Benieuwd naar andere Produkte?</h2>
+            <h2 class="text-2xl sm:text-3xl font-bold mb-4">Neugierig auf andere Produkte?</h2>
             <p class="text-base sm:text-lg mb-6 max-w-2xl mx-auto">
-                Entdecken ons volledige assortiment en vind het product dat het beste bij jouw wensen past.
+                Entdecken Sie unser vollständiges Sortiment und finden Sie das Produkt, das am besten zu Ihren Wünschen passt.
             </p>
             <a href="{{ route('produkte.index') }}"
             class="inline-block bg-white text-blue-800 font-semibold py-3 px-8 rounded-full shadow-lg hover:bg-gray-100 transition duration-200 ease-in-out focus:outline-none focus:ring-2 focus:ring-white focus:ring-offset-2">
@@ -513,10 +533,11 @@
         <!-- Teruglink -->
         <div class="mt-12 text-center">
             <a href="{{ route('testberichte.index') }}" class="text-blue-600 hover:text-blue-800 font-semibold text-sm">
-                &larr; Terug naar alle Testberichte
+                &larr; Zurück zu allen Testberichten
             </a>
         </div>
     </div>
+    @endif
 @php
     use Spatie\SchemaOrg\Schema;
 
@@ -566,15 +587,12 @@
              class="w-12 h-12 object-contain rounded-lg">
         <div class="flex-1 min-w-0">
             <p class="text-sm font-medium text-gray-900 truncate">{{ Str::limit($product->title, 25) }}</p>
-            @if($product->price)
-                <p class="text-lg font-bold text-gray-900">€{{ number_format($product->price, 2, ',', '.') }}</p>
-            @endif
         </div>
         <a href="{{ $affiliateLink }}" 
            target="_blank"
            rel="nofollow sponsored"
            class="bg-green-600 hover:bg-green-700 text-white font-semibold px-4 py-2 rounded-xl text-sm transition-colors duration-200 whitespace-nowrap">
-            Ansehen op bol.com
+            Preis prüfen
         </a>
     </div>
 </div>

@@ -17,8 +17,8 @@
 @section('content')
 @php
     $secondImage = $post->product?->images->get(1)?->url ?? $post->product?->image_url;
-    $affiliateLink = $post->product && $post->product->url
-        ? getBolAffiliateLink($post->product->url, $post->product->title)
+    $affiliateLink = $post->product
+        ? getProductAffiliateLink($post->product)
         : '#';
 @endphp
 
@@ -47,7 +47,7 @@
                 <svg class="w-4 h-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7" />
                 </svg>
-                Terug naar overzicht
+                Zurück zur Übersicht
             </a>
         </div>
         
@@ -77,7 +77,7 @@
                             <svg class="w-4 h-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z" />
                             </svg>
-                            {{ $post->created_at->format('d M Y') }} • {{ ceil(str_word_count(strip_tags($post->content)) / 200) }} min leestijd
+                            {{ $post->created_at->format('d M Y') }} • {{ ceil(str_word_count(strip_tags($post->content)) / 200) }} Min. Lesezeit
                         </div>
                     </div>
                     
@@ -111,7 +111,7 @@
                         <svg class="w-4 h-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 002 2z" />
                         </svg>
-                        {{ $post->created_at->format('d M Y') }} • {{ ceil(str_word_count(strip_tags($post->content)) / 200) }} min leestijd
+                        {{ $post->created_at->format('d M Y') }} • {{ ceil(str_word_count(strip_tags($post->content)) / 200) }} Min. Lesezeit
                     </div>
                 </div>
             @endif
@@ -174,7 +174,7 @@
                                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8c-1.657 0-3 .895-3 2s1.343 2 3 2 3 .895 3 2-1.343 2-3 2m0-8c1.11 0 2.08.402 2.599 1M12 8V7m0 1v8m0 0v1m0-1c-1.11 0-2.08-.402-2.599-1M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
                             </svg>
                             <div class="flex-1">
-                                <h3 class="text-xl font-bold text-gray-900 mb-3">Exclusieve korting voor onze lezers</h3>
+                                <h3 class="text-xl font-bold text-gray-900 mb-3">Exklusiver Rabatt für unsere Leser</h3>
                                 <div class="prose prose-lg max-w-none text-gray-700">
                                     {!! nl2br(e($json['custom_affiliate']['discount_block'])) !!}
                                 </div>
@@ -183,7 +183,7 @@
                                        target="_blank"
                                        rel="nofollow sponsored"
                                        class="inline-flex items-center mt-4 bg-green-600 hover:bg-green-700 text-white font-semibold px-6 py-3 rounded-lg transition-colors duration-200">
-                                        Ansehen {{ $json['custom_affiliate']['product_name'] ?? 'dit product' }}
+                                        {{ $json['custom_affiliate']['product_name'] ?? 'Produkt' }} ansehen
                                         <svg class="w-4 h-4 ml-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14" />
                                         </svg>
@@ -230,7 +230,7 @@
                         <a href="{{ $ctaUrl }}"
                            @if($isExternalLink) target="_blank" rel="nofollow sponsored" @endif 
                            class="inline-flex items-center bg-gray-900 hover:bg-gray-800 text-white font-medium px-8 py-4 rounded-full transition-all duration-300 text-lg shadow-lg hover:shadow-xl transform hover:-translate-y-1">
-                            {{ $cta['label'] ?? 'Entdecken meer' }}
+                            {{ $cta['label'] ?? 'Mehr entdecken' }}
                             <svg class="w-5 h-5 ml-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 8l4 4m0 0l-4 4m4-4H3" />
                             </svg>
@@ -248,7 +248,7 @@
                 <!-- Terugknop -->
                 <div class="mb-6">
                     <a href="{{ route('ratgeber.index') }}" class="inline-block bg-blue-600 hover:bg-blue-700 text-white text-sm font-medium px-5 py-2 rounded-full shadow transition">
-                        &larr; Terug naar overzicht
+                        &larr; Zurück zur Übersicht
                     </a>
                 </div>
                 
@@ -258,7 +258,7 @@
                         <h1 class="text-3xl sm:text-4xl md:text-5xl font-extrabold bg-gradient-to-r from-blue-800 via-purple-700 to-gray-800 text-transparent bg-clip-text leading-tight mb-3">
                             {{ $post->title }}
                         </h1>
-                        <p class="text-sm text-gray-500">Geplaatst op {{ $post->created_at->format('d M Y') }}</p>
+                        <p class="text-sm text-gray-500">Veröffentlicht am {{ $post->created_at->format('d M Y') }}</p>
                     </div>
 
                     @if ($post->product && $secondImage)
@@ -269,7 +269,7 @@
                                 </div>
                             </a>
                             <a href="{{ $affiliateLink }}" target="_blank" rel="nofollow sponsored" class="mt-3 text-sm text-blue-600 hover:underline">
-                                Ansehen dit product op bol
+                                Produkt auf Amazon ansehen
                             </a>
                         </div>
                     @endif
@@ -309,7 +309,7 @@
                     @if(!empty($json['verdict']))
                         <div class="mb-16">
                             <h2 class="text-3xl font-light text-gray-900 mb-6 tracking-tight">
-                                {{ ContentJson::getString($json['verdict'], 'headline', 'Onze Fazit') }}
+                                {{ ContentJson::getString($json['verdict'], 'headline', 'Unser Fazit') }}
                             </h2>
                             <p class="text-xl text-gray-600 font-light leading-relaxed">
                                 {{ ContentJson::getString($json['verdict'], 'body') }}
@@ -319,9 +319,9 @@
 
                     {{-- Bottom CTA --}}
                     @if($post->product)
-                        <x-cta.product-primary :product="$post->product" text="Ansehen actuele Preis" classes="mt-8" />
+                        <x-cta.product-primary :product="$post->product" text="Aktuellen Preis ansehen" classes="mt-8" />
                     @else
-                        <x-cta.list-primary text="Entdecken alle opties" classes="mt-8" />
+                        <x-cta.list-primary text="Alle Optionen entdecken" classes="mt-8" />
                     @endif
                 </div>
             </div>
@@ -333,7 +333,7 @@
                 <!-- Terugknop -->
                 <div class="mb-6">
                     <a href="{{ route('ratgeber.index') }}" class="inline-block bg-blue-600 hover:bg-blue-700 text-white text-sm font-medium px-5 py-2 rounded-full shadow transition">
-                        &larr; Terug naar overzicht
+                        &larr; Zurück zur Übersicht
                     </a>
                 </div>
                 
@@ -343,7 +343,7 @@
                         <h1 class="text-3xl sm:text-4xl md:text-5xl font-extrabold bg-gradient-to-r from-blue-800 via-purple-700 to-gray-800 text-transparent bg-clip-text leading-tight mb-3">
                             {{ $post->title }}
                         </h1>
-                        <p class="text-sm text-gray-500">Geplaatst op {{ $post->created_at->format('d M Y') }}</p>
+                        <p class="text-sm text-gray-500">Veröffentlicht am {{ $post->created_at->format('d M Y') }}</p>
                     </div>
 
                     @if ($post->product && $secondImage)
@@ -354,7 +354,7 @@
                                 </div>
                             </a>
                             <a href="{{ $affiliateLink }}" target="_blank" rel="nofollow sponsored" class="mt-3 text-sm text-blue-600 hover:underline">
-                                Ansehen dit product op bol
+                                Produkt auf Amazon ansehen
                             </a>
                         </div>
                     @endif
@@ -363,14 +363,14 @@
                 <!-- Fallback naar oude structStunde voor bestaande blogs -->
                 @if ($post->intro)
                     <section class="bg-blue-50 border-l-4 border-blue-500 pl-6 pr-4 py-4 rounded-lg">
-                        <h2 class="text-xl sm:text-2xl font-bold text-blue-900 mb-3">Introductie</h2>
+                        <h2 class="text-xl sm:text-2xl font-bold text-blue-900 mb-3">Einführung</h2>
                         {!! $post->intro !!}
                     </section>
                 @endif
 
                 @if ($post->main_content)
                     <section class="bg-purple-50 border-l-4 border-purple-500 pl-6 pr-4 py-4 rounded-lg">
-                        <h2 class="text-xl sm:text-2xl font-bold text-purple-900 mb-3">Uitleg & Achtergrond</h2>
+                        <h2 class="text-xl sm:text-2xl font-bold text-purple-900 mb-3">Erklärung & Hintergrund</h2>
                         {!! $post->main_content !!}
                     </section>
                 @endif
@@ -386,7 +386,7 @@
 
                 @if ($post->usage_tips)
                     <section class="bg-yellow-50 border-l-4 border-yellow-500 pl-6 pr-4 py-4 rounded-lg">
-                        <h2 class="text-xl sm:text-2xl font-bold text-yellow-900 mb-3">Gebruikstips</h2>
+                        <h2 class="text-xl sm:text-2xl font-bold text-yellow-900 mb-3">Nutzungstipps</h2>
                         {!! $post->usage_tips !!}
                     </section>
                 @endif
@@ -397,7 +397,7 @@
                             <svg class="w-7 h-7 sm:w-8 sm:h-8 text-blue-600 mr-3" fill="currentColor" viewBox="0 0 20 20">
                                 <path fill-rule="evenodd" d="M18 10c0 4.418-3.582 8-8 8s-8-3.582-8-8 3.582-8 8-8 8 3.582 8 8zm-9-4a1 1 0 112 0v3a1 1 0 01-2 0V6zm1 8a1.25 1.25 0 100-2.5 1.25 1.25 0 000 2.5z" clip-rule="evenodd" />
                             </svg>
-                            <h2 class="text-xl sm:text-2xl font-bold text-blue-800">Afsluiting</h2>
+                            <h2 class="text-xl sm:text-2xl font-bold text-blue-800">Fazit</h2>
                         </div>
                         <div class="text-gray-700 text-base sm:text-lg">
                             {!! $post->closing !!}
@@ -415,21 +415,21 @@
         <div class="mt-16">
         @if ($post->product)
             <div class="bg-gradient-to-r from-blue-600 to-blue-800 text-white rounded-lg shadow-lg p-6 sm:p-8 flex flex-col items-center text-center">
-                <h2 class="text-2xl sm:text-3xl font-bold mb-4">Benieuwd naar dit product?</h2>
-                <p class="text-base sm:text-lg mb-6 max-w-xl">Ansehen de actuele Preis, lees Testberichte en ontdek waarom dit product zo populair is.</p>
+                <h2 class="text-2xl sm:text-3xl font-bold mb-4">Neugierig auf dieses Produkt?</h2>
+                <p class="text-base sm:text-lg mb-6 max-w-xl">Lesen Sie Testberichte und entdecken Sie, warum dieses Produkt so beliebt ist.</p>
                 <a href="{{ $affiliateLink }}" target="_blank" rel="nofollow sponsored"
                    class="inline-block bg-yellow-400 hover:bg-yellow-500 text-black font-semibold py-3 px-8 rounded-full shadow-lg transition duration-200 ease-in-out focus:outline-none focus:ring-2 focus:ring-yellow-400 focus:ring-offset-2">
-                    Ansehen op bol
+                    Preis prüfen auf Amazon
                 </a>
             </div>
         @elseif ($post->created_at->isAfter('2025-09-10') && $post->type === 'general')
             {{-- Alleen tonen voor GSC-gegenereerde content (na 10 sept 2025) --}}
             <div class="bg-gradient-to-r from-blue-600 to-blue-800 text-white rounded-lg shadow-lg p-6 sm:p-8 flex flex-col items-center text-center">
-                <h2 class="text-2xl sm:text-3xl font-bold mb-4">Op zoek naar de beste Produkte?</h2>
-                <p class="text-base sm:text-lg mb-6 max-w-xl">Entdecken onze zorgvuldig geselecteerde Produkte en kies de perfecte match voor jouw situatie.</p>
+                <h2 class="text-2xl sm:text-3xl font-bold mb-4">Auf der Suche nach den besten Produkten?</h2>
+                <p class="text-base sm:text-lg mb-6 max-w-xl">Entdecken Sie unsere sorgfältig ausgewählten Produkte und wählen Sie die perfekte Option für Ihre Situation.</p>
                 <a href="{{ route('produkte.index') }}"
                    class="inline-block bg-white text-blue-800 font-semibold py-3 px-8 rounded-full shadow-lg hover:bg-gray-100 transition duration-200 ease-in-out focus:outline-none focus:ring-2 focus:ring-white focus:ring-offset-2">
-                    Ansehen het assortiment
+                    Zum Sortiment
                 </a>
             </div>
         @endif
@@ -439,12 +439,12 @@
     <!-- CTA Top 5 - Alleen voor GSC content -->
     <section class="bg-gradient-to-r from-purple-600 to-pink-600 text-white rounded-lg shadow-lg p-6 sm:p-8 mt-16 mb-20 flex flex-col sm:flex-row items-center justify-between">
         <div class="mb-4 sm:mb-0">
-            <h2 class="text-2xl sm:text-3xl font-bold mb-2">Ansehen onze Top 5 Aanbevelingen</h2>
-            <p class="text-base sm:text-lg">Maak kiezen makkelijk met onze best beoordeelde Produkte, speciaal voor jou geselecteerd.</p>
+            <h2 class="text-2xl sm:text-3xl font-bold mb-2">Unsere Top 5 Empfehlungen ansehen</h2>
+            <p class="text-base sm:text-lg">Machen Sie die Wahl einfach mit unseren bestbewerteten Produkten, speziell für Sie ausgewählt.</p>
         </div>
         <a href="{{ url('/top-5') }}"
            class="inline-block bg-white text-purple-700 font-semibold py-3 px-8 rounded-full shadow-lg hover:bg-gray-100 transition duration-200 ease-in-out focus:outline-none focus:ring-2 focus:ring-white focus:ring-offset-2">
-            Ansehen de Top 5
+            Zur Top 5
         </a>
         </section>
     @endif
@@ -452,7 +452,7 @@
         <!-- Teruglink -->
         <div class="text-center">
             <a href="{{ route('ratgeber.index') }}" class="text-blue-600 hover:text-blue-800 font-semibold text-sm">
-                &larr; Terug naar alle blogs
+                &larr; Zurück zu allen Ratgebern
             </a>
         </div>
     </div>
@@ -497,15 +497,12 @@
              class="w-12 h-12 object-contain rounded-lg">
         <div class="flex-1 min-w-0">
             <p class="text-sm font-medium text-gray-900 truncate">{{ Str::limit($post->product->title, 25) }}</p>
-            @if($post->product->price)
-                <p class="text-lg font-bold text-gray-900">€{{ number_format($post->product->price, 2, ',', '.') }}</p>
-            @endif
         </div>
         <a href="{{ $affiliateLink }}"
            target="_blank"
            rel="nofollow sponsored"
            class="bg-blue-600 hover:bg-blue-700 text-white font-semibold px-4 py-2 rounded-xl text-sm transition-colors duration-200 whitespace-nowrap">
-            Ansehen nu
+            Preis prüfen
         </a>
     </div>
 </div>

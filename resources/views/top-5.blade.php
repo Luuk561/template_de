@@ -83,10 +83,10 @@
             </div>
         </div>
 
-        <div class="space-y-4">
+        <div class="space-y-4 w-full">
             @foreach($products as $index => $product)
                 @php
-                    $affiliateLink = getBolAffiliateLink($product->url, $product->title);
+                    $affiliateLink = getProductAffiliateLink($product);
                     $savings = ($product->strikethrough_price && $product->price)
                         ? $product->strikethrough_price - $product->price
                         : 0;
@@ -99,9 +99,9 @@
                     $rankingColor = '';
                 @endphp
 
-                <div class="bg-white rounded-2xl hover:bg-gray-50 transition-all duration-200 overflow-hidden border border-gray-200 {{ !$loop->last ? 'border-b' : '' }}">
+                <div class="bg-white rounded-2xl hover:bg-gray-50 transition-all duration-200 overflow-hidden border border-gray-200 w-full {{ !$loop->last ? 'border-b' : '' }}">
                     <!-- Mobile Layout (< 768px) -->
-                    <div class="md:hidden p-4">
+                    <div class="md:hidden p-4 w-full">
                         <div class="flex items-center gap-3 mb-3">
                             <div class="flex-shrink-0 w-12 h-12 rounded-full flex items-center justify-center text-white font-black text-lg shadow-lg" style="background: {{ $primaryColor }};">
                                 {{ $position }}
@@ -118,7 +118,7 @@
 
                         <div class="flex items-center gap-4 mb-3">
                             <div class="w-28 h-28 flex items-center justify-center p-2">
-                                <img src="{{ $product->image_url ?? 'https://via.placeholder.com/100x100?text=Geen+Afbeelding' }}"
+                                <img src="{{ $product->image_url ?? 'https://via.placeholder.com/100x100?text=Kein+Bild' }}"
                                      alt="{{ $product->title }}"
                                      class="max-w-full max-h-full object-contain">
                             </div>
@@ -149,16 +149,6 @@
                                         @endif
                                     </div>
                                 @endif
-
-                                <div class="mb-2">
-                                    @if($savings > 0)
-                                        <p class="text-gray-400 text-xs line-through">€{{ number_format($product->strikethrough_price, 2, ',', '.') }}</p>
-                                    @endif
-                                    <p class="text-gray-900 font-black text-lg">€{{ number_format($product->price ?? 0, 2, ',', '.') }}</p>
-                                    @if($savings > 0)
-                                        <p class="text-green-600 font-bold text-xs">Sparen €{{ number_format($savings, 2, ',', '.') }}</p>
-                                    @endif
-                                </div>
                             </div>
                         </div>
 
@@ -169,24 +159,24 @@
                             </a>
                             <a href="{{ $affiliateLink }}" target="_blank" rel="nofollow sponsored"
                                class="flex-1 cta-button text-white text-sm font-semibold py-3 px-4 rounded-xl text-center transition shadow-sm">
-                                Ansehen op bol.com
+                                Preis prüfen auf Amazon
                             </a>
                         </div>
                     </div>
 
                     <!-- Desktop Layout (>= 768px) -->
-                    <div class="hidden md:grid md:grid-cols-12 gap-6 p-8 items-center">
+                    <div class="hidden md:grid md:grid-cols-12 gap-4 p-5 items-center">
                         <!-- Position -->
-                        <div class="col-span-1 flex justify-center">
-                            <div class="w-16 h-16 rounded-full flex items-center justify-center text-white font-black text-2xl shadow-lg" style="background: {{ $primaryColor }};">
+                        <div class="col-span-1 flex items-center">
+                            <div class="w-12 h-12 rounded-full flex items-center justify-center text-white font-black text-lg shadow-lg flex-shrink-0" style="background: {{ $primaryColor }};">
                                 {{ $position }}
                             </div>
                         </div>
 
                         <!-- Image -->
-                        <div class="col-span-2 flex items-center justify-center">
-                            <div class="w-32 h-32 flex items-center justify-center p-2">
-                                <img src="{{ $product->image_url ?? 'https://via.placeholder.com/100x100?text=Geen+Afbeelding' }}"
+                        <div class="col-span-2 flex items-center">
+                            <div class="w-full h-20 flex items-center justify-center">
+                                <img src="{{ $product->image_url ?? 'https://via.placeholder.com/100x100?text=Kein+Bild' }}"
                                      alt="{{ $product->title }}"
                                      class="max-w-full max-h-full object-contain">
                             </div>
@@ -228,26 +218,15 @@
                             @endif
                         </div>
 
-                        <!-- Price -->
-                        <div class="col-span-2 text-center">
-                            @if($savings > 0)
-                                <p class="text-gray-400 text-base line-through mb-2">€{{ number_format($product->strikethrough_price, 2, ',', '.') }}</p>
-                            @endif
-                            <p class="text-gray-900 font-black text-3xl">€{{ number_format($product->price ?? 0, 2, ',', '.') }}</p>
-                            @if($savings > 0)
-                                <p class="text-green-600 font-bold text-base mt-2">Sparen €{{ number_format($savings, 2, ',', '.') }}</p>
-                            @endif
-                        </div>
-
                         <!-- Actions -->
-                        <div class="col-span-3 flex gap-3">
+                        <div class="col-span-5 flex gap-2 justify-end">
                             <a href="{{ route('produkte.show', $product->slug) }}"
-                               class="flex-1 bg-white hover:bg-gray-50 text-gray-900 text-sm font-semibold py-3 px-4 rounded-xl text-center transition border-2 border-gray-200">
+                               class="bg-white hover:bg-gray-50 text-gray-900 text-sm font-semibold py-2.5 px-5 rounded-xl text-center transition border-2 border-gray-200 whitespace-nowrap">
                                 Ansehen
                             </a>
                             <a href="{{ $affiliateLink }}" target="_blank" rel="nofollow sponsored"
-                               class="flex-1 cta-button text-white text-sm font-semibold py-3 px-4 rounded-xl text-center transition shadow-sm">
-                                Ansehen op bol.com
+                               class="cta-button text-white text-sm font-semibold py-2.5 px-5 rounded-xl text-center transition shadow-sm whitespace-nowrap">
+                                Preis prüfen auf Amazon
                             </a>
                         </div>
                     </div>

@@ -577,10 +577,10 @@ ERFOLGREICHE MUSTER:
 6. FEHLER: "Häufige Fehler beim Kauf"
 
 SPRACHGEBRAUCH:
-- menu_title: 30-45 karakters, natürliches Deutsch mit Artikeln
-- article_title: 50-70 karakters, kann Kontext hinzufügen
+- menu_title: 30-45 Zeichen, natürliches Deutsch mit Artikeln
+- article_title: 50-70 Zeichen, kann Kontext hinzufügen
 - slug: URL-friendly
-- meta_description: 150-155 karakters
+- meta_description: 150-155 Zeichen
 
 Geben Sie NUR ein JSON-Array zurück:
 [

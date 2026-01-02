@@ -1,9 +1,8 @@
 @props(['product' => null, 'text' => 'Ansehen dit product', 'classes' => ''])
 
-@if($product && $product->url)
+@if($product)
   @php
-    $sid = env('BOL_SITE_ID', 'fallback_id');
-    $affiliateLink = 'https://partner.bol.com/click/click?p=2&t=url&s=' . $sid . '&f=TXL&url=' . urlencode($product->url) . '&name=' . urlencode($product->title ?? '');
+    $affiliateLink = getProductAffiliateLink($product);
   @endphp
 
   <div class="my-12 text-center {{ $classes }}">

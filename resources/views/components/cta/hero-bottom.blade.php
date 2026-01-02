@@ -1,23 +1,16 @@
 @props(['product' => null, 'text' => 'Ansehen product', 'classes' => ''])
 
-@if($product && $product->url)
+@if($product)
   @php
-    $sid = env('BOL_SITE_ID', 'fallback_id');
-    $affiliateLink = 'https://partner.bol.com/click/click?p=2&t=url&s=' . $sid . '&f=TXL&url=' . urlencode($product->url) . '&name=' . urlencode($product->title ?? '');
+    $affiliateLink = getProductAffiliateLink($product);
   @endphp
 
   <section class="my-24 {{ $classes }}">
     <div class="max-w-6xl mx-auto bg-gradient-to-br from-gray-50 via-white to-gray-50 rounded-3xl p-12 md:p-20 text-center">
-      <h3 class="text-4xl md:text-5xl font-bold text-gray-900 mb-6 tracking-tight">
+      <h3 class="text-4xl md:text-5xl font-bold text-gray-900 mb-12 tracking-tight">
         {{ $product->title ?? 'Product' }}
       </h3>
-      
-      @if($product->price)
-        <p class="text-3xl md:text-4xl font-light text-gray-600 mb-12">
-          €{{ number_format($product->price, 2, ',', '.') }}
-        </p>
-      @endif
-      
+
       <a href="{{ $affiliateLink }}" 
          target="_blank" 
          rel="nofollow sponsored"

@@ -1,12 +1,12 @@
 @extends('layouts.app')
 
 @section('title', 'Vergleichen Produkte')
-@section('meta_description', 'Vergleichen je favoriete Produkte direct naast elkaar op Spezifikationen, Preis, Testberichte en meer. Vind snel de beste keuze voor jouw situatie en budget.')
+@section('meta_description', 'Vergleichen Sie Ihre Lieblingsprodukte direkt nebeneinander nach Spezifikationen, Preis, Testberichten und mehr. Finden Sie schnell die beste Wahl für Ihre Situation und Ihr Budget.')
 
 @section('breadcrumbs')
     <x-breadcrumbs :items="[
         'Produkte' => route('produkte.index'),
-        'Vergleichenen' => route('produkte.vergelijken'),
+        'Vergleichen' => '',
     ]" />
 @endsection
 
@@ -44,22 +44,22 @@
             <div>
                 <h1 class="text-2xl sm:text-3xl font-bold text-gray-900 mb-2">Vergleichen Produkte</h1>
                 <p class="text-gray-600 text-sm">
-                    Vergleichen tot 3 Produkte naast elkaar
+                    Bis zu 3 Produkte nebeneinander vergleichen
                 </p>
             </div>
 
             @if(count($products) < 3)
                 <a href="{{ route('produkte.index', ['terug_naar_vergelijker' => '1', 'eans' => request('eans')]) }}"
-                   class="inline-flex items-center gap-2 text-white font-semibold px-6 py-3 rounded-lg transition hover:opacity-90"
-                   style="background-color: {{ $primaryColor }}">
+                   class="inline-flex items-center gap-2 font-semibold px-6 py-3 rounded-lg transition hover:opacity-90"
+                   style="background-color: {{ $primaryColor }}; color: white !important;">
                     <svg class="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4"/>
                     </svg>
-                    Voeg product toe
+                    Produkt hinzufügen
                 </a>
             @else
-                <div class="inline-flex items-center gap-2 text-white font-semibold px-6 py-3 rounded-lg opacity-50 cursor-not-allowed"
-                     style="background-color: {{ $primaryColor }}">
+                <div class="inline-flex items-center gap-2 font-semibold px-6 py-3 rounded-lg opacity-50 cursor-not-allowed"
+                     style="background-color: {{ $primaryColor }}; color: white !important;">
                     <svg class="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4"/>
                     </svg>
@@ -71,7 +71,7 @@
 
     @if($products->isEmpty())
         <div class="max-w-7xl mx-auto text-center py-20">
-            <h2 class="text-xl font-semibold text-gray-700 mb-4">Geen Produkte geselecteerd</h2>
+            <h2 class="text-xl font-semibold text-gray-700 mb-4">Keine Produkte ausgewählt</h2>
             <a href="{{ route('produkte.index') }}"
                class="inline-block text-white px-6 py-3 rounded-lg font-semibold transition hover:opacity-90"
                style="background-color: {{ $primaryColor }}">
@@ -94,20 +94,20 @@
                                     <p class="font-bold text-xs text-gray-900 leading-tight line-clamp-2">{{ Str::limit($product->title, 25) }}</p>
                                 </div>
                                 <p class="text-xs text-gray-500 font-medium">{{ $product->brand }}</p>
-                                <p class="text-gray-900 font-black text-sm">€{{ number_format($product->price, 0) }}</p>
                                 <div class="mt-3 space-y-2 w-full">
                                     @php
-                                        $affiliateLink = getBolAffiliateLink($product->url, $product->title);
+                                        $affiliateLink = getProductAffiliateLink($product);
                                     @endphp
 
                                     <a href="{{ $affiliateLink }}" target="_blank" rel="nofollow sponsored"
-                                       class="block text-xs text-white font-bold py-1.5 rounded transition text-center hover:opacity-90"
-                                       style="background-color: {{ $primaryColor }}">
-                                        Ansehen op bol.com
+                                       class="block text-xs font-bold py-1.5 px-2 rounded transition text-center hover:opacity-90 bg-blue-600 no-underline"
+                                       style="color: white !important; text-decoration: none !important;">
+                                        Preis prüfen
                                     </a>
 
                                     <a href="{{ route('produkte.show', $product->slug) }}"
-                                       class="block text-xs text-gray-900 font-medium py-1.5 rounded transition text-center border border-gray-300 bg-white hover:bg-gray-50">
+                                       class="block text-xs text-gray-900 font-medium py-1.5 px-2 rounded transition text-center border border-gray-300 bg-white hover:bg-gray-50 no-underline"
+                                       style="text-decoration: none !important;">
                                         Details
                                     </a>
                                 </div>
@@ -115,9 +115,10 @@
                                     $eans = collect(explode(',', request('eans', '')));
                                     $updatedEans = $eans->reject(fn($ean) => $ean == $product->ean)->implode(',');
                                 @endphp
-                                <a href="{{ route('produkte.vergelijken', ['eans' => $updatedEans]) }}"
-                                class="absolute -top-2 -right-2 bg-red-500 hover:bg-red-600 text-white text-xs w-6 h-6 rounded-full shadow-lg flex items-center justify-center transition transform hover:scale-110"
-                                title="Verwijder {{ $product->title }}">
+                                <a href="{{ url('/vergleichen?eans=' . $updatedEans) }}"
+                                class="absolute -top-2 -right-2 bg-red-500 hover:bg-red-600 text-xs w-6 h-6 rounded-full shadow-lg flex items-center justify-center transition transform hover:scale-110 no-underline"
+                                style="color: white !important; text-decoration: none !important;"
+                                title="{{ $product->title }} entfernen">
                                     ×
                                 </a>
                             </div>
@@ -153,8 +154,8 @@
                                         </div>
                                         <button @click="expanded = !expanded" 
                                                 class="mt-1 text-blue-600 text-xs hover:text-blue-800 font-medium focus:outline-none">
-                                            <span x-show="!expanded">→ Meer</span>
-                                            <span x-show="expanded">← Minder</span>
+                                            <span x-show="!expanded">→ Mehr</span>
+                                            <span x-show="expanded">← Weniger</span>
                                         </button>
                                     </div>
                                 @else
@@ -180,30 +181,31 @@
                                 <img src="{{ $product->image_url }}" alt="{{ $product->title }}" loading="lazy" class="w-20 h-20 object-contain mx-auto mb-3">
                                 <p class="font-semibold text-sm text-gray-900 leading-tight text-center break-words">{{ \Illuminate\Support\Str::limit($product->title, 50) }}</p>
                                 <p class="text-xs text-gray-500 mt-1">{{ $product->brand }}</p>
-                                <p class="text-gray-900 font-bold text-lg mt-2">€{{ number_format($product->price, 2, ',', '.') }}</p>
                                 <div class="mt-3 space-y-2 w-full">
                                     @php
-                                        $affiliateLink = getBolAffiliateLink($product->url, $product->title);
+                                        $affiliateLink = getProductAffiliateLink($product);
                                     @endphp
 
                                     <a href="{{ $affiliateLink }}" target="_blank" rel="nofollow sponsored"
-                                       class="block text-sm text-white font-semibold py-2 rounded transition text-center hover:opacity-90"
-                                       style="background-color: {{ $primaryColor }}">
-                                        Ansehen op bol.com
+                                       class="block text-sm font-semibold py-2 px-3 rounded transition text-center hover:opacity-90 bg-blue-600 no-underline"
+                                       style="color: white !important; text-decoration: none !important;">
+                                        Preis prüfen auf Amazon
                                     </a>
 
                                     <a href="{{ route('produkte.show', $product->slug) }}"
-                                       class="block text-sm text-gray-900 font-medium py-2 rounded transition text-center border border-gray-300 bg-white hover:bg-gray-50">
-                                        Ansehen details
+                                       class="block text-sm text-gray-900 font-medium py-2 px-3 rounded transition text-center border border-gray-300 bg-white hover:bg-gray-50 no-underline"
+                                       style="text-decoration: none !important;">
+                                        Details ansehen
                                     </a>
                                 </div>
                                 @php
                                     $eans = collect(explode(',', request('eans', '')));
                                     $updatedEans = $eans->reject(fn($ean) => $ean == $product->ean)->implode(',');
                                 @endphp
-                                <a href="{{ route('produkte.vergelijken', ['eans' => $updatedEans]) }}"
-                                class="absolute top-0 right-0 bg-red-500 hover:bg-red-600 text-white text-[10px] sm:text-xs px-1.5 sm:px-2 py-1 rounded-full shadow"
-                                title="Verwijder {{ $product->title }}">
+                                <a href="{{ url('/vergleichen?eans=' . $updatedEans) }}"
+                                class="absolute top-0 right-0 bg-red-500 hover:bg-red-600 text-[10px] sm:text-xs px-1.5 sm:px-2 py-1 rounded-full shadow no-underline"
+                                style="color: white !important; text-decoration: none !important;"
+                                title="{{ $product->title }} entfernen">
                                     ✕
                                 </a>
                             </div>

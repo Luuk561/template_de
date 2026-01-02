@@ -124,7 +124,7 @@
                         <a href="{{ route('produkte.show', $product->slug) }}"
                            class="group relative bg-white rounded-2xl overflow-hidden shadow-sm hover:shadow-xl transition-all duration-300 p-4 sm:p-6 border border-gray-100 hover:border-gray-200 {{ $layout['col'] }} {{ $layout['row'] }} {{ $layout['start-col'] }} {{ $layout['start-row'] }}">
                             <div class="w-full h-full flex items-center justify-center">
-                                <img src="{{ $product->image_url ?? 'https://via.placeholder.com/300x300?text=Geen+Afbeelding' }}"
+                                <img src="{{ $product->image_url ?? 'https://via.placeholder.com/300x300?text=Kein+Bild' }}"
                                      alt="{{ $product->title }}"
                                      class="max-w-full max-h-full object-contain group-hover:scale-105 transition-transform duration-300">
                             </div>
@@ -206,7 +206,7 @@
         <div class="bg-white border border-gray-200 rounded-2xl overflow-hidden shadow-sm">
             @foreach($top10Products as $index => $product)
                 @php
-                    $affiliateLink = getBolAffiliateLink($product->url, $product->title);
+                    $affiliateLink = getProductAffiliateLink($product);
                     $savings = ($product->strikethrough_price && $product->price)
                         ? $product->strikethrough_price - $product->price
                         : 0;
@@ -236,7 +236,7 @@
 
                         <div class="flex items-center gap-3 mb-2">
                             <div class="w-20 h-20 flex items-center justify-center p-1">
-                                <img src="{{ $product->image_url ?? 'https://via.placeholder.com/100x100?text=Geen+Afbeelding' }}"
+                                <img src="{{ $product->image_url ?? 'https://via.placeholder.com/100x100?text=Kein+Bild' }}"
                                      alt="{{ $product->title }}"
                                      class="max-w-full max-h-full object-contain">
                             </div>
@@ -252,16 +252,6 @@
                                         @endif
                                     </div>
                                 @endif
-
-                                <div class="mb-2">
-                                    @if($savings > 0)
-                                        <p class="text-gray-400 text-xs line-through">€{{ number_format($product->strikethrough_price, 2, ',', '.') }}</p>
-                                    @endif
-                                    <p class="text-gray-900 font-black text-lg">€{{ number_format($product->price ?? 0, 2, ',', '.') }}</p>
-                                    @if($savings > 0)
-                                        <p class="text-green-600 font-bold text-xs">Sparen €{{ number_format($savings, 2, ',', '.') }}</p>
-                                    @endif
-                                </div>
                             </div>
                         </div>
 
@@ -301,7 +291,7 @@
                         <!-- Image -->
                         <div class="col-span-2 flex items-center justify-center">
                             <div class="w-16 h-16 flex items-center justify-center">
-                                <img src="{{ $product->image_url ?? 'https://via.placeholder.com/100x100?text=Geen+Afbeelding' }}"
+                                <img src="{{ $product->image_url ?? 'https://via.placeholder.com/100x100?text=Kein+Bild' }}"
                                      alt="{{ $product->title }}"
                                      class="max-w-full max-h-full object-contain">
                             </div>
@@ -328,19 +318,8 @@
                             @endif
                         </div>
 
-                        <!-- Price -->
-                        <div class="col-span-2 text-center">
-                            @if($savings > 0)
-                                <p class="text-gray-400 text-xs line-through mb-0.5">€{{ number_format($product->strikethrough_price, 2, ',', '.') }}</p>
-                            @endif
-                            <p class="text-gray-900 font-black text-lg">€{{ number_format($product->price ?? 0, 2, ',', '.') }}</p>
-                            @if($savings > 0)
-                                <p class="text-green-600 font-bold text-xs mt-0.5">Sparen €{{ number_format($savings, 2, ',', '.') }}</p>
-                            @endif
-                        </div>
-
                         <!-- Actions -->
-                        <div class="col-span-3 flex gap-2 items-center pointer-events-auto">
+                        <div class="col-span-5 flex gap-2 items-center pointer-events-auto">
                             <label class="flex items-center gap-1 cursor-pointer group" title="Dieses Produkt vergleichen">
                                 <input
                                     type="checkbox"

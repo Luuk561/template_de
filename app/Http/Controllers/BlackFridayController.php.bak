@@ -64,6 +64,7 @@ class BlackFridayController extends Controller
 
         // Show best rated products during Black Friday (no price-based sorting due to Amazon policy)
         $producten = Product::query()
+            ->where('price', '>=', 25)
             ->where('rating_average', '>=', 4.0)
             ->orderByDesc('rating_average')
             ->orderByDesc('rating_count')

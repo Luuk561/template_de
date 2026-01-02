@@ -15,21 +15,21 @@
                     d="M12 4v1m0 14v1m8-8h1M4 12H3m15.364-5.364l.707.707M6.343 17.657l-.707.707m12.021 0l-.707-.707M6.343 6.343l-.707-.707M12 8a4 4 0 100 8 4 4 0 000-8z" />
             </svg>
         </div>
-        <p class="text-base font-semibold">Moeite met kiezen?</p>
+        <p class="text-base font-semibold">Schwer zu entscheiden?</p>
     </div>
     <p class="text-sm text-white/90 leading-snug mb-4">
-        Laat onze slimme AI binnen seconden jouw beste match vinden.
+        Lassen Sie unsere smarte AI in Sekunden Ihre beste Wahl finden.
     </p>
     <button id="ai-hint-start"
         class="w-full text-sm font-bold bg-white text-blue-800 hover:text-white hover:bg-blue-900 px-4 py-2 rounded-xl shadow-md transition-all duration-200">
-        🤖 Start AI-hulp
+        🤖 AI-Hilfe starten
     </button>
 </div>
 
 <!-- AI Reopen Button -->
 <button id="ai-reopen-btn"
     class="fixed bottom-6 right-6 z-40 bg-blue-700 text-white rounded-full w-14 h-14 flex items-center justify-center shadow-xl hover:bg-blue-800 transition-all hidden"
-    aria-label="Toon AI-analyse opnieuw">
+    aria-label="AI-Analyse erneut anzeigen">
     <span class="text-3xl font-regular">+</span>
 </button>
 
@@ -56,7 +56,7 @@
                     </div>
                 </div>
                 <h2 id="ai-Fazit-title" class="text-2xl font-extrabold text-blue-800">
-                    AI-analyse in uitvoering
+                    AI-Analyse läuft
                 </h2>
             </div>
 
@@ -64,14 +64,14 @@
                 class="text-gray-800 text-base md:text-[17px] leading-relaxed space-y-4 transition-all duration-300">
                 <div class="text-center">
                     <p class="text-blue-700 text-sm md:text-base font-medium">
-                        Onze slimme AI denkt met je mee… Even geduld terwijl we jouw perfecte match berekenen.
+                        Unsere smarte AI denkt für Sie mit... Einen Moment bitte, während wir Ihre perfekte Wahl berechnen.
                     </p>
                 </div>
             </div>
         </div>
         
         <div class="border-t border-blue-100 bg-blue-50 text-blue-700 text-xs text-center py-2 px-4">
-            Let op: AI-analyses zijn gebaseerd op gegenereerde interpretaties en kunnen onnauwkeurigheden bevatten.
+            Hinweis: AI-Analysen basieren auf generierten Interpretationen und können Ungenauigkeiten enthalten.
         </div>
        
         <!-- Scroll fade overlays voor mobiel -->
@@ -129,7 +129,7 @@
             const cached = localStorage.getItem(cacheKey);
             if (!cached) return;
 
-            analyseTitle.textContent = 'AI-analyse resultaat';
+            analyseTitle.textContent = 'AI-Analyse Ergebnis';
             modal.classList.remove('hidden');
             analyseBox.classList.remove('hidden');
             analyseContent.innerHTML = cached;
@@ -152,7 +152,7 @@
 
         if (!eans || eans.length === 0) {
             analyseTitle.textContent = 'Geen Produkte geselecteerd';
-            analyseContent.innerHTML = `<p class="text-sm text-red-500 text-center">Selecteer eerst Produkte om te vergelijken.</p>`;
+            analyseContent.innerHTML = `<p class="text-sm text-red-500 text-center">Wählen Sie zuerst Produkte zum Vergleichen aus.</p>`;
             modal.classList.remove('hidden');
             return;
         }
@@ -160,7 +160,7 @@
         const cacheKey = 'ai_Fazit_' + eans.sort().join('-');
 
         function showResult(html) {
-            analyseTitle.textContent = 'AI-analyse resultaat';
+            analyseTitle.textContent = 'AI-Analyse Ergebnis';
             modal.classList.remove('hidden');
             analyseBox.classList.remove('hidden');
             analyseContent.innerHTML = html;
@@ -175,7 +175,7 @@
         modal.classList.remove('hidden');
         analyseBox.classList.remove('hidden');
         document.body.classList.add('modal-open');
-        analyseTitle.textContent = 'AI-analyse in uitvoering';
+        analyseTitle.textContent = 'AI-Analyse läuft';
         analyseContent.innerHTML = `
             <div class="flex flex-col items-center space-y-4">
                 <div class="relative w-10 h-10">
@@ -184,11 +184,11 @@
                         AI
                     </div>
                 </div>
-                <p class="text-sm text-blue-700 text-center">AI-analyse wordt geladen…</p>
+                <p class="text-sm text-blue-700 text-center">AI-Analyse wird geladen…</p>
             </div>
         `;
 
-        fetch("{{ route('ai.Fazit') }}", {
+        fetch("{{ route('ai.conclusie') }}", {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json',
@@ -202,8 +202,8 @@
             showResult(data.html);
         })
         .catch(() => {
-            analyseTitle.textContent = 'Fout bij laden';
-            analyseContent.innerHTML = '<p class="text-red-600 text-sm text-center">AI-analyse kon niet worden geladen. Probeer het later opnieuw.</p>';
+            analyseTitle.textContent = 'Fehler beim Laden';
+            analyseContent.innerHTML = '<p class="text-red-600 text-sm text-center">AI-Analyse konnte nicht geladen werden. Bitte versuchen Sie es später erneut.</p>';
         });
     });
 

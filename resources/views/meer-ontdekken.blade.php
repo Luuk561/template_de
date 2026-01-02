@@ -193,7 +193,7 @@
                 @endforeach
             </div>
         @else
-            <p class="text-center text-gray-500 text-lg">Er zijn op dit moment geen verwante websites beschikbaar voor deze categorie.</p>
+            <p class="text-center text-gray-500 text-lg">Derzeit sind keine verwandten Websites für diese Kategorie verfügbar.</p>
         @endif
     </div>
 </section>
