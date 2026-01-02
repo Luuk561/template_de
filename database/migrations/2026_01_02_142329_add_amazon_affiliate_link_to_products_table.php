@@ -12,7 +12,10 @@ return new class extends Migration
     public function up(): void
     {
         Schema::table('products', function (Blueprint $table) {
-            $table->text('amazon_affiliate_link')->nullable()->after('asin');
+            // Add amazon_affiliate_link column (without 'after' to avoid dependency on asin column)
+            if (!Schema::hasColumn('products', 'amazon_affiliate_link')) {
+                $table->text('amazon_affiliate_link')->nullable();
+            }
         });
     }
 
