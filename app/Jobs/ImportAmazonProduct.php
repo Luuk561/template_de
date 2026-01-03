@@ -130,9 +130,7 @@ ANTWORTFORMAT (NUR JSON, kein anderer Text):
   \"cons\": [\"Nachteil 1\", \"Nachteil 2\"]
 }";
 
-            $client = OpenAI::client(config('openai.api_key'));
-
-            $response = $client->chat()->create([
+            $response = OpenAI::chat()->create([
                 'model' => 'gpt-4o-mini',
                 'messages' => [
                     ['role' => 'user', 'content' => $prompt]
