@@ -753,6 +753,7 @@ REGELS:
 
 Begin NU:
 PROMPT;
+        }
 
         $jsonResponse = $this->openAI->generateFromPrompt($fullPrompt, 'gpt-4o-mini');
         $jsonResponse = trim($jsonResponse);
