@@ -73,21 +73,35 @@ class ImportAmazonProduct implements ShouldQueue
         Log::info("Improving content with OpenAI for {$data['asin']}");
 
         try {
-            $prompt = "Verbeter de volgende producttekst voor een Duitse affiliate website. Herschrijf de beschrijving en bullet points zodat ze:
-- Overtuigender en aantrekkelijker zijn voor klanten
-- Dezelfde kwaliteit behouden maar beter geschreven zijn
-- In het Duits blijven
-- Alle belangrijke informatie behouden
-- SEO-vriendelijk zijn
+            $prompt = "Du bist ein professioneller SEO-Texter für deutsche Affiliate-Websites. Optimiere das folgende Produkt für Suchmaschinen und Conversions.
 
-Originele titel: {$data['title']}
-Originele beschrijving: {$data['description']}
-Originele bullet points: " . implode("\n", $data['bullets'] ?? []) . "
+KRITISCHE REGELN:
+- Schreibe AUSSCHLIESSLICH auf Deutsch (keine englischen, spanischen oder anderen Sprachen!)
+- Entferne ALLE nicht-deutschen Texte komplett (z.B. \"Servicio al Cliente\" = LÖSCHEN!)
+- Korrigiere alle Rechtschreibfehler und Grammatik
+- Nutze korrekte deutsche Groß-/Kleinschreibung
+- Keine fancy Unicode-Zeichen (𝙀𝙛𝙛𝙞𝙯𝙞𝙚𝙣𝙩) - nur normales Deutsch
+- Behalte alle technischen Daten (Maße, Gewicht, Leistung, etc.)
 
-Geef ALLEEN een JSON terug met deze structuur (geen extra tekst):
+SEO-ANFORDERUNGEN:
+- SEO Title: Max 60 Zeichen, enthält Hauptkeyword + wichtigste USPs
+- Meta Description: 150-155 Zeichen, überzeugend, Call-to-Action
+- Slug: Kurz, prägnant, max 5-6 Wörter, nur wichtigste Keywords (z.B. 'merach-laufband-walking-pad')
+- Beschreibung: Professionell, überzeugend, alle wichtigen Infos
+
+PRODUKTINFORMATIONEN:
+Marke: {$data['brand']}
+Titel: {$data['title']}
+Beschreibung: {$data['description']}
+Bullet Points: " . implode("\n", $data['bullets'] ?? []) . "
+
+ANTWORTFORMAT (NUR JSON, kein anderer Text):
 {
-  \"improved_description\": \"...\",
-  \"improved_bullets\": [\"...\", \"...\"]
+  \"seo_title\": \"Kurzer prägnanter Titel max 60 chars\",
+  \"meta_description\": \"Überzeugende Beschreibung 150-155 chars mit Call-to-Action\",
+  \"slug\": \"kurzer-seo-optimierter-slug\",
+  \"improved_description\": \"Professionelle deutsche Produktbeschreibung ohne Fremdsprachen\",
+  \"improved_bullets\": [\"Bullet 1\", \"Bullet 2\", \"Bullet 3\"]
 }";
 
             $response = OpenAI::chat()->create([
@@ -101,11 +115,27 @@ Geef ALLEEN een JSON terug met deze structuur (geen extra tekst):
             $improved = json_decode($response->choices[0]->message->content, true);
 
             if ($improved && isset($improved['improved_description'])) {
+                // Update content
                 $data['description'] = $improved['improved_description'];
+
                 if (isset($improved['improved_bullets'])) {
                     $data['bullets'] = $improved['improved_bullets'];
                 }
-                Log::info("Content improved successfully");
+
+                // Update SEO fields
+                if (isset($improved['seo_title'])) {
+                    $data['seo_title'] = $improved['seo_title'];
+                }
+
+                if (isset($improved['meta_description'])) {
+                    $data['meta_description'] = $improved['meta_description'];
+                }
+
+                if (isset($improved['slug'])) {
+                    $data['slug'] = $improved['slug'];
+                }
+
+                Log::info("Content and SEO improved successfully");
             } else {
                 Log::warning("OpenAI returned invalid format, using original content");
             }
