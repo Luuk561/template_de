@@ -87,7 +87,14 @@ SEO-ANFORDERUNGEN:
 - SEO Title: Max 60 Zeichen, enthält Hauptkeyword + wichtigste USPs
 - Meta Description: 150-155 Zeichen, überzeugend, Call-to-Action
 - Slug: Kurz, prägnant, max 5-6 Wörter, nur wichtigste Keywords (z.B. 'merach-laufband-walking-pad')
-- Beschreibung: Professionell, überzeugend, alle wichtigen Infos
+
+BESCHREIBUNGS-ANFORDERUNGEN:
+- 2-3 prägnante Absätze (getrennt durch \\n\\n)
+- Erster Absatz: Einführung und Hauptmerkmale
+- Zweiter Absatz: Technische Details und Funktionen
+- Dritter Absatz (optional): Fazit und Kaufanreiz
+- KEINE Überschriften in der Beschreibung
+- Professionell, überzeugend, alle wichtigen Infos
 
 PRODUKTINFORMATIONEN:
 Marke: {$data['brand']}
@@ -100,8 +107,10 @@ ANTWORTFORMAT (NUR JSON, kein anderer Text):
   \"seo_title\": \"Kurzer prägnanter Titel max 60 chars\",
   \"meta_description\": \"Überzeugende Beschreibung 150-155 chars mit Call-to-Action\",
   \"slug\": \"kurzer-seo-optimierter-slug\",
-  \"improved_description\": \"Professionelle deutsche Produktbeschreibung ohne Fremdsprachen\",
-  \"improved_bullets\": [\"Bullet 1\", \"Bullet 2\", \"Bullet 3\"]
+  \"improved_description\": \"Professionelle deutsche Produktbeschreibung in 2-3 Absätzen (getrennt durch \\\\n\\\\n)\",
+  \"improved_bullets\": [\"Bullet 1\", \"Bullet 2\", \"Bullet 3\"],
+  \"pros\": [\"Vorteil 1\", \"Vorteil 2\", \"Vorteil 3\"],
+  \"cons\": [\"Nachteil 1\", \"Nachteil 2\"]
 }";
 
             $client = OpenAI::client(config('openai.api_key'));
@@ -135,6 +144,15 @@ ANTWORTFORMAT (NUR JSON, kein anderer Text):
 
                 if (isset($improved['slug'])) {
                     $data['slug'] = $improved['slug'];
+                }
+
+                // Store pros/cons
+                if (isset($improved['pros'])) {
+                    $data['pros'] = $improved['pros'];
+                }
+
+                if (isset($improved['cons'])) {
+                    $data['cons'] = $improved['cons'];
                 }
 
                 Log::info("Content and SEO improved successfully");
