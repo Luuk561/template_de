@@ -93,19 +93,19 @@ SEO-ANFORDERUNGEN:
 
 BESCHREIBUNGS-ANFORDERUNGEN:
 - Schreibe eine ausführliche, strukturierte Produktbeschreibung mit 6-8 Absätzen
-- KEINE explizite Überschriften wie \"Einleitung\" oder \"Vorteile\" - nur fließende Absätze
-- Struktur (ohne Überschriften):
-  1. Einführung: Was ist das Produkt und für wen ist es?
-  2. Hauptmerkmale: Die wichtigsten Funktionen und USPs
-  3. Praktische Vorteile: Wie verbessert es das Leben des Nutzers?
-  4. Zielgruppe: Für wen ist es besonders geeignet?
-  5. Technische Details: Wichtige Spezifikationen in verständlicher Sprache
-  6. Vergleich mit Alternativen: Was macht es besser/anders?
-  7. Verwendungstipps: Wie nutzt man es optimal?
-  8. Fazit: Zusammenfassung und Kaufempfehlung
-- Jeder Absatz sollte 3-5 Sätze haben
-- Absätze durch \\n\\n trennen
-- Professionell, überzeugend, informativ
+- Nutze H2-Überschriften für SEO (3-4 Überschriften maximal, strategisch platziert)
+- H2 Format: <h2>Überschrift hier</h2> (KEIN Markdown ##)
+- Überschriften sollten Keywords enthalten (z.B. \"Vorteile des [Produktname]\", \"Für wen ist das [Produkttyp] geeignet?\")
+- Struktur mit SEO-Überschriften:
+  1. Einführungsabsatz (OHNE Überschrift): Was ist das Produkt?
+  2. <h2>Wichtigste Funktionen und Vorteile</h2> + 2 Absätze über Features
+  3. <h2>Für wen ist das [Produkttyp] geeignet?</h2> + 1 Absatz über Zielgruppe
+  4. 1-2 Absätze über technische Details (OHNE Überschrift)
+  5. <h2>Praktische Tipps zur Verwendung</h2> + 1 Absatz (optional, nur wenn sinnvoll)
+  6. Fazit-Absatz (OHNE Überschrift): Kaufempfehlung
+- Jeder Absatz 3-5 Sätze
+- Absätze durch \\n\\n trennen, H2 tags direkt in den Text integrieren
+- Professionell, überzeugend, keyword-optimiert
 
 PRODUKTINFORMATIONEN:
 Marke: {$data['brand']}
