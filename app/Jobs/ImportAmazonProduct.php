@@ -82,6 +82,9 @@ KRITISCHE REGELN:
 - Nutze korrekte deutsche Groß-/Kleinschreibung
 - Keine fancy Unicode-Zeichen (𝙀𝙛𝙛𝙞𝙯𝙞𝙚𝙣𝙩) - nur normales Deutsch
 - Behalte alle technischen Daten (Maße, Gewicht, Leistung, etc.)
+- WICHTIG: Nutze NUR Informationen aus den gegebenen Produktdaten (Titel, Beschreibung, Bullet Points)
+- ERFINDE KEINE neuen Funktionen oder Spezifikationen
+- HERSCHREIBE die vorhandenen Informationen in besserer Struktur und Sprache
 
 SEO-ANFORDERUNGEN:
 - SEO Title: Max 60 Zeichen, enthält Hauptkeyword + wichtigste USPs
@@ -89,12 +92,20 @@ SEO-ANFORDERUNGEN:
 - Slug: Kurz, prägnant, max 5-6 Wörter, nur wichtigste Keywords (z.B. 'merach-laufband-walking-pad')
 
 BESCHREIBUNGS-ANFORDERUNGEN:
-- 2-3 prägnante Absätze (getrennt durch \\n\\n)
-- Erster Absatz: Einführung und Hauptmerkmale
-- Zweiter Absatz: Technische Details und Funktionen
-- Dritter Absatz (optional): Fazit und Kaufanreiz
-- KEINE Überschriften in der Beschreibung
-- Professionell, überzeugend, alle wichtigen Infos
+- Schreibe eine ausführliche, strukturierte Produktbeschreibung mit 6-8 Absätzen
+- KEINE explizite Überschriften wie \"Einleitung\" oder \"Vorteile\" - nur fließende Absätze
+- Struktur (ohne Überschriften):
+  1. Einführung: Was ist das Produkt und für wen ist es?
+  2. Hauptmerkmale: Die wichtigsten Funktionen und USPs
+  3. Praktische Vorteile: Wie verbessert es das Leben des Nutzers?
+  4. Zielgruppe: Für wen ist es besonders geeignet?
+  5. Technische Details: Wichtige Spezifikationen in verständlicher Sprache
+  6. Vergleich mit Alternativen: Was macht es besser/anders?
+  7. Verwendungstipps: Wie nutzt man es optimal?
+  8. Fazit: Zusammenfassung und Kaufempfehlung
+- Jeder Absatz sollte 3-5 Sätze haben
+- Absätze durch \\n\\n trennen
+- Professionell, überzeugend, informativ
 
 PRODUKTINFORMATIONEN:
 Marke: {$data['brand']}
@@ -107,7 +118,7 @@ ANTWORTFORMAT (NUR JSON, kein anderer Text):
   \"seo_title\": \"Kurzer prägnanter Titel max 60 chars\",
   \"meta_description\": \"Überzeugende Beschreibung 150-155 chars mit Call-to-Action\",
   \"slug\": \"kurzer-seo-optimierter-slug\",
-  \"improved_description\": \"Professionelle deutsche Produktbeschreibung in 2-3 Absätzen (getrennt durch \\\\n\\\\n)\",
+  \"improved_description\": \"Ausführliche strukturierte Produktbeschreibung mit 6-8 Absätzen (getrennt durch \\\\n\\\\n). Jeder Absatz 3-5 Sätze. KEINE Überschriften.\",
   \"improved_bullets\": [\"Bullet 1\", \"Bullet 2\", \"Bullet 3\"],
   \"pros\": [\"Vorteil 1\", \"Vorteil 2\", \"Vorteil 3\"],
   \"cons\": [\"Nachteil 1\", \"Nachteil 2\"]

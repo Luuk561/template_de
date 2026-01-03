@@ -241,6 +241,53 @@
                     @endif
                 </div>
 
+                <!-- Vor- und Nachteile -->
+                @if(($product->pros && count($product->pros) > 0) || ($product->cons && count($product->cons) > 0))
+                    <div class="mb-8 grid grid-cols-1 md:grid-cols-2 gap-6">
+                        @if($product->pros && count($product->pros) > 0)
+                            <div class="bg-green-50 border border-green-200 rounded-lg p-6">
+                                <h3 class="text-lg font-bold text-green-900 mb-4 flex items-center gap-2">
+                                    <svg class="w-5 h-5" fill="currentColor" viewBox="0 0 20 20">
+                                        <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clip-rule="evenodd"/>
+                                    </svg>
+                                    Vorteile
+                                </h3>
+                                <ul class="space-y-2">
+                                    @foreach($product->pros as $pro)
+                                        <li class="flex items-start gap-2 text-sm text-green-800">
+                                            <svg class="w-4 h-4 mt-0.5 flex-shrink-0" fill="currentColor" viewBox="0 0 20 20">
+                                                <path fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clip-rule="evenodd"/>
+                                            </svg>
+                                            <span>{{ $pro }}</span>
+                                        </li>
+                                    @endforeach
+                                </ul>
+                            </div>
+                        @endif
+
+                        @if($product->cons && count($product->cons) > 0)
+                            <div class="bg-red-50 border border-red-200 rounded-lg p-6">
+                                <h3 class="text-lg font-bold text-red-900 mb-4 flex items-center gap-2">
+                                    <svg class="w-5 h-5" fill="currentColor" viewBox="0 0 20 20">
+                                        <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zM8.707 7.293a1 1 0 00-1.414 1.414L8.586 10l-1.293 1.293a1 1 0 101.414 1.414L10 11.414l1.293 1.293a1 1 0 001.414-1.414L11.414 10l1.293-1.293a1 1 0 00-1.414-1.414L10 8.586 8.707 7.293z" clip-rule="evenodd"/>
+                                    </svg>
+                                    Nachteile
+                                </h3>
+                                <ul class="space-y-2">
+                                    @foreach($product->cons as $con)
+                                        <li class="flex items-start gap-2 text-sm text-red-800">
+                                            <svg class="w-4 h-4 mt-0.5 flex-shrink-0" fill="currentColor" viewBox="0 0 20 20">
+                                                <path fill-rule="evenodd" d="M4.293 4.293a1 1 0 011.414 0L10 8.586l4.293-4.293a1 1 0 111.414 1.414L11.414 10l4.293 4.293a1 1 0 01-1.414 1.414L10 11.414l-4.293 4.293a1 1 0 01-1.414-1.414L8.586 10 4.293 5.707a1 1 0 010-1.414z" clip-rule="evenodd"/>
+                                            </svg>
+                                            <span>{{ $con }}</span>
+                                        </li>
+                                    @endforeach
+                                </ul>
+                            </div>
+                        @endif
+                    </div>
+                @endif
+
                 @if($product->specifications->isNotEmpty())
                     <div class="mb-8">
                         <h2 class="text-2xl font-bold text-gray-900 mb-4">Spezifikationen</h2>
