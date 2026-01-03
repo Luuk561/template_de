@@ -475,7 +475,6 @@ class GenerateBlogPost extends Command
 
         // Get products for comparison table/top list
         $products = Product::where('rating_average', '>=', 4.0)
-            ->whereNotNull('price')
             ->orderBy('rating_average', 'desc')
             ->orderBy('rating_count', 'desc')
             ->limit(10)
@@ -532,7 +531,8 @@ PROMPT;
         }
 
         foreach ($products->take(5) as $index => $prod) {
-            $fullPrompt .= "\n" . ($index + 1) . ". {$prod->title} - €{$prod->price} - Rating: {$prod->rating_average}/5";
+            $priceText = $prod->price ? "€{$prod->price}" : "Preis variiert";
+            $fullPrompt .= "\n" . ($index + 1) . ". {$prod->title} - {$priceText} - Rating: {$prod->rating_average}/5";
         }
 
         if ($isGerman) {
