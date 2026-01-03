@@ -15,7 +15,7 @@
     $affiliateLink = getProductAffiliateLink($product);
 
     $defaultImage = '/images/fallback.jpg';
-    $activeImage = $product->images->first()->image_url ?? $defaultImage;
+    $activeImage = $product->image_url ?? $defaultImage;
 
     $primaryColor = getSetting('primary_color', '#7c3aed');
 
@@ -189,14 +189,14 @@
                     </div>
 
                     <!-- Thumbnails -->
-                    @if($product->images->count() > 1)
+                    @if(false)
                         <div class="flex gap-2 flex-wrap">
-                            @foreach ($product->images->take(5)->values() as $index => $image)
-                                @php $img = $image->image_url; @endphp
+                            {{-- Multiple images not yet implemented for Amazon products --}}
+                            @php $img = $product->image_url; @endphp
                                 <img
                                     src="{{ $img }}"
-                                    @click="updateImage({{ $index }}, '{{ $img }}')"
-                                    :class="selectedIndex === {{ $index }} ? 'ring-2' : 'ring-0'"
+                                    @click="updateImage(0, '{{ $img }}')"
+                                    :class="selectedIndex === 0 ? 'ring-2' : 'ring-0'"
                                     style="--tw-ring-color: {{ $primaryColor }};"
                                     class="w-14 h-14 object-cover border border-gray-200 rounded cursor-pointer hover:opacity-75 transition"
                                     alt="Bild {{ $loop->iteration }}"
