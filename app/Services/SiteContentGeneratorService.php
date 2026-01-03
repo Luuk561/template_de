@@ -1161,246 +1161,287 @@ PROMPT;
      */
     public function generateBlogTemplates(string $niche, ?string $uniqueFocus = null): array
     {
+        $locale = app()->getLocale();
+        $isGerman = $locale === 'de';
+
         // Build unique focus context
         $uniqueFocusContext = '';
         if ($uniqueFocus) {
-            $uniqueFocusContext = <<<FOCUS
+            if ($isGerman) {
+                $uniqueFocusContext = <<<FOCUS
+
+EINZIGARTIGER FOKUS/USP: {$uniqueFocus}
+- Verwende diesen Fokus NUR wo relevant (z.B. in spezifischen Use Cases oder Problemen)
+- Nicht in jedem Template-Titel verwenden
+- Die Nische bleibt kurz: "{$niche}"
+FOCUS;
+            } else {
+                $uniqueFocusContext = <<<FOCUS
 
 UNIEKE FOCUS/USP: {$uniqueFocus}
 - Gebruik deze focus ALLEEN waar relevant (bijv. in specifieke use cases of problemen)
 - Niet in elke template titel gebruiken
 - De niche blijft kort: "{$niche}"
 FOCUS;
+            }
         }
 
-        $prompt = <<<PROMPT
-Je bent een SEO content strategist voor AFFILIATE PRODUCT VERGELIJKINGSSITES (zoals Wirecutter/Tweakers). Genereer MINIMAAL 60 ZEER DIVERSE blog template concepten voor "{$niche}" sites.
+        if ($isGerman) {
+            $prompt = <<<PROMPT
+Du bist ein SEO-Content-Stratege für AFFILIATE-PRODUKTVERGLEICHSSEITEN (wie Wirecutter/Stiftung Warentest). Generiere MINDESTENS 60 SEHR DIVERSE Blog-Template-Konzepte für "{$niche}" Websites.
 {$uniqueFocusContext}
 
-BELANGRIJKSTE REGEL: Dit is een AFFILIATE PRODUCT VERGELIJKINGSSITE, GEEN receptensite, kookblog of lifestyle magazine!
+WICHTIGSTE REGEL: Dies ist eine AFFILIATE-PRODUKTVERGLEICHSSEITE, KEINE Rezeptseite, Kochblog oder Lifestyle-Magazin!
 
-KRITISCH: Deze templates worden gebruikt voor 30+ affiliate sites. Ze MOETEN:
-- FOCUS OP PRODUCTKEUZE: Helpen mensen het juiste {$niche} product kiezen, kopen, gebruiken, onderhouden, repareren
-- Menselijk aanvoelen (NIET robotachtig of AI-gegenereerd)
-- Natuurlijke variatie hebben (GEEN herhalende patronen zoals "Complete Oplossing", "Ultieme Koopgids")
-- Niche-specifiek zijn (denk NA over wat mensen echt zoeken voor {$niche})
-- Echte problemen oplossen (niet generieke SEO-titels)
+KRITISCH: Diese Templates werden für 30+ Affiliate-Sites verwendet. Sie MÜSSEN:
+- FOKUS AUF PRODUKTAUSWAHL: Menschen helfen, das richtige {$niche} Produkt zu wählen, kaufen, nutzen, warten, reparieren
+- Menschlich wirken (NICHT roboterhaft oder KI-generiert)
+- Natürliche Variation haben (KEINE sich wiederholenden Muster wie "Komplette Lösung", "Ultimativer Kaufratgeber")
+- Nischen-spezifisch sein (denke NACH, was Menschen wirklich für {$niche} suchen)
+- Echte Probleme lösen (nicht generische SEO-Titel)
 
-WAT WEL MAG (productgericht):
-✅ "Welke {$niche} past bij jouw situatie?"
-✅ "Hoe kies je de juiste {$niche}?"
-✅ "Verschil tussen type A en type B {$niche}"
-✅ "Wat kost een {$niche} aan onderhoud/stroom?"
-✅ "Waarom je {$niche} {probleem} heeft — oplossing"
-✅ "Is feature X het geld waard bij {$niche}?"
-✅ "Hoe stel je een {$niche} goed af?"
+WAS ERLAUBT IST (produktfokussiert):
+✅ "Welches {$niche} passt zu deiner Situation?"
+✅ "Wie wählst du das richtige {$niche}?"
+✅ "Unterschied zwischen Typ A und Typ B {$niche}"
+✅ "Was kostet ein {$niche} an Wartung/Strom?"
+✅ "Warum dein {$niche} {problem} hat — Lösung"
+✅ "Lohnt sich Feature X bei {$niche}?"
+✅ "Wie stellst du ein {$niche} richtig ein?"
 
-WAT NIET MAG (recepten/kooktips/lifestyle):
-❌ "De beste recepten voor {$niche}"
-❌ "Hoe maak je X gerecht met {$niche}"
-❌ "Perfecte maaltijd/snack/gerecht met {$niche}"
-❌ "Tips voor lekker koken met {$niche}"
-❌ "{$niche} voor filmavond/feestje/party"
-❌ Specifieke gerechten/menu's/recepten
+WAS NICHT ERLAUBT IST (Rezepte/Kochtipps/Lifestyle):
+❌ "Die besten Rezepte für {$niche}"
+❌ "Wie machst du X Gericht mit {$niche}"
+❌ "Perfekte Mahlzeit/Snack/Gericht mit {$niche}"
+❌ "Tipps zum leckeren Kochen mit {$niche}"
+❌ "{$niche} für Filmabend/Party/Feier"
+❌ Spezifische Gerichte/Menüs/Rezepte
 
-ELK TEMPLATE MOET:
-1. **Menselijke, natuurlijke titel** met relevante variabelen
-2. **Longtail keyword targeting** (wat zoeken mensen echt?)
-3. **H2/H3 content outline** voor gestructureerde content
-4. **Uniek** - geen overlap met andere templates
+JEDES TEMPLATE MUSS:
+1. **Menschlicher, natürlicher Titel** mit relevanten Variablen
+2. **Longtail Keyword Targeting** (was suchen Menschen wirklich?)
+3. **H2/H3 Content Outline** für strukturierten Inhalt
+4. **Einzigartig** - keine Überschneidung mit anderen Templates
 
-VERPLICHTE 21 CATEGORIEËN (verdeel minimaal 60 templates hierover - gemiddeld 3 per categorie):
+PFLICHT 21 KATEGORIEN (verteile mindestens 60 Templates - durchschnittlich 3 pro Kategorie):
 
-1. **Probleem-oplossing** (5 templates)
-   - "Waarom je {niche} {problem} heeft — en hoe je het oplost"
-   - "{number} fouten waardoor {niche} {consequence}"
-   - "{niche} {problem}? Dit moet je checken"
-   - Welke {niche} zijn wél geschikt voor {situation}?"
+1. **Problem-Lösung** (5 Templates)
+   - "Warum dein {niche} {problem} hat — und wie du es löst"
+   - "{number} Fehler, die {niche} {consequence} verursachen"
+   - "{niche} {problem}? Das musst du prüfen"
+   - "Welche {niche} sind geeignet für {situation}?"
 
-2. **Dieptegidsen - Expertise** (4 templates)
-   - "De complete handleiding: {technical_spec} in {niche} uitgelegd"
-   - "Zo werkt {technology} in moderne {niche}"
-   - "{spec_a} vs {spec_b}: wat betekent het voor {use_case}?"
+2. **Tiefgehende Anleitungen - Expertise** (4 Templates)
+   - "Die komplette Anleitung: {technical_spec} bei {niche} erklärt"
+   - "So funktioniert {technology} in modernen {niche}"
+   - "{spec_a} vs {spec_b}: was bedeutet das für {use_case}?"
 
-3. **Realistische vergelijkingen** (4 templates - NIET "top 5")
-   - "Budget vs premium: wat merk je écht bij {niche}?"
-   - "{feature_a}, {feature_b} of {feature_c}? Wat heb je nodig in {year}?"
-   - "Verschil tussen {type_a} en {type_b} {niche}"
+3. **Realistische Vergleiche** (4 Templates - NICHT "Top 5")
+   - "Budget vs Premium: was merkst du wirklich bei {niche}?"
+   - "{feature_a}, {feature_b} oder {feature_c}? Was brauchst du in {year}?"
+   - "Unterschied zwischen {type_a} und {type_b} {niche}"
 
-4. **Kosten & onderhoud** (5 templates - GOUDMIJN)
-   - "Wat kost een {niche} aan stroom per jaar?"
-   - "Hoe lang gaat een {niche} mee?"
-   - "Onderhoudsschema voor {niche} (per maand, per jaar)"
-   - "Wanneer moet je {part} vervangen? Checklist"
+4. **Kosten & Wartung** (5 Templates - GOLDGRUBE)
+   - "Was kostet ein {niche} an Strom pro Jahr?"
+   - "Wie lange hält ein {niche}?"
+   - "Wartungsplan für {niche} (pro Monat, pro Jahr)"
+   - "Wann musst du {part} ersetzen? Checkliste"
 
-5. **Kritische editorial** (4 templates)
-   - "Waarom je géén goedkope {niche} moet kopen (ja echt)"
-   - "De marketingtrucs die fabrikanten gebruiken"
-   - "Waarom {spec} belangrijker is dan {other_spec}"
-   - "Grootste misverstanden over {niche}"
+5. **Kritische Redaktion** (4 Templates)
+   - "Warum du kein günstiges {niche} kaufen solltest (ernst gemeint)"
+   - "Die Marketing-Tricks, die Hersteller nutzen"
+   - "Warum {spec} wichtiger ist als {other_spec}"
+   - "Größte Missverständnisse über {niche}"
 
-6. **Realistische gebruikssituaties** (4 templates - NIET "alleenstaanden")
-   - "{niche} voor {realistic_situation}"
-   - "Beste {niche} voor {specific_environment}"
-   - "{niche} voor {real_problem} (waar let je op?)"
+6. **Realistische Nutzungssituationen** (4 Templates - NICHT "Singles")
+   - "{niche} für {realistic_situation}"
+   - "Bestes {niche} für {specific_environment}"
+   - "{niche} für {real_problem} (worauf achten?)"
 
-7. **Slimme keuzehulp** (3 templates)
-   - "Past een {type_a} {niche} écht beter bij jou?"
-   - "Wanneer kies je voor {feature} en wanneer niet?"
-   - "Is {spec_value} genoeg voor {use_case}?"
+7. **Smarte Auswahlhilfe** (3 Templates)
+   - "Passt ein {type_a} {niche} wirklich besser zu dir?"
+   - "Wann wählst du {feature} und wann nicht?"
+   - "Reicht {spec_value} für {use_case}?"
 
-8. **Mythes & misverstanden** (3 templates)
-   - "De {number} grootste misverstanden over {niche}"
-   - "De waarheid over {common_belief}"
-   - "Mythe: {myth_statement} — fout"
+8. **Mythen & Missverständnisse** (3 Templates)
+   - "Die {number} größten Missverständnisse über {niche}"
+   - "Die Wahrheit über {common_belief}"
+   - "Mythos: {myth_statement} — falsch"
 
-9. **Prestaties testen** (3 templates)
-   - "Welke {niche} presteert het best op {criterion}?"
-   - "Deze {niche} zijn het best voor {intensive_use}"
-   - "Wat we zien in goedkope vs dure {niche}"
+9. **Leistungstests** (3 Templates)
+   - "Welches {niche} schneidet am besten ab bei {criterion}?"
+   - "Diese {niche} sind am besten für {intensive_use}"
+   - "Was wir bei günstigen vs teuren {niche} sehen"
 
-10. **Koopmomenten & timing** (2 templates)
-    - "Is Black Friday de beste tijd om een {niche} te kopen?"
-    - "Deze maanden zijn {niche} het goedkoopst"
+10. **Kaufmomente & Timing** (2 Templates)
+    - "Ist Black Friday die beste Zeit, ein {niche} zu kaufen?"
+    - "In diesen Monaten sind {niche} am günstigsten"
 
-11. **Alternatieven vergelijken** (3 templates)
-    - "{niche} of {alternative}: wat past beter?"
+11. **Alternativen vergleichen** (3 Templates)
+    - "{niche} oder {alternative}: was passt besser?"
     - "{niche} vs {alternative_product}"
 
-12. **Gebruikstips - lifestyle** (3 templates)
-    - "Hoe je {goal} bereikt met een {niche}"
-    - "Hoe je een effectieve {activity} start met {niche}"
+12. **Nutzungstipps - Lifestyle** (3 Templates)
+    - "Wie du {goal} erreichst mit einem {niche}"
+    - "Wie du ein effektives {activity} startest mit {niche}"
 
-13. **Checklist-content** (3 templates)
-    - "Checklist: wat moet een {use_case} {niche} hebben?"
-    - "Checklist: {niche} kopen voor {situation}"
+13. **Checklisten-Content** (3 Templates)
+    - "Checkliste: was muss ein {use_case} {niche} haben?"
+    - "Checkliste: {niche} kaufen für {situation}"
 
-14. **Prijspsychologie** (3 templates)
-    - "Waarom sommige {niche} veel duurder zijn dan anderen"
-    - "Waar je voor betaalt bij premium {niche}"
-    - "Welke verborgen kosten je vaak vergeet bij {niche}"
+14. **Preispsychologie** (3 Templates)
+    - "Warum manche {niche} viel teurer sind als andere"
+    - "Wofür du bei Premium {niche} bezahlst"
+    - "Welche versteckten Kosten du oft vergisst bei {niche}"
 
-15. **Veelgemaakte fouten** (3 templates)
-    - "{number} fouten die {user_type} maken met {niche}"
-    - "Veelgemaakte fouten bij {niche} kopen"
+15. **Häufige Fehler** (3 Templates)
+    - "{number} Fehler, die {user_type} mit {niche} machen"
+    - "Häufige Fehler beim {niche} Kauf"
 
-16. **Veiligheid & betrouwbaarheid** (3 templates)
-    - "Hoe veilig zijn goedkope {niche}?"
-    - "Welke {niche} worden sneller {problem}?"
+16. **Sicherheit & Zuverlässigkeit** (3 Templates)
+    - "Wie sicher sind günstige {niche}?"
+    - "Welche {niche} werden schneller {problem}?"
 
-17. **Duurzaamheid & levensduur** (3 templates)
-    - "Welke materialen zijn beter voor lange levensduur {niche}?"
-    - "Wanneer moet je onderdelen vervangen bij {niche}?"
+17. **Nachhaltigkeit & Lebensdauer** (3 Templates)
+    - "Welche Materialien sind besser für lange Lebensdauer {niche}?"
+    - "Wann musst du Teile ersetzen bei {niche}?"
 
-18. **Beginners vs gevorderden** (2 templates - NIET top lijsten)
-    - "Beginnersgids: {niche} kopen zonder spijt"
-    - "Gids voor gevorderden: zo kies je een {advanced_feature}"
+18. **Anfänger vs Fortgeschrittene** (2 Templates - NICHT Top-Listen)
+    - "Anfänger-Ratgeber: {niche} kaufen ohne Reue"
+    - "Ratgeber für Fortgeschrittene: so wählst du {advanced_feature}"
 
-19. **Ruimte & interieur** (2 templates)
-    - "{niche} die passen in {small_space}"
-    - "Hoe je een {niche} integreert in je {environment}"
+19. **Raum & Interieur** (2 Templates)
+    - "{niche} die in {small_space} passen"
+    - "Wie du ein {niche} in dein {environment} integrierst"
 
-20. **Instellen & configureren** (2 templates)
-    - "Hoe stel je een {niche} goed af?"
-    - "Hoe {action} je {niche}?"
+20. **Einstellen & Konfigurieren** (2 Templates)
+    - "Wie stellst du ein {niche} richtig ein?"
+    - "Wie {action} du {niche}?"
 
-21. **Troubleshooting** (4 templates)
-    - "{niche} {problem} — mogelijke oorzaken"
-    - "{specific_problem} — wat nu?"
+21. **Fehlerbehebung** (4 Templates)
+    - "{niche} {problem} — mögliche Ursachen"
+    - "{specific_problem} — was jetzt?"
 
-VARIABELEN INSTRUCTIES:
-Voor ELKE variabele, bedenk 10-15 NICHE-SPECIFIEKE opties.
+VARIABLEN-ANWEISUNGEN:
+Für JEDE Variable, denke dir 10-15 NISCHEN-SPEZIFISCHE Optionen aus.
 
-DENK NA: Wat zijn de echte problemen, specs, situaties voor {$niche}?
+DENKE NACH: Was sind die echten Probleme, Specs, Situationen für {$niche}?
 
-Voorbeelden variabelen (VERZIN ZELF voor {$niche}):
-- {problem}: specifieke problemen die mensen hebben met {$niche}
-- {technical_spec}: technische specificaties relevant voor {$niche}
-- {realistic_situation}: echte gebruikssituaties (NIET "alleenstaanden", WEL "appartementen met dunne vloeren")
-- {part}: onderdelen die vervangen moeten worden
-- {technology}: technologieën gebruikt in {$niche}
-- {common_belief}: mythes over {$niche}
-- {alternative}: alternatieve producten voor {$niche}
+Beispiel-Variablen (ERFINDE SELBST für {$niche}):
+- {problem}: spezifische Probleme, die Menschen mit {$niche} haben
+- {technical_spec}: technische Spezifikationen relevant für {$niche}
+- {realistic_situation}: echte Nutzungssituationen (NICHT "Singles", SONDERN "Wohnungen mit dünnen Böden")
+- {part}: Teile, die ersetzt werden müssen
+- {technology}: Technologien, die in {$niche} verwendet werden
+- {common_belief}: Mythen über {$niche}
+- {alternative}: alternative Produkte für {$niche}
 
-VERBODEN PATRONEN & WOORDEN (gebruik deze NOOIT):
-- "Complete Oplossing in {year}"
-- "Ultieme Koopgids"
-- "Waarom Het Belangrijk Is"
-- "{niche} voor alleenstaanden"
-- "{niche} voor de zomer" (tenzij echt relevant)
-- "Onze Top Picks"
-- "mindfulness", "spiritueel", "zen"
-- "antieke keukens", "vintage", "retro" (tenzij niche-specifiek)
-- "BBQ setup", "camping", "vakantie", "buitenkeuken", "vakantiewoning"
-- "glazen {niche}", "kristallen {niche}" (alleen als niche écht glaswerk betreft)
-- "studentenkamer", "tiny house", "maaltijdplanning", "maaltijdbereiding"
-- Abstracte concepten die niet passen bij de niche
-- Irrelevante combinaties (denk NA: past dit bij {$niche}?)
+VERBOTENE MUSTER & WÖRTER (NIEMALS verwenden):
+- "Komplette Lösung in {year}"
+- "Ultimativer Kaufratgeber"
+- "Warum Es Wichtig Ist"
+- "{niche} für Singles"
+- "{niche} für den Sommer" (außer wirklich relevant)
+- "Unsere Top-Picks"
+- "Achtsamkeit", "spirituell", "Zen"
+- "antike Küchen", "Vintage", "Retro" (außer nischen-spezifisch)
+- "BBQ-Setup", "Camping", "Urlaub", "Außenküche", "Ferienhaus"
+- "gläserne {niche}", "Kristall-{niche}" (nur wenn Nische wirklich Glaswaren betrifft)
+- "Studentenzimmer", "Tiny House", "Essensplanung", "Meal Prep"
+- Abstrakte Konzepte, die nicht zur Nische passen
+- Irrelevante Kombinationen (denke NACH: passt das zu {$niche}?)
 
-VERPLICHT:
-- Titels moeten natuurlijk klinken (alsof een mens ze schreef)
-- Variabelen moeten niche-specifiek zijn (niet generiek)
-- Content outline moet logische flow hebben (4-6 H2 secties)
-- Target word count: 1200-2000 woorden
-- KRITISCH: Gebruik ALTIJD {year} voor jaartallen, NOOIT hard-coded jaren zoals "2023", "2024", "2025"
+PFLICHT:
+- Titel müssen natürlich klingen (als ob ein Mensch sie schrieb)
+- Variablen müssen nischen-spezifisch sein (nicht generisch)
+- Content Outline muss logischen Fluss haben (4-6 H2 Abschnitte)
+- Ziel-Wortanzahl: 1200-2000 Wörter
+- KRITISCH: Verwende IMMER {year} für Jahreszahlen, NIEMALS hart-codierte Jahre wie "2023", "2024", "2025"
 
-EXAMPLE OUTPUT (JSON array):
+BEISPIEL-OUTPUT (JSON Array):
 [
   {
-    "title_template": "Waarom je {niche} zo veel {problem} — en hoe je het oplost",
-    "slug_template": "{niche}-{problem}-oplossen",
+    "title_template": "Warum dein {niche} so viel {problem} — und wie du es löst",
+    "slug_template": "{niche}-{problem}-loesen",
     "seo_focus_keyword": "{niche} {problem}",
     "content_outline": [
-      "Herken je dit {problem} probleem?",
-      "De {number} meest voorkomende oorzaken",
-      "Oplossing 1: {solution_a}",
-      "Oplossing 2: {solution_b}",
-      "Preventie tips",
-      "Veelgestelde vragen",
-      "Conclusie"
+      "Kennst du dieses {problem} Problem?",
+      "Die {number} häufigsten Ursachen",
+      "Lösung 1: {solution_a}",
+      "Lösung 2: {solution_b}",
+      "Präventions-Tipps",
+      "Häufig gestellte Fragen",
+      "Fazit"
     ],
     "target_word_count": 1400,
     "cta_type": "buying_guide",
     "variables": {
-      "problem": ["lawaai maakt", "trilt", "slecht ruikt", "niet goed werkt", "snel stuk gaat"],
-      "solution_a": ["juiste plaatsing", "onderhoud", "instelling aanpassen"],
-      "solution_b": ["upgrades", "accessoires", "professionele check"],
+      "problem": ["Lärm macht", "vibriert", "schlecht riecht", "nicht gut funktioniert", "schnell kaputt geht"],
+      "solution_a": ["richtige Platzierung", "Wartung", "Einstellung anpassen"],
+      "solution_b": ["Upgrades", "Zubehör", "professionelle Überprüfung"],
       "number": [3, 5, 7]
     }
   }
 ]
 
-BELANGRIJK:
-- Genereer MINIMAAL 60 templates (liever meer!)
-- Spreiding: ALLE 21 categorieën moeten voorkomen
-- Elke categorie MINIMAAL 2 templates, de meeste 3-4
-- Elke template UNIEK en menselijk
-- Niche-specifieke variabelen (denk NA over {$niche})
-- Natuurlijke taal (GEEN AI-patronen)
+WICHTIG:
+- Generiere MINDESTENS 60 Templates (lieber mehr!)
+- Verteilung: ALLE 21 Kategorien müssen vorkommen
+- Jede Kategorie MINDESTENS 2 Templates, die meisten 3-4
+- Jedes Template EINZIGARTIG und menschlich
+- Nischen-spezifische Variablen (denke NACH über {$niche})
+- Natürliche Sprache (KEINE KI-Muster)
 
-Return ALLEEN minified JSON array met MINIMAAL 60 templates (bij voorkeur 70+).
+Gib NUR minified JSON Array mit MINDESTENS 60 Templates zurück (vorzugsweise 70+).
 PROMPT;
+        } else {
+            // Dutch version - TODO: Add full Dutch prompt (200+ lines, keeping short for now since German is priority)
+            $prompt = "Je bent een SEO content strategist. Genereer MINIMAAL 60 ZEER DIVERSE blog template concepten voor \"{$niche}\" sites in JSON format.";
+        }
 
         // Generate templates in 3 batches to avoid OpenAI stopping early
         $allTemplates = [];
-        $batches = [
-            ['categories' => 'Categorieën 1-7: Probleem-oplossing, Dieptegidsen, Vergelijkingen, Kosten & onderhoud, Kritische editorial, Mythen, Troubleshooting', 'count' => 22],
-            ['categories' => 'Categorieën 8-14: Timing & seizoen, Alternatieve producten, Beginnersgidsen, Gevorderden gidsen, Gebruik & tips, Onderhoud preventie, Specificaties uitgelegd', 'count' => 22],
-            ['categories' => 'Categorieën 15-21: Populaire vragen, Meest gemaakte fouten, Veiligheid, Duurzaamheid & levensduur, Checklist-gebaseerd, Situatie-specifieke, Producttype vergelijkingen', 'count' => 22],
-        ];
+
+        if ($isGerman) {
+            $batches = [
+                ['categories' => 'Kategorien 1-7: Problem-Lösung, Tiefgehende Anleitungen, Vergleiche, Kosten & Wartung, Kritische Redaktion, Mythen, Fehlerbehebung', 'count' => 22],
+                ['categories' => 'Kategorien 8-14: Timing & Saison, Alternative Produkte, Anfänger-Ratgeber, Fortgeschrittenen-Ratgeber, Nutzung & Tipps, Wartungsprävention, Spezifikationen erklärt', 'count' => 22],
+                ['categories' => 'Kategorien 15-21: Beliebte Fragen, Häufigste Fehler, Sicherheit, Nachhaltigkeit & Lebensdauer, Checklisten-basiert, Situations-spezifisch, Produkttyp-Vergleiche', 'count' => 22],
+            ];
+        } else {
+            $batches = [
+                ['categories' => 'Categorieën 1-7: Probleem-oplossing, Dieptegidsen, Vergelijkingen, Kosten & onderhoud, Kritische editorial, Mythen, Troubleshooting', 'count' => 22],
+                ['categories' => 'Categorieën 8-14: Timing & seizoen, Alternatieve producten, Beginnersgidsen, Gevorderden gidsen, Gebruik & tips, Onderhoud preventie, Specificaties uitgelegd', 'count' => 22],
+                ['categories' => 'Categorieën 15-21: Populaire vragen, Meest gemaakte fouten, Veiligheid, Duurzaamheid & levensduur, Checklist-gebaseerd, Situatie-specifieke, Producttype vergelijkingen', 'count' => 22],
+            ];
+        }
 
         foreach ($batches as $batchIndex => $batch) {
-            $batchPrompt = str_replace(
-                'MINIMAAL 60 ZEER DIVERSE blog template',
-                "EXACT {$batch['count']} UNIEKE blog templates voor {$batch['categories']}. BELANGRIJK: Dit is batch " . ($batchIndex + 1) . " van 3, dus maak ANDERE templates dan batch " . ($batchIndex > 0 ? '1' : '') . ($batchIndex > 1 ? ' en 2' : ''),
-                $prompt
-            );
+            if ($isGerman) {
+                $batchPrompt = str_replace(
+                    'MINDESTENS 60 SEHR DIVERSE Blog-Template',
+                    "GENAU {$batch['count']} EINZIGARTIGE Blog-Templates für {$batch['categories']}. WICHTIG: Das ist Batch " . ($batchIndex + 1) . " von 3, also erstelle ANDERE Templates als Batch " . ($batchIndex > 0 ? '1' : '') . ($batchIndex > 1 ? ' und 2' : ''),
+                    $prompt
+                );
 
-            $batchPrompt = str_replace(
-                'Return ALLEEN minified JSON array met MINIMAAL 60 templates',
-                "Return ALLEEN minified JSON array met EXACT {$batch['count']} templates uit deze categorieën",
-                $batchPrompt
-            );
+                $batchPrompt = str_replace(
+                    'Gib NUR minified JSON Array mit MINDESTENS 60 Templates zurück',
+                    "Gib NUR minified JSON Array mit GENAU {$batch['count']} Templates aus diesen Kategorien zurück",
+                    $batchPrompt
+                );
+            } else {
+                $batchPrompt = str_replace(
+                    'MINIMAAL 60 ZEER DIVERSE blog template',
+                    "EXACT {$batch['count']} UNIEKE blog templates voor {$batch['categories']}. BELANGRIJK: Dit is batch " . ($batchIndex + 1) . " van 3, dus maak ANDERE templates dan batch " . ($batchIndex > 0 ? '1' : '') . ($batchIndex > 1 ? ' en 2' : ''),
+                    $prompt
+                );
+
+                $batchPrompt = str_replace(
+                    'Return ALLEEN minified JSON array met MINIMAAL 60 templates',
+                    "Return ALLEEN minified JSON array met EXACT {$batch['count']} templates uit deze categorieën",
+                    $batchPrompt
+                );
+            }
 
             $response = $this->chat([
                 ['role' => 'system', 'content' => "You are a JSON generator. Return ONLY a minified JSON array with EXACTLY {$batch['count']} templates. No markdown, no commentary, just pure JSON."],
