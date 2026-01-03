@@ -1714,19 +1714,104 @@ PROMPT;
      */
     public function generateProductBlogTemplates(string $niche, ?string $uniqueFocus = null): array
     {
+        $locale = app()->getLocale();
+        $isGerman = $locale === 'de';
+
         // Build unique focus context
         $uniqueFocusContext = '';
         if ($uniqueFocus) {
-            $uniqueFocusContext = <<<FOCUS
+            if ($isGerman) {
+                $uniqueFocusContext = <<<FOCUS
+
+EINZIGARTIGER FOKUS/USP: {$uniqueFocus}
+- Verwende diesen Fokus sparsam in spezifischen Szenarien/Anwendungsfällen
+- Nicht in jedem Template-Titel
+- Nische bleibt kurz: "{$niche}"
+FOCUS;
+            } else {
+                $uniqueFocusContext = <<<FOCUS
 
 UNIEKE FOCUS/USP: {$uniqueFocus}
 - Gebruik deze focus spaarzaam in specifieke scenarios/use cases waar relevant
 - Niet in elke template titel
 - Niche blijft kort: "{$niche}"
 FOCUS;
+            }
         }
 
-        $prompt = <<<PROMPT
+        if ($isGerman) {
+            $prompt = <<<PROMPT
+Du bist ein SEO Content Strategist. Generiere GENAU 20 VOLLSTÄNDIG EINZIGARTIGE Produkt-Blog-Templates für "{$niche}" Websites.
+{$uniqueFocusContext}
+
+KRITISCH: JEDES DER 20 TEMPLATES MUSS EINEN ANDEREN title_template HABEN!
+- NICHT: 5 Templates die 4x wiederholt werden
+- SONDERN: 20 Templates mit 20 verschiedenen Titeln
+
+PRODUKT BLOG = praktische Geschichte darüber, wie man EIN SPEZIFISCHES Produkt verwendet/optimiert.
+Ton: informativ, hilfreich, leichtes Storytelling.
+Fokus: Wie macht dieses Produkt das Leben besser?
+
+VERTEILUNG (sorge für diese exakten Zahlen):
+
+1. HOW-TO (6 Templates mit VERSCHIEDENEN TITELN):
+   - "Wie du {product} optimal für {use_case} nutzt"
+   - "Erste Schritte mit {product}: Komplette Anleitung"
+   - "Maximales Ergebnis aus {product} herausholen: Guide für {use_case}"
+   - "Schritt-für-Schritt: {product} einrichten für {use_case}"
+   - "{product} Masterclass: Vom Anfänger zum Experten"
+   - "Entdecke die versteckten Funktionen von {product}"
+
+2. VORTEILE (4 Templates mit VERSCHIEDENEN TITELN):
+   - "Die {number} überraschenden Vorteile von {product} für {scenario}"
+   - "Warum {product} dein Leben verändert: {number} Gründe"
+   - "Was {product} für {scenario} bedeuten kann"
+   - "{product} Review: {number} Dinge, die mich überraschten"
+
+3. FEHLER (3 Templates mit VERSCHIEDENEN TITELN):
+   - "{number} häufige Fehler bei {product} (und wie du sie vermeidest)"
+   - "Stopp diese {number} Fehler bei {product}"
+   - "{product} Probleme? Das läuft wahrscheinlich schief"
+
+4. ANWENDUNGSFÄLLE (4 Templates mit VERSCHIEDENEN TITELN):
+   - "{product} für {scenario}: Entdecke die Möglichkeiten"
+   - "Transformiere {scenario} mit {product}: Meine Erfahrung"
+   - "Von Chaos zu Kontrolle: {product} für {scenario}"
+   - "{product} in der Praxis: {scenario} Szenario"
+
+5. VERGLEICHE (3 Templates mit VERSCHIEDENEN TITELN):
+   - "Warum {product} besser ist als {alternative}"
+   - "{product} vs {alternative}: Ehrlicher Vergleich"
+   - "Von {alternative} zu {product}: War der Wechsel es wert?"
+
+VARIABLEN (spezifisch für {$niche}):
+- {use_case}: [Anfänger, Profis, täglicher Gebrauch, intensiver Gebrauch, Familien, kleine Räume]
+- {number}: [3, 5, 7, 10]
+- {scenario}: [hektische Morgen, gesundes Leben, Zeit sparen, Partys, Wochenmenü, Alltag]
+- {alternative}: [traditionelle Methode, manuelle Arbeit, ältere Modelle, günstigere Alternativen]
+
+JSON pro Template:
+{
+  "title_template": "EINZIGARTIGER Titel",
+  "slug_template": "einzigartiger-slug",
+  "seo_focus_keyword": "keyword",
+  "content_outline": ["H2 1", "H2 2", "H2 3", "H2 4"],
+  "target_word_count": 1500,
+  "tone": "practical|inspirational|storytelling|problem_solving",
+  "scenario_focus": "how_to|benefits|mistakes|use_cases|comparison",
+  "cta_type": "product_primary",
+  "variables": {"use_case": ["option1"]}
+}
+
+VALIDIERUNG:
+✓ Habe ich 20 verschiedene title_template Werte?
+✓ Sind sie verteilt als 6+4+3+4+3=20?
+✓ Hat jedes Template eine einzigartige content_outline?
+
+Gib NUR minified JSON Array zurück [{...},{...},...] mit 20 Templates.
+PROMPT;
+        } else {
+            $prompt = <<<PROMPT
 Je bent een SEO content strategist. Genereer EXACT 20 VOLLEDIG UNIEKE product blog templates voor "{$niche}" sites.
 {$uniqueFocusContext}
 
@@ -1794,8 +1879,9 @@ VALIDATIE:
 ✓ Zijn ze verdeeld als 6+4+3+4+3=20?
 ✓ Heeft elk template unieke content_outline?
 
-Return ALLEEN minified JSON array [{{...}},{{...}},...] met 20 templates.
+Return ALLEEN minified JSON array [{...},{...},...] met 20 templates.
 PROMPT;
+        }
 
         $response = $this->chat([
             ['role' => 'system', 'content' => 'You MUST return a JSON array with EXACTLY 20 unique templates. Each must have a different title_template. Return ONLY the JSON array, no markdown, no text.'],
