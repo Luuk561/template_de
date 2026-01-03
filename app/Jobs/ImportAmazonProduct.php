@@ -118,7 +118,7 @@ ANTWORTFORMAT (NUR JSON, kein anderer Text):
   \"seo_title\": \"Kurzer prägnanter Titel max 60 chars\",
   \"meta_description\": \"Überzeugende Beschreibung 150-155 chars mit Call-to-Action\",
   \"slug\": \"kurzer-seo-optimierter-slug\",
-  \"improved_description\": \"Ausführliche strukturierte Produktbeschreibung mit 6-8 Absätzen (getrennt durch \\\\n\\\\n). Jeder Absatz 3-5 Sätze. KEINE Überschriften.\",
+  \"improved_description\": \"Ausführliche strukturierte Produktbeschreibung mit 6-8 Absätzen (getrennt durch \\\\n\\\\n) und 3-4 <h2>Überschriften</h2> strategisch platziert. Jeder Absatz 3-5 Sätze. H2 tags direkt im HTML-Format verwenden.\",
   \"improved_bullets\": [\"Bullet 1\", \"Bullet 2\", \"Bullet 3\"],
   \"pros\": [\"Vorteil 1\", \"Vorteil 2\", \"Vorteil 3\"],
   \"cons\": [\"Nachteil 1\", \"Nachteil 2\"]
