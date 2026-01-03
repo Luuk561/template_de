@@ -129,6 +129,10 @@ class ImportProductJson extends Command
         $product->meta_title = $data['seo_title'] ?? null;
         $product->meta_description = $data['meta_description'] ?? null;
 
+        // Pros/Cons from OpenAI
+        $product->pros = $data['pros'] ?? null;
+        $product->cons = $data['cons'] ?? null;
+
         // Images - store first as image_url, all as images_json
         if (!empty($data['images'])) {
             $product->image_url = $data['images'][0];

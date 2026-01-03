@@ -39,6 +39,8 @@ class Product extends Model
         'is_available' => 'boolean',
         'unavailable_since' => 'datetime',
         'images_json' => 'array',
+        'pros' => 'array',
+        'cons' => 'array',
     ];
 
     public function images()
