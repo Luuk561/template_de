@@ -23,3 +23,14 @@ yarn-error.log
 /.nova
 /.vscode
 /.zed
+
+# Admin panel (local only - don't push to production sites)
+/resources/views/admin/
+/app/Http/Controllers/Admin/
+/public/amazon-bookmarklet.js
+/public/install-bookmarklet.html
+BOOKMARKLET-INSTRUCTIONS.md
+
+# Keep these - needed on production:
+# /app/Jobs/ImportAmazonProduct.php
+# /app/Console/Commands/ImportProductJson.php
