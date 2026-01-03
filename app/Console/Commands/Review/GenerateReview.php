@@ -102,18 +102,35 @@ class GenerateReview extends Command
         $slug = 'review-'.Str::slug(Str::limit($product->title, 60)).'-'.Str::random(4);
         $siteName = config('app.name', 'Website');
 
-        // SEO-optimized title variations (juridisch verantwoord + overtuigend)
-        $titleVariations = [
-            "{$product->title} Review - Uitgebreide Test",
-            "{$product->title} Review & Ervaringen",
-            "{$product->title} - Eerlijke Review",
-            "Review {$product->title} - Voor- en Nadelen",
-            "{$product->title} Getest - Onze Review",
-        ];
-        $seoTitle = Str::limit($titleVariations[array_rand($titleVariations)], 120, '');
+        $locale = app()->getLocale();
+        $isGerman = $locale === 'de';
 
-        $metaTitle = Str::limit("{$product->title} Review - Test & Ervaringen", 60, '');
-        $metaDescription = Str::limit("Eerlijke review van de {$product->title}. Ontdek de voor- en nadelen uit onze praktijktest en lees onze ervaringen.", 155, '');
+        // SEO-optimized title variations (juridisch verantwoord + overtuigend)
+        if ($isGerman) {
+            $titleVariations = [
+                "{$product->title} Test - Ausführlicher Testbericht",
+                "{$product->title} Test & Erfahrungen",
+                "{$product->title} - Ehrlicher Test",
+                "Test {$product->title} - Vor- und Nachteile",
+                "{$product->title} Getestet - Unser Testbericht",
+            ];
+            $metaTitleTemplate = "{$product->title} Test - Testbericht & Erfahrungen";
+            $metaDescriptionTemplate = "Ehrlicher Test des {$product->title}. Entdecke die Vor- und Nachteile aus unserem Praxistest und lies unsere Erfahrungen.";
+        } else {
+            $titleVariations = [
+                "{$product->title} Review - Uitgebreide Test",
+                "{$product->title} Review & Ervaringen",
+                "{$product->title} - Eerlijke Review",
+                "Review {$product->title} - Voor- en Nadelen",
+                "{$product->title} Getest - Onze Review",
+            ];
+            $metaTitleTemplate = "{$product->title} Review - Test & Ervaringen";
+            $metaDescriptionTemplate = "Eerlijke review van de {$product->title}. Ontdek de voor- en nadelen uit onze praktijktest en lees onze ervaringen.";
+        }
+
+        $seoTitle = Str::limit($titleVariations[array_rand($titleVariations)], 120, '');
+        $metaTitle = Str::limit($metaTitleTemplate, 60, '');
+        $metaDescription = Str::limit($metaDescriptionTemplate, 155, '');
 
         try {
             Review::create([
