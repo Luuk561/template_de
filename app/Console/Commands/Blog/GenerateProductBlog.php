@@ -162,11 +162,17 @@ class GenerateProductBlog extends Command
 
         // Generate SEO meta
         $metaTitle = Str::limit($instantiated['title'], 60, '');
-        $metaDescription = Str::limit(
-            "Ontdek hoe je {$product->title} optimaal gebruikt. Praktische tips, ervaringen en advies voor het beste resultaat.",
-            155,
-            ''
-        );
+
+        $locale = app()->getLocale();
+        $isGerman = $locale === 'de';
+
+        if ($isGerman) {
+            $defaultMetaDescription = "Entdecke, wie du {$product->title} optimal nutzt. Praktische Tipps, Erfahrungen und Ratschläge für das beste Ergebnis.";
+        } else {
+            $defaultMetaDescription = "Ontdek hoe je {$product->title} optimaal gebruikt. Praktische tips, ervaringen en advies voor het beste resultaat.";
+        }
+
+        $metaDescription = Str::limit($defaultMetaDescription, 155, '');
 
         // Save blog post
         try {
@@ -178,7 +184,7 @@ class GenerateProductBlog extends Command
                 'meta_description' => $metaDescription,
                 'status' => 'published',
                 'product_id' => $product->id, // CRITICAL: This is a product blog
-                'excerpt' => Str::limit($json['standfirst'] ?? "Blog over {$product->title}", 200),
+                'excerpt' => Str::limit($json['standfirst'] ?? ($isGerman ? "Blog über {$product->title}" : "Blog over {$product->title}"), 200),
             ]);
 
             // Mark template as used
