@@ -245,7 +245,113 @@ class GenerateProductBlog extends Command
         $toneGuidance = $this->getToneGuidance($template->tone);
         $scenarioGuidance = $this->getScenarioGuidance($template->scenario_focus);
 
-        $fullPrompt = <<<PROMPT
+        $locale = app()->getLocale();
+        $isGerman = $locale === 'de';
+
+        if ($isGerman) {
+            $fullPrompt = <<<PROMPT
+SYSTEM: Du bist ein Experte für SEO-Content, spezialisiert auf Produkt-Blogs mit Storytelling-Elementen. Du schreibst auf Deutsch.
+
+AUFGABE: Schreibe einen PRODUKT-BLOG über "{$product->title}" für {$siteName}, eine {$niche} Website.
+
+WICHTIG: Dies ist ein PRODUKT-BLOG - kein allgemeiner Blog!
+Ein Produkt-Blog geht SPEZIFISCH darüber, wie du DIESES PRODUKT verwendest, optimierst und Wert daraus ziehst.
+
+PRODUKT-BLOG MERKMALE:
+- Ton: {$toneGuidance}
+- Fokus: {$scenarioGuidance}
+- Storytelling: Verwende "Stell dir vor..." / "Entdecke wie..." / "Transformiere dein..."
+- Praktisch: Konkrete Tipps und Ratschläge für DIESES spezifische Produkt
+- Erlebnis: Wie macht {$product->title} das Leben einfacher/angenehmer/effizienter?
+
+PRODUKT INFORMATIONEN:
+Name: {$product->title}
+Marke: {$product->brand}
+Beschreibung: {$product->description}
+Preis: €{$product->price}
+
+CONTENT OUTLINE (folge dieser Struktur):
+{$outlineText}
+
+ZIEL:
+- Wortanzahl: {$template->target_word_count} Wörter
+- SEO Fokus-Keyword: {$instantiated['seo_keyword']}
+
+KRITISCH: Verwende GENAU diesen Titel (nicht ändern, kein Jahr ändern!):
+Titel: {$instantiated['title']}
+
+KRITISCH: Folge GENAU dieser JSON-Struktur. Jedes section-Objekt muss auf derselben Ebene im sections-Array stehen!
+
+KORREKTE STRUKTUR (ACHTUNG: quote ist SEPARATES section, nicht innerhalb von text!):
+{
+  "version": "blog.v3",
+  "locale": "de-DE",
+  "author": "{$siteName}",
+  "title": "{$instantiated['title']}",
+  "standfirst": "Eine packende Eröffnung (2-3 Sätze)",
+  "sections": [
+    {
+      "type": "text",
+      "heading": "Erste H2 Überschrift",
+      "paragraphs": ["Absatz 1 Text hier", "Absatz 2 Text hier"]
+    },
+    {
+      "type": "quote",
+      "quote": {"text": "Zitat-Text hier"}
+    },
+    {
+      "type": "text",
+      "heading": "Zweite H2 Überschrift",
+      "paragraphs": ["Absatz 1 Text hier", "Absatz 2 Text hier"]
+    },
+    {
+      "type": "text",
+      "heading": "Dritte H2 Überschrift",
+      "paragraphs": ["Absatz 1 Text hier", "Absatz 2 Text hier"]
+    }
+  ],
+  "product_context": {
+    "name": "{$product->title}",
+    "brand": "{$product->brand}",
+    "why_relevant": "Warum relevant (1 Satz)"
+  },
+  "closing": {
+    "headline": "Fazit",
+    "summary": "Zusammenfassendes Fazit (3-4 Sätze)",
+    "primary_cta": {
+      "label": "{$product->title} ansehen",
+      "url_key": "producten.show",
+      "url_params": {"slug": "{$product->slug}"}
+    }
+  }
+}
+
+FEHLER - NIEMALS TUN:
+{
+  "sections": [
+    {
+      "type": "text",
+      "paragraphs": ["..."],
+      "type": "quote"  <-- FEHLER! Quote muss separate section sein!
+    }
+  ]
+}
+
+REGELN:
+1. Erstelle 3-4 text sections basierend auf outline (NICHT mehr - halte es kompakt!)
+2. Füge 1 quote section hinzu
+3. Jede text section: 2 Absätze mit 3-4 Sätzen (kurz und bündig!)
+4. Verwende "dieses {$niche}", "das Gerät", "{$product->brand} Modell" für Abwechslung - NICHT ständig den vollen Produktnamen wiederholen
+5. Verwende Storytelling und praktische Beispiele
+6. Insgesamt ~1000 Wörter (NICHT mehr, halte es kompakt!)
+7. Verwende KEINE Tables/Markdown - nur Text
+8. Halte es praktisch, inspirierend und umsetzbar
+9. Gib NUR minified JSON zurück, KEINE Markdown-Blöcke
+
+Beginne JETZT:
+PROMPT;
+        } else {
+            $fullPrompt = <<<PROMPT
 SYSTEM: Je bent een expert SEO content writer gespecialiseerd in product blogs met storytelling elementen. Je schrijft in het Nederlands.
 
 OPDRACHT: Schrijf een PRODUCT BLOG over "{$product->title}" voor {$siteName}, een {$niche} website.
@@ -293,7 +399,7 @@ CORRECTE STRUCTURE (LET OP: quote is APART section, niet binnen text!):
     },
     {
       "type": "quote",
-      "quote": {{"text": "Quote tekst hier"}}
+      "quote": {"text": "Quote tekst hier"}
     },
     {
       "type": "text",
@@ -317,7 +423,7 @@ CORRECTE STRUCTURE (LET OP: quote is APART section, niet binnen text!):
     "primary_cta": {
       "label": "Bekijk {$product->title}",
       "url_key": "producten.show",
-      "url_params": {{"slug": "{$product->slug}"}}
+      "url_params": {"slug": "{$product->slug}"}
     }
   }
 }
@@ -346,6 +452,7 @@ REGELS:
 
 Begin NU:
 PROMPT;
+        }
 
         $response = $this->openAI->generateFromPrompt($fullPrompt, 'gpt-4o-mini');
 
@@ -374,24 +481,51 @@ PROMPT;
 
     protected function getToneGuidance(string $tone): string
     {
-        return match($tone) {
-            'inspirational' => 'Inspirerend en motiverend - maak de lezer enthousiast over de mogelijkheden',
-            'practical' => 'Praktisch en hands-on - concrete tips en hoe-te-doen instructies',
-            'storytelling' => 'Verhalend en meeslepend - gebruik scenario\'s en voorbeelden uit het echte leven',
-            'problem_solving' => 'Probleemoplossend - focus op hoe dit product specifieke uitdagingen aanpakt',
-            default => 'Informatief en behulpzaam met een vleugje enthousiasme',
-        };
+        $locale = app()->getLocale();
+        $isGerman = $locale === 'de';
+
+        if ($isGerman) {
+            return match($tone) {
+                'inspirational' => 'Inspirierend und motivierend - begeistere den Leser für die Möglichkeiten',
+                'practical' => 'Praktisch und hands-on - konkrete Tipps und Anleitungen',
+                'storytelling' => 'Erzählend und fesselnd - verwende Szenarien und Beispiele aus dem echten Leben',
+                'problem_solving' => 'Problemlösend - fokussiere darauf, wie dieses Produkt spezifische Herausforderungen angeht',
+                default => 'Informativ und hilfreich mit einer Prise Begeisterung',
+            };
+        } else {
+            return match($tone) {
+                'inspirational' => 'Inspirerend en motiverend - maak de lezer enthousiast over de mogelijkheden',
+                'practical' => 'Praktisch en hands-on - concrete tips en hoe-te-doen instructies',
+                'storytelling' => 'Verhalend en meeslepend - gebruik scenario\'s en voorbeelden uit het echte leven',
+                'problem_solving' => 'Probleemoplossend - focus op hoe dit product specifieke uitdagingen aanpakt',
+                default => 'Informatief en behulpzaam met een vleugje enthousiasme',
+            };
+        }
     }
 
     protected function getScenarioGuidance(string $scenario): string
     {
-        return match($scenario) {
-            'how_to' => 'Leg stap-voor-stap uit hoe je het product optimaal gebruikt',
-            'benefits' => 'Benadruk de concrete voordelen en wat het product bijzonder maakt',
-            'mistakes' => 'Wijs op veelgemaakte fouten en hoe je die vermijdt',
-            'use_cases' => 'Beschrijf specifieke gebruik scenario\'s en toepassingen',
-            'comparison' => 'Vergelijk met alternatieven en laat zien waarom dit product beter is',
-            default => 'Focus op praktische toepassingen en gebruikservaringen',
-        };
+        $locale = app()->getLocale();
+        $isGerman = $locale === 'de';
+
+        if ($isGerman) {
+            return match($scenario) {
+                'how_to' => 'Erkläre Schritt für Schritt, wie du das Produkt optimal nutzt',
+                'benefits' => 'Betone die konkreten Vorteile und was das Produkt besonders macht',
+                'mistakes' => 'Weise auf häufige Fehler hin und wie du sie vermeidest',
+                'use_cases' => 'Beschreibe spezifische Nutzungsszenarien und Anwendungen',
+                'comparison' => 'Vergleiche mit Alternativen und zeige, warum dieses Produkt besser ist',
+                default => 'Fokussiere auf praktische Anwendungen und Nutzererfahrungen',
+            };
+        } else {
+            return match($scenario) {
+                'how_to' => 'Leg stap-voor-stap uit hoe je het product optimaal gebruikt',
+                'benefits' => 'Benadruk de concrete voordelen en wat het product bijzonder maakt',
+                'mistakes' => 'Wijs op veelgemaakte fouten en hoe je die vermijdt',
+                'use_cases' => 'Beschrijf specifieke gebruik scenario\'s en toepassingen',
+                'comparison' => 'Vergelijk met alternatieven en laat zien waarom dit product beter is',
+                default => 'Focus op praktische toepassingen en gebruikservaringen',
+            };
+        }
     }
 }
