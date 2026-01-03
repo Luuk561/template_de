@@ -104,9 +104,7 @@ ANTWORTFORMAT (NUR JSON, kein anderer Text):
   \"improved_bullets\": [\"Bullet 1\", \"Bullet 2\", \"Bullet 3\"]
 }";
 
-            $client = OpenAI::client(config('openai.api_key'));
-
-            $response = $client->chat()->create([
+            $response = OpenAI::client(config('openai.api_key'))->chat()->create([
                 'model' => 'gpt-4o-mini',
                 'messages' => [
                     ['role' => 'user', 'content' => $prompt]
