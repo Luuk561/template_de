@@ -92,20 +92,26 @@ SEO-ANFORDERUNGEN:
 - Slug: Kurz, prägnant, max 5-6 Wörter, nur wichtigste Keywords (z.B. 'merach-laufband-walking-pad')
 
 BESCHREIBUNGS-ANFORDERUNGEN:
-- Schreibe eine ausführliche, strukturierte Produktbeschreibung mit 6-8 Absätzen
-- Nutze H2-Überschriften für SEO (3-4 Überschriften maximal, strategisch platziert)
-- H2 Format: <h2>Überschrift hier</h2> (KEIN Markdown ##)
-- Überschriften sollten Keywords enthalten (z.B. \"Vorteile des [Produktname]\", \"Für wen ist das [Produkttyp] geeignet?\")
-- Struktur mit SEO-Überschriften:
-  1. Einführungsabsatz (OHNE Überschrift): Was ist das Produkt?
-  2. <h2>Wichtigste Funktionen und Vorteile</h2> + 2 Absätze über Features
-  3. <h2>Für wen ist das [Produkttyp] geeignet?</h2> + 1 Absatz über Zielgruppe
-  4. 1-2 Absätze über technische Details (OHNE Überschrift)
-  5. <h2>Praktische Tipps zur Verwendung</h2> + 1 Absatz (optional, nur wenn sinnvoll)
-  6. Fazit-Absatz (OHNE Überschrift): Kaufempfehlung
-- Jeder Absatz 3-5 Sätze
-- Absätze durch \\n\\n trennen, H2 tags direkt in den Text integrieren
-- Professionell, überzeugend, keyword-optimiert
+WICHTIG: Die Beschreibung MUSS 3-4 H2-Überschriften enthalten im Format <h2>Text hier</h2>
+
+Beispiel-Struktur:
+Einführungsabsatz ohne Überschrift (3-5 Sätze)
+
+<h2>Wichtigste Funktionen und Vorteile</h2>
+2 Absätze über Features (je 3-5 Sätze)
+
+<h2>Für wen ist das [Produkttyp] geeignet?</h2>
+1 Absatz über Zielgruppe (3-5 Sätze)
+
+<h2>Technische Details und Besonderheiten</h2>
+1-2 Absätze über technische Aspekte (je 3-5 Sätze)
+
+Fazit-Absatz ohne Überschrift (3-5 Sätze)
+
+- Absätze durch \\n\\n trennen
+- H2 tags exakt so verwenden: <h2>Überschrift</h2>
+- Keywords in Überschriften einbauen
+- Professionell und überzeugend schreiben
 
 PRODUKTINFORMATIONEN:
 Marke: {$data['brand']}
