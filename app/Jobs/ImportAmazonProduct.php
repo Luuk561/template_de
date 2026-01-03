@@ -6,7 +6,7 @@ use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Foundation\Queue\Queueable;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Process;
-use OpenAI\Laravel\Facades\OpenAI;
+use OpenAI;
 
 class ImportAmazonProduct implements ShouldQueue
 {
@@ -104,7 +104,9 @@ ANTWORTFORMAT (NUR JSON, kein anderer Text):
   \"improved_bullets\": [\"Bullet 1\", \"Bullet 2\", \"Bullet 3\"]
 }";
 
-            $response = OpenAI::client(config('openai.api_key'))->chat()->create([
+            $client = OpenAI::client(config('openai.api_key'));
+
+            $response = $client->chat()->create([
                 'model' => 'gpt-4o-mini',
                 'messages' => [
                     ['role' => 'user', 'content' => $prompt]
