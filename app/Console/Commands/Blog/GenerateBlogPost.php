@@ -496,7 +496,26 @@ class GenerateBlogPost extends Command
             ->implode("\n");
 
         // Generate blog content via OpenAI in V3 JSON format
-        $fullPrompt = <<<PROMPT
+        $locale = app()->getLocale();
+        $isGerman = $locale === 'de';
+
+        if ($isGerman) {
+            $fullPrompt = <<<PROMPT
+Du bist ein Experte für SEO-Content. Erstelle einen Blog-Artikel im JSON-Format gemäß dem V3-Schema für {$niche}.
+
+TITEL: {$instantiated['title']}
+SEO KEYWORD: {$instantiated['seo_keyword']}
+ZIELGRUPPE: {$targetAudience}
+TONALITÄT: {$toneOfVoice}
+ZIELWORTANZAHL: {$template->target_word_count}
+
+INHALTSSEKTIONEN (als Basis verwenden):
+{$outlineText}
+
+PRODUKTE:
+PROMPT;
+        } else {
+            $fullPrompt = <<<PROMPT
 Je bent een expert SEO content writer. Genereer een blog artikel in JSON format volgens het V3 schema voor {$niche}.
 
 TITEL: {$instantiated['title']}
@@ -510,18 +529,133 @@ CONTENT SECTIES (gebruik deze als basis):
 
 PRODUCTEN:
 PROMPT;
+        }
 
         foreach ($products->take(5) as $index => $prod) {
             $fullPrompt .= "\n" . ($index + 1) . ". {$prod->title} - €{$prod->price} - Rating: {$prod->rating_average}/5";
         }
 
-        $fullPrompt .= <<<PROMPT
+        if ($isGerman) {
+            $fullPrompt .= <<<PROMPT
+
+
+WICHTIG: Dies ist ein ALLGEMEINER BLOG - kein Produktblog!
+Dies ist ein ausführlicher, informativer Artikel, der die Website als Autorität in der Nische positioniert.
+
+SCHREIBE ALS MENSCHLICHER EXPERTE - NICHT ALS KI:
+PROMPT;
+        } else {
+            $fullPrompt .= <<<PROMPT
 
 
 BELANGRIJK: Dit is een GENERAL BLOG - geen product blog!
 Dit is een diepgaand, informatief artikel dat de site positioneert als autoriteit in de niche.
 
 SCHRIJF ALS MENSELIJKE EXPERT - NIET ALS AI:
+PROMPT;
+        }
+
+        if ($isGerman) {
+            $fullPrompt .= <<<PROMPT
+✅ Variiere Satzlänge (kurz, lang, mittel gemischt)
+✅ Füge konkrete Details hinzu (Wattleistung, Abmessungen, Temperaturen, Dezibel)
+✅ Gebe Meinungen und Nuancen ("Günstige Modelle sind oft lauter als Hersteller zugeben")
+✅ Verwende Gegenargumente ("Manche Nutzer finden doppelte Körbe verschwenderisch")
+✅ Spezifische Beispiele ("In Küchen unter 60cm Breite...")
+✅ Variiere Struktur pro Blog (manchmal Bullets, manchmal lange Absätze, manchmal kurze Abschnitte)
+
+❌ VERBOTENE KI-MUSTER (NIEMALS verwenden):
+❌ "Bei so vieler Auswahl auf dem Markt kann es überwältigend sein"
+❌ "Eine Checkliste hilft dir, dich auf das Wesentliche zu konzentrieren"
+❌ "Das ist eine smarte Investition für Familien, die..."
+❌ "Perfekt für Familien, die gesund kochen möchten"
+❌ "Es ist wichtig zu wissen, dass..."
+❌ "Entdecke die Unterschiede und wähle, was zu dir passt"
+❌ Generische Intros ohne neue Info
+❌ Zu neutraler Ton ohne Meinung
+❌ Immer gleiche Struktur (variieren!)
+❌ Vage Wörter: "oft", "manchmal", "meist", "in der Regel" (konkret sein!)
+❌ Gefälschte Preise ohne Quelle ("im Juli für €80") - verwende KEINE spezifischen Preise!
+❌ Experten-Zitate ohne Name/Quelle
+❌ Lifestyle-Sprache: "Statement", "Eyecatcher", "Chic", "Elegantes Design"
+❌ Interior-Design-Fokus - dies ist eine PRODUKTBERATUNGS-Seite, kein Wohnmagazin!
+❌ Vage Schlussfolgerungen: "Die Wahl hängt ab von..." (gib HARTE Empfehlung!)
+
+PFLICHT IN JEDEM BLOG:
+1. Mindestens 3 konkrete Specs (z.B. "1500W", "5.5L Kapazität", "unter 50dB")
+2. Mindestens 1 Meinungs-Hook (z.B. "Philips ist teurer aber leiser - für Wohnungen essentiell")
+3. Mindestens 1 praktisches Szenario (z.B. "Für 2 Personen in 40m² Wohnung...")
+4. Variiere Anzahl Sections: manchmal 3, manchmal 5, manchmal 6 (nicht immer 4-5!)
+5. Variiere Absatzlängen: manchmal 2 Sätze, manchmal 6 Sätze
+6. HARTE SCHLUSSFOLGERUNG mit spezifischer Empfehlung (nicht "hängt ab von", sondern "ich empfehle X weil Y")
+7. KEINE spezifischen Preise (ok: "durchschnittlich 20-30% Rabatt", nie: "für €84,99")
+8. Fokus auf FUNKTION und LEISTUNG, nicht auf Aussehen/Design/Lifestyle
+
+KRITISCH: Verwende GENAU diesen Titel (nicht ändern!):
+Titel: {$instantiated['title']}
+
+JSON STRUKTUR (genau folgen):
+{
+  "version": "blog.v3",
+  "locale": "de-DE",
+  "author": "besteslaufband.de",
+  "title": "{$instantiated['title']}",
+  "standfirst": "Informativer Einstieg OHNE generische Sätze (2-3 Sätze mit konkretem Hook)",
+  "sections": [
+    {
+      "type": "text",
+      "heading": "H2 Überschrift (variiere Stil: manchmal Frage, manchmal Statement)",
+      "paragraphs": ["Absatz mit KONKRETEN Details (Specs, Meinungen, Beispiele)", "Zweiter Absatz mit Nuance"]
+    },
+    {
+      "type": "quote",
+      "quote": {{"text": "Experten-Meinung mit konkreter Beobachtung (NICHT generisch!)"}}
+    },
+    {
+      "type": "text",
+      "heading": "Nächste H2",
+      "paragraphs": ["Absatz 1", "Absatz 2", "Optional: Absatz 3 falls nötig"]
+    }
+  ],
+  "product_context": {
+    "name": "{$niche}",
+    "why_relevant": "Konkreter Grund mit Specs/Verwendung"
+  },
+  "closing": {
+    "headline": "Fazit",
+    "summary": "Fazit mit konkreten Empfehlungen und Meinungen (NICHT generisch!)",
+    "primary_cta": {
+      "label": "Alle {$niche} ansehen",
+      "url_key": "producten.index"
+    }
+  }
+}
+
+SCHREIBSTIL-VARIATION (zufällig wählen):
+- Stil A: Kurze Sätze, direkter Ton, viele Bullets/Listen
+- Stil B: Längere Absätze, tiefgehende Erklärung, technisch
+- Stil C: Mix aus kurz/lang, praktischer Fokus, Szenarien
+- Stil D: Frage-getrieben, interaktiv, persönlich
+
+REGELN:
+1. Ziel {$template->target_word_count} Wörter (erreiche das!)
+2. Ton: {$toneOfVoice} aber mit MENSCHLICHER Variation (nicht roboterhaft konsistent!)
+3. SEO keyword: {$instantiated['seo_keyword']} muss 3-4 mal vorkommen (natürlich!)
+4. Bespreche 2-3 Produkte mit KONKRETEN Vergleichen (z.B. "Ninja ist 400g schwerer aber leiser")
+5. Füge IMMER mindestens 3 konkrete Zahlen/Specs hinzu
+6. Gebe IMMER mindestens 1 Meinung oder Gegenargument
+7. Gib NUR minified JSON zurück, KEINE Markdown-Blöcke
+
+🚫 LINKING REGELN (WICHTIG):
+- Platziere NIEMALS Links in laufendem Text (paragraphs)
+- Erwähne Produkte/Marken im Text, aber NICHT verlinken
+- Einziger Link darf in "closing" > "primary_cta" (automatisch zu /producten)
+- Kein internes Linking-System - CTA-Buttons machen das
+
+Beginne JETZT:
+PROMPT;
+        } else {
+            $fullPrompt .= <<<PROMPT
 ✅ Varieer zinslengte (kort, lang, medium door elkaar)
 ✅ Voeg concrete details toe (wattages, afmetingen, temperaturen, decibels)
 ✅ Geef meningen en nuance ("Goedkope modellen zijn vaak luider dan fabrikanten toegeven")
@@ -674,7 +808,24 @@ PROMPT;
         }
 
         // Generate meta description
-        $metaPrompt = <<<PROMPT
+        if ($isGerman) {
+            $metaPrompt = <<<PROMPT
+Schreibe eine perfekte Meta-Description (max. 155 Zeichen) für diesen Blog-Artikel:
+
+Titel: {$instantiated['title']}
+SEO Keyword: {$instantiated['seo_keyword']}
+
+Regeln:
+- Maximal 155 Zeichen
+- Enthält das SEO-Keyword
+- Ansprechend und klickbar
+- Keine Anführungszeichen oder Sonderzeichen
+- Deutsch
+
+Gib NUR die Meta-Description zurück, nichts anderes:
+PROMPT;
+        } else {
+            $metaPrompt = <<<PROMPT
 Schrijf een perfecte meta description (max 155 karakters) voor dit blog artikel:
 
 Titel: {$instantiated['title']}
@@ -689,6 +840,7 @@ Regels:
 
 Geef ALLEEN de meta description, niets anders:
 PROMPT;
+        }
 
         $metaDescription = $this->openAI->generateFromPrompt($metaPrompt, 'gpt-4o-mini');
         $metaDescription = trim($metaDescription, '"\'');
