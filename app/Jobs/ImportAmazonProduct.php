@@ -140,9 +140,15 @@ ANTWORTFORMAT (NUR JSON, kein anderer Text):
                 'temperature' => 0.7,
             ]);
 
-            $improved = json_decode($response->choices[0]->message->content, true);
+            $rawResponse = $response->choices[0]->message->content;
+            Log::info("Raw OpenAI response: " . substr($rawResponse, 0, 1000));
+
+            $improved = json_decode($rawResponse, true);
 
             if ($improved && isset($improved['improved_description'])) {
+                Log::info("Description contains H2? " . (strpos($improved['improved_description'], '<h2>') !== false ? 'YES' : 'NO'));
+                Log::info("First 500 chars of description: " . substr($improved['improved_description'], 0, 500));
+
                 // Update content
                 $data['description'] = $improved['improved_description'];
 
