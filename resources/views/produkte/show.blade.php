@@ -188,8 +188,24 @@
                              class="max-h-full max-w-full object-contain" />
                     </div>
 
-                    <!-- Thumbnails - Disabled for single image products -->
-                    {{-- Multiple images not yet implemented for Amazon products --}}
+                    <!-- Thumbnails -->
+                    @php
+                        $images = $product->images_json ?? [];
+                    @endphp
+                    @if(count($images) > 1)
+                        <div class="flex gap-2 flex-wrap">
+                            @foreach(array_slice($images, 0, 5) as $index => $imageUrl)
+                                <img
+                                    src="{{ $imageUrl }}"
+                                    @click="updateImage({{ $index }}, '{{ $imageUrl }}')"
+                                    :class="selectedIndex === {{ $index }} ? 'ring-2' : 'ring-0'"
+                                    style="--tw-ring-color: {{ $primaryColor }};"
+                                    class="w-14 h-14 object-cover border border-gray-200 rounded cursor-pointer hover:opacity-75 transition"
+                                    alt="Bild {{ $index + 1 }}"
+                                >
+                            @endforeach
+                        </div>
+                    @endif
                 </div>
 
                 <!-- Secondary Links -->

@@ -125,9 +125,10 @@ class ImportProductJson extends Command
         $product->rating_average = $data['rating_average'] ?? null;
         $product->rating_count = $data['rating_count'] ?? null;
 
-        // Images (only first one to image_url)
-        if (!empty($data['images'][0])) {
+        // Images - store first as image_url, all as images_json
+        if (!empty($data['images'])) {
             $product->image_url = $data['images'][0];
+            $product->images_json = $data['images'];
         }
 
         $product->save();

@@ -28,6 +28,7 @@ class Product extends Model
         'rating_count',
         'brand',
         'image_url',
+        'images_json',
         'meta_title',
         'meta_description',
         'is_available',
@@ -37,6 +38,7 @@ class Product extends Model
     protected $casts = [
         'is_available' => 'boolean',
         'unavailable_since' => 'datetime',
+        'images_json' => 'array',
     ];
 
     public function images()

@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\Admin\ProductImportController;
 use App\Http\Controllers\AIConclusieController;
 use App\Http\Controllers\BlackFridayController;
 use App\Http\Controllers\BlogController;
@@ -17,6 +18,11 @@ use App\Models\TeamMember;
 use Illuminate\Support\Facades\Route;
 use Spatie\Sitemap\Sitemap;
 use Spatie\Sitemap\Tags\Url;
+
+// Admin Product Import Panel
+Route::get('/admin/products/import', [ProductImportController::class, 'index'])->name('admin.products.import');
+Route::post('/admin/products/import', [ProductImportController::class, 'import'])->name('admin.products.import.store');
+Route::get('/admin/products/import/status', [ProductImportController::class, 'status'])->name('admin.products.import.status');
 
 // Homepagina
 Route::get('/', [HomeController::class, 'index'])->name('home');
