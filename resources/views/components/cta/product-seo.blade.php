@@ -1,13 +1,13 @@
 <!-- CTA Gradient Blok -->
 <section class="bg-gradient-to-r from-blue-700 to-purple-700 text-white rounded-lg shadow-lg p-8 my-16 flex flex-col sm:flex-row items-center justify-between max-w-7xl mx-auto px-4">
     <div class="mb-6 sm:mb-0 max-w-xl">
-        <h2 class="text-3xl font-extrabold mb-4">Wil je onze Top 5 favoriete Produkte zien?</h2>
+        <h2 class="text-3xl font-extrabold mb-4">Möchten Sie unsere Top 5 Lieblings produkte sehen?</h2>
         <p class="text-lg">
-            Ansehen welke Produkte wij het hoogst aanbevelen op basis van prestaties, gebruiksgemak en Preis-kwaliteitverhouding.
+            Sehen Sie, welche Produkte wir am meisten empfehlen basierend auf Leistung, Benutzerfreundlichkeit und Preis-Leistungs-Verhältnis.
         </p>
     </div>
     <a href="/top-20" class="inline-block bg-yellow-400 hover:bg-yellow-500 text-gray-900 font-semibold py-3 px-8 rounded-full transition duration-300 shadow-lg whitespace-nowrap">
-        Ansehen de Top 5
+        Top 5 ansehen
     </a>
 </section>
 

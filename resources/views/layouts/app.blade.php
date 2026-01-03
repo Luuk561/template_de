@@ -1,12 +1,12 @@
 <!DOCTYPE html>
-<html lang="nl">
+<html lang="de">
 <head>
     <x-layout.head />
 </head>
 
 <body class="text-gray-800 text-base">
     @php
-        \Carbon\Carbon::setLocale('nl');
+        \Carbon\Carbon::setLocale('de');
         $huidigeMaand = \Carbon\Carbon::now()->translatedFormat('F');
     @endphp
 

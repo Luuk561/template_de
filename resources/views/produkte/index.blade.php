@@ -20,11 +20,11 @@
     $bfStart   = getSetting('bf_start');    // bijv. '2025-11-24'
     $bfUntil   = getSetting('bf_until');    // bijv. '2025-12-02'
     $previewOn = in_array(strtolower((string) request('bf')), ['1','on','true'], true);
-    $today     = \Carbon\Carbon::today('Europe/Amsterdam');
+    $today     = \Carbon\Carbon::today('Europe/Berlin');
     $inWindow  = ($bfStart && $bfUntil)
         ? $today->between(
-            \Carbon\Carbon::parse($bfStart, 'Europe/Amsterdam'),
-            \Carbon\Carbon::parse($bfUntil, 'Europe/Amsterdam')
+            \Carbon\Carbon::parse($bfStart, 'Europe/Berlin'),
+            \Carbon\Carbon::parse($bfUntil, 'Europe/Berlin')
           )
         : false;
 

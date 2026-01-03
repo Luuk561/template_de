@@ -24,11 +24,11 @@
             <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M18.364 18.364A9 9 0 005.636 5.636m12.728 12.728A9 9 0 015.636 5.636m12.728 12.728L5.636 5.636"/>
             </svg>
-            Niet leverbaar
+            Nicht lieferbar
         </div>
         @if($size === 'default')
             <p class="text-xs text-center text-gray-500">
-                Ansehen alternatieven <a href="#alternatieven" class="underline hover:text-gray-700">hieronder</a>
+                Siehe Alternativen <a href="#alternatieven" class="underline hover:text-gray-700">unten</a>
             </p>
         @endif
     </div>

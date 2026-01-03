@@ -1,4 +1,4 @@
-@props(['product' => null, 'text' => 'Ansehen dit product', 'classes' => ''])
+@props(['product' => null, 'text' => 'Dieses Produkt ansehen', 'classes' => ''])
 
 @if($product)
   @php

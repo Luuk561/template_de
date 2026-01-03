@@ -115,7 +115,8 @@ class ImportProductJson extends Command
         // Create or update product
         $product = $existing ?? new Product();
 
-        $product->title = $data['title'];
+        // Use SEO title as main title (60 chars), fallback to Amazon title
+        $product->title = $data['seo_title'] ?? $data['title'];
         $product->slug = $data['slug'] ?? Str::slug($data['title']);
         $product->brand = $data['brand'] ?? null;
         $product->asin = $data['asin'];

@@ -24,11 +24,11 @@
         $bfStart = config('blackfriday.start');   // bv. '2026-11-23'
         $bfEnd   = config('blackfriday.until');   // bv. '2026-12-01'
 
-        $today    = Carbon::today('Europe/Amsterdam');
+        $today    = Carbon::today('Europe/Berlin');
         $inWindow = ($bfStart && $bfEnd)
             ? $today->between(
-                Carbon::parse($bfStart, 'Europe/Amsterdam')->startOfDay(),
-                Carbon::parse($bfEnd,   'Europe/Amsterdam')->endOfDay()
+                Carbon::parse($bfStart, 'Europe/Berlin')->startOfDay(),
+                Carbon::parse($bfEnd,   'Europe/Berlin')->endOfDay()
               )
             : false;
 
@@ -36,10 +36,10 @@
         $until = $bfEnd ?: $until;
     }
 
-    // Countdown-eind (config-based; NL 23:59:59). Geen random fallback.
+    // Countdown-eind (config-based; DE 23:59:59). Geen random fallback.
     $endIso = null;
     if ($flag && $until) {
-        $endIso = Carbon::parse($until, 'Europe/Amsterdam')->endOfDay()->format('Y-m-d\TH:i:sP');
+        $endIso = Carbon::parse($until, 'Europe/Berlin')->endOfDay()->format('Y-m-d\TH:i:sP');
     }
 @endphp
 
@@ -178,7 +178,7 @@
 
     bannerEl = document.getElementById('bf-top-banner');
     if (!bannerEl){
-      var until = BF_END_ISO ? new Date(BF_END_ISO).toLocaleDateString('nl-NL', {day: 'numeric', month: 'long', year: 'numeric'}) : '';
+      var until = BF_END_ISO ? new Date(BF_END_ISO).toLocaleDateString('de-DE', {day: 'numeric', month: 'long', year: 'numeric'}) : '';
       var parsed = Date.parse(BF_END_ISO || '');
       var initialTime = (!isNaN(parsed)) ? formatDiff(Math.max(0, parsed - Date.now())) : '00:00:00';
 

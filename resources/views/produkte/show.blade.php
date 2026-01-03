@@ -1,7 +1,7 @@
 @extends('layouts.app')
 
-@section('title', strip_tags($product->seo_title))
-@section('meta_description', strip_tags($product->seo_description) ?: 'Ansehen dit product en ontdek of het past bij jouw situatie.')
+@section('title', strip_tags($product->title))
+@section('meta_description', strip_tags($product->meta_description) ?: 'Entdecken Sie dieses Produkt und sehen Sie, ob es zu Ihrer Situation passt.')
 
 @section('breadcrumbs')
     <x-breadcrumbs :items="[
@@ -137,11 +137,11 @@
                                 <x-product-cta :product="$product" classes="whitespace-nowrap" />
                                 @if(($product->is_available ?? true) && $product->delivery_time && (
                                     stripos($product->delivery_time, 'morgen') !== false ||
-                                    stripos($product->delivery_time, 'vandaag') !== false ||
+                                    stripos($product->delivery_time, 'heute') !== false ||
                                     stripos($product->delivery_time, '24') !== false
                                 ))
                                     @php
-                                        $now = now()->setTimezone('Europe/Amsterdam');
+                                        $now = now()->setTimezone('Europe/Berlin');
                                         // Check if delivery_time contains specific cutoff hour
                                         preg_match('/(\d{2}):(\d{2})/', $product->delivery_time, $matches);
                                         $cutoffHour = !empty($matches) ? (int)$matches[1] : 23;
@@ -152,7 +152,7 @@
                                             $cutoffTime = str_pad($cutoffHour, 2, '0', STR_PAD_LEFT) . ':00';
                                         @endphp
                                         <p class="text-xs text-center font-semibold" style="color: {{ $primaryColor }};">
-                                            Voor {{ $cutoffTime }} besteld = morgen in huis
+                                            Vor {{ $cutoffTime }} Uhr bestellt = morgen geliefert
                                         </p>
                                     @endif
                                 @endif
@@ -214,14 +214,14 @@
                         @if($product->review)
                             <a href="{{ route('testberichte.show', $product->review->slug) }}"
                                class="block bg-white hover:bg-gray-50 text-gray-900 text-center text-sm font-medium px-6 py-2 rounded-lg border border-gray-300 transition">
-                                Lees review
+                                Testbericht lesen
                             </a>
                         @endif
 
                         @if($product->blogPosts->isNotEmpty())
                             <a href="{{ route('ratgeber.show', $product->blogPosts->first()->slug) }}"
                                class="block bg-white hover:bg-gray-50 text-gray-900 text-center text-sm font-medium px-6 py-2 rounded-lg border border-gray-300 transition">
-                                Ansehen blog
+                                Ratgeber ansehen
                             </a>
                         @endif
                     </div>
@@ -230,14 +230,14 @@
 
             <!-- DETAILS -->
             <section class="lg:col-span-2 flex flex-col">
-                <h2 class="text-2xl font-bold text-gray-900 mb-4">ProductBeschreibung</h2>
+                <h2 class="text-2xl font-bold text-gray-900 mb-4">Produktbeschreibung</h2>
 
                 <!-- AI-Beschreibung (robust render) -->
                 <div class="product-copy mb-8 text-gray-700 leading-relaxed" itemprop="description">
                     @if($renderHtml !== '')
                         {!! $renderHtml !!}
                     @else
-                        <p>Beschreibung volgt binnenkort.</p>
+                        <p>Beschreibung folgt in Kürze.</p>
                     @endif
                 </div>
 
@@ -300,10 +300,10 @@
                             @foreach($groupedSpecs as $groupName => $specs)
                                 <div x-data="{ open: {{ $loop->first ? 'true' : 'false' }} }" class="bg-gray-50 rounded-xl overflow-hidden border border-gray-200">
                                     <!-- Group Header -->
-                                    <button @click="open = !open" 
+                                    <button @click="open = !open"
                                             class="w-full flex items-center justify-between p-4 text-left hover:bg-gray-100 transition-colors">
                                         <h3 class="font-bold text-gray-900 text-sm sm:text-base">
-                                            {{ $groupName ?: 'Algemeen' }}
+                                            {{ $groupName ?: 'Allgemein' }}
                                         </h3>
                                         <svg :class="{'rotate-180': open}" 
                                              class="w-5 h-5 text-gray-600 transform transition-transform duration-200" 
@@ -351,7 +351,7 @@
         <!-- Footer info -->
         <section class="w-full py-4 px-6 sm:px-8 bg-gray-50 border-t border-gray-200">
             <div class="max-w-7xl mx-auto">
-                <p class="text-xs text-gray-500">EAN: {{ $product->ean ?? 'Onbekend' }}</p>
+                <p class="text-xs text-gray-500">EAN: {{ $product->ean ?? 'Unbekannt' }}</p>
             </div>
         </section>
 
@@ -360,15 +360,15 @@
     <div class="max-w-4xl mx-auto">
         <div class="text-center">
             <h2 class="text-2xl font-bold text-gray-900 mb-3">
-                Vergleichen met andere modellen
+                Mit anderen Modellen vergleichen
             </h2>
             <p class="text-gray-600 mb-6">
-                Ansehen onze top selectie of alle Produkte
+                Sehen Sie unsere Top-Auswahl oder alle Produkte
             </p>
             <div class="flex flex-col sm:flex-row gap-3 justify-center">
                 <a href="{{ route('produkte.top') }}"
                    class="cta-button inline-flex items-center justify-center gap-2 px-6 py-3 rounded-lg font-semibold transition-all text-white">
-                    Ansehen Top 5
+                    Top 5 ansehen
                 </a>
                 <a href="{{ route('produkte.index') }}"
                    class="inline-flex items-center justify-center gap-2 bg-white hover:bg-gray-50 text-gray-900 px-6 py-3 rounded-lg font-semibold border border-gray-300 transition-all">
@@ -388,12 +388,12 @@
     // Gebruik de opgeschoonde HTML van hierboven voor schema
     $descForSchema = strip_tags($renderHtml);
     if (empty($descForSchema)) {
-        $descForSchema = 'ProductBeschreibung wordt binnenkort toegevoegd.';
+        $descForSchema = 'Produktbeschreibung wird in Kürze hinzugefügt.';
     }
 
     // Determine availability based on delivery_time or assume in stock
     $availabilityUrl = 'https://schema.org/InStock';
-    if ($product->delivery_time && stripos($product->delivery_time, 'niet beschikbaar') !== false) {
+    if ($product->delivery_time && stripos($product->delivery_time, 'nicht verfügbar') !== false) {
         $availabilityUrl = 'https://schema.org/OutOfStock';
     }
 
@@ -540,7 +540,7 @@
                     <div class="mt-auto flex flex-col gap-2">
                         <a href="{{ route('produkte.show', $relatedProduct->slug) }}"
                            class="bg-white hover:bg-gray-50 text-gray-900 text-xs font-medium py-2 px-3 rounded-lg text-center transition border border-gray-300">
-                            Ansehen
+                            Details
                         </a>
                         <x-product-cta :product="$relatedProduct" size="small" />
                     </div>

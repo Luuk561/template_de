@@ -1,7 +1,7 @@
 @extends('layouts.app')
 
 @section('title', 'Seite nicht gefunden - 404')
-@section('meta-description', 'Sorry, we konden de pagina die je zocht niet vinden. Entdecken onze beste Produkte en vind wat je zoekt.')
+@section('meta-description', 'Seite nicht gefunden. Entdecken Sie unsere besten Produkte und finden Sie was Sie suchen.')
 
 @section('content')
 
@@ -74,24 +74,24 @@
         <!-- Error Message -->
         <div class="space-y-6 mb-12">
             <h2 class="text-3xl sm:text-4xl lg:text-5xl font-bold text-gray-900 leading-tight tracking-tight">
-                De pagina die je zocht<br>konden we niet vinden.
+                Die Seite die Sie suchten<br>konnten wir nicht finden.
             </h2>
             <p class="text-xl text-apple-gray max-w-2xl mx-auto leading-relaxed">
-                Misschien is de link verlopen, of is de pagina verplaatst. 
-                Geen probleem — we helpen je graag verder.
+                Möglicherweise ist der Link abgelaufen oder die Seite wurde verschoben.
+                Kein Problem — wir helfen Ihnen gerne weiter.
             </p>
         </div>
 
         <!-- CTA Buttons -->
         <div class="flex flex-col sm:flex-row gap-4 justify-center mb-12">
-            <a href="{{ route('home') }}" 
+            <a href="{{ route('home') }}"
                class="cta-button inline-flex items-center justify-center px-8 py-4 text-white font-semibold text-lg">
-                Ga naar homepage
+                Zur Startseite
             </a>
             
-            <a href="{{ route('produkte.index') }}" 
+            <a href="{{ route('produkte.index') }}"
                class="cta-button-secondary inline-flex items-center justify-center px-8 py-4 font-semibold text-lg">
-                Alle ansehen {{ $siteNiche }}
+                Alle {{ $siteNiche }} ansehen
             </a>
         </div>
 
@@ -107,10 +107,10 @@
         
         <div class="text-center mb-8">
             <h2 class="text-2xl sm:text-3xl font-bold text-gray-900 mb-3 tracking-tight">
-                Beliebte bestemmingen
+                Beliebte Ziele
             </h2>
             <p class="text-lg text-apple-gray max-w-xl mx-auto">
-                Hier vind je waar de meeste mensen naar op zoek zijn.
+                Hier finden Sie wonach die meisten Leute suchen.
             </p>
         </div>
 
@@ -119,27 +119,27 @@
             <!-- Popular Products -->
             <div class="apple-card rounded-lg p-4 text-center">
                 <h3 class="text-base font-semibold text-gray-900 mb-3">Beliebtste {{ $siteNiche }}</h3>
-                <a href="{{ route('produkte.index') }}" 
+                <a href="{{ route('produkte.index') }}"
                    class="text-blue-600 font-semibold hover:text-blue-700 transition-colors text-sm">
-                    Alle ansehen Produkte →
+                    Alle Produkte ansehen →
                 </a>
             </div>
 
             <!-- Top Rated -->
             <div class="apple-card rounded-lg p-4 text-center">
-                <h3 class="text-base font-semibold text-gray-900 mb-3">Best beoordeelde</h3>
-                <a href="{{ route('produkte.top') }}" 
+                <h3 class="text-base font-semibold text-gray-900 mb-3">Am besten bewertet</h3>
+                <a href="{{ route('produkte.top') }}"
                    class="text-blue-600 font-semibold hover:text-blue-700 transition-colors text-sm">
-                    Ansehen Top 5 →
+                    Top 5 ansehen →
                 </a>
             </div>
 
             <!-- Testberichte -->
             <div class="apple-card rounded-lg p-4 text-center">
-                <h3 class="text-base font-semibold text-gray-900 mb-3">Testberichte & ervaringen</h3>
-                <a href="{{ route('testberichte.index') }}" 
+                <h3 class="text-base font-semibold text-gray-900 mb-3">Testberichte & Erfahrungen</h3>
+                <a href="{{ route('testberichte.index') }}"
                    class="text-blue-600 font-semibold hover:text-blue-700 transition-colors text-sm">
-                    Lees Testberichte →
+                    Testberichte lesen →
                 </a>
             </div>
         </div>
@@ -157,7 +157,7 @@
     "url": "{{ url()->current() }}",
     "name": "404 - Seite nicht gefunden",
     "description": "Sorry, we konden de pagina die je zocht niet vinden. Entdecken onze beste {{ $siteNiche }} en vind wat je zoekt.",
-    "inLanguage": "nl-NL",
+    "inLanguage": "de-DE",
     "isPartOf": {
         "@type": "WebSite",
         "@id": "{{ config('app.url') }}/#website",

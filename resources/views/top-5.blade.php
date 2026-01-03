@@ -8,8 +8,8 @@
 
 @section('content')
 @php
-    \Carbon\Carbon::setLocale('nl');
-    $huidigeMaand = \Carbon\Carbon::now('Europe/Amsterdam')->translatedFormat('F');
+    \Carbon\Carbon::setLocale('de');
+    $huidigeMaand = \Carbon\Carbon::now('Europe/Berlin')->translatedFormat('F');
     $primaryColor = getSetting('primary_color', '#7c3aed');
 @endphp
 
@@ -155,7 +155,7 @@
                         <div class="flex gap-2">
                             <a href="{{ route('produkte.show', $product->slug) }}"
                                class="flex-1 bg-white hover:bg-gray-50 text-gray-900 text-sm font-semibold py-3 px-4 rounded-xl text-center transition border-2 border-gray-200">
-                                Ansehen
+                                Details
                             </a>
                             <a href="{{ $affiliateLink }}" target="_blank" rel="nofollow sponsored"
                                class="flex-1 cta-button text-white text-sm font-semibold py-3 px-4 rounded-xl text-center transition shadow-sm">
@@ -222,7 +222,7 @@
                         <div class="col-span-5 flex gap-2 justify-end">
                             <a href="{{ route('produkte.show', $product->slug) }}"
                                class="bg-white hover:bg-gray-50 text-gray-900 text-sm font-semibold py-2.5 px-5 rounded-xl text-center transition border-2 border-gray-200 whitespace-nowrap">
-                                Ansehen
+                                Details
                             </a>
                             <a href="{{ $affiliateLink }}" target="_blank" rel="nofollow sponsored"
                                class="cta-button text-white text-sm font-semibold py-2.5 px-5 rounded-xl text-center transition shadow-sm whitespace-nowrap">
@@ -273,7 +273,7 @@
                 {{-- Button rechts --}}
                 <div class="flex justify-center lg:justify-end">
                     <a href="{{ route('produkte.index') }}" class="cta-button inline-block px-8 py-4 text-white font-semibold rounded-xl shadow-lg transition hover:scale-105">
-                        Alle ansehen {{ $niche }}
+                        Alle {{ $niche }} ansehen
                     </a>
                 </div>
             </div>
