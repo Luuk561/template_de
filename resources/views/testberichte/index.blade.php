@@ -170,7 +170,7 @@
                 {{-- Button rechts --}}
                 <div class="flex justify-center lg:justify-end">
                     <a href="{{ route('produkte.index') }}" class="cta-button inline-block px-8 py-4 text-white font-semibold rounded-xl shadow-lg transition hover:scale-105">
-                        Vergleichen alle modellen
+                        Alle Modelle vergleichen
                     </a>
                 </div>
             </div>

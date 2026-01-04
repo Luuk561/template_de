@@ -161,7 +161,7 @@
                         <svg class="w-4 h-4 text-blue-600" fill="currentColor" viewBox="0 0 20 20">
                             <path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.519 4.674a1 1 0 00.95.69h4.915c.969 0 1.371 1.24.588 1.81l-3.976 2.888a1 1 0 00-.363 1.118l1.518 4.674c.3.922-.755 1.688-1.538 1.118l-3.976-2.888a1 1 0 00-1.176 0l-3.976 2.888c-.783.57-1.838-.197-1.538-1.118l1.518-4.674a1 1 0 00-.363-1.118l-3.976-2.888c-.784-.57-.38-1.81.588-1.81h4.914a1 1 0 00.951-.69l1.519-4.674z"/>
                         </svg>
-                        <span class="font-medium">Unabhängig</span>
+                        <span class="font-medium">Objektiv bewertet</span>
                     </div>
                     <div class="flex items-center gap-1.5 text-gray-700">
                         <svg class="w-4 h-4 text-purple-600" fill="currentColor" viewBox="0 0 20 20">
@@ -188,9 +188,10 @@
 <!-- TOP 10 LIST -->
 <section id="top-10-list" class="w-full pt-8 sm:pt-12 pb-16 sm:pb-20 lg:pb-24 bg-white">
     <div class="max-w-7xl mx-auto px-6 sm:px-8">
+
         <div class="text-center mb-10 sm:mb-14 space-y-4">
             <h2 class="text-3xl sm:text-4xl lg:text-5xl font-black tracking-tight text-gray-900">
-                Top 10 Beste Produkte
+                Top 10 im Vergleich
             </h2>
             <p class="text-gray-600 text-lg max-w-2xl mx-auto">
                 Die beliebtesten Optionen auf einen Blick. Vergleichen Sie direkt und finden Sie, was zu Ihnen passt.
@@ -199,7 +200,7 @@
                 <svg class="w-3.5 h-3.5 text-gray-600" fill="currentColor" viewBox="0 0 20 20">
                     <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm1-12a1 1 0 10-2 0v4a1 1 0 00.293.707l2.828 2.829a1 1 0 101.415-1.415L11 9.586V6z" clip-rule="evenodd"/>
                 </svg>
-                <span class="text-sm font-medium text-gray-700">Täglich aktualisiert</span>
+                <span class="text-sm font-medium text-gray-700">Regelmäßig aktualisiert</span>
             </div>
         </div>
 
@@ -338,7 +339,7 @@
                             </a>
                             <a href="{{ $affiliateLink }}" target="_blank" rel="nofollow sponsored"
                                class="flex-1 cta-button text-white text-sm font-semibold py-2.5 px-3 rounded-xl text-center transition shadow-sm leading-tight">
-                                Jetzt kaufen
+                                Preis prüfen
                             </a>
                         </div>
                     </div>
@@ -356,6 +357,11 @@
                 </svg>
             </a>
         </div>
+
+        <!-- Subtle Affiliate Disclaimer -->
+        <p class="text-center text-xs text-gray-400 mt-8">
+            Wir finanzieren uns über Partnerlinks. Auswahl & Bewertung bleiben davon unberührt. <a href="{{ route('methodik') }}" class="underline hover:text-gray-600">Mehr erfahren</a>
+        </p>
     </div>
 </section>
 

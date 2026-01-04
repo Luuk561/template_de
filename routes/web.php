@@ -63,6 +63,9 @@ Route::view('/datenschutz', 'pages.privacy')->name('datenschutz');
 Route::view('/haftungsausschluss', 'pages.disclaimer')->name('haftungsausschluss');
 Route::view('/kontakt', 'pages.contact')->name('kontakt');
 
+// Methodiek / Transparenz Seite
+Route::view('/so-bewerten-wir', 'pages.methodik')->name('methodik');
+
 // Black Friday pagina
 Route::get('/blackfriday', [BlackFridayController::class, 'show'])->name('blackfriday');
 

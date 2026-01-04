@@ -29,4 +29,9 @@
     @if($count)
         <span class="text-xs text-gray-500">({{ $count }})</span>
     @endif
+
+    {{-- Amazon Source Label --}}
+    @if($rating > 0)
+        <span class="text-xs text-gray-400 ml-0.5" title="Bewertungen von Amazon.de">Amazon</span>
+    @endif
 </div>

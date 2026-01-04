@@ -139,7 +139,7 @@ use App\Support\ContentJson;
                 {{-- Button links --}}
                 <div class="order-2 lg:order-1 flex justify-center lg:justify-start">
                     <a href="{{ route('produkte.index') }}" class="cta-button inline-block px-8 py-4 text-white font-semibold rounded-xl shadow-lg transition hover:scale-105">
-                        Entdecken de nieuwste modellen
+                        Entdecken Sie die neuesten Modelle
                     </a>
                 </div>
                 {{-- Tekst rechts --}}
@@ -171,7 +171,7 @@ use App\Support\ContentJson;
         <div class="max-w-4xl mx-auto prose prose-gray prose-lg">
             {!! getContent('blogs.seo', ['fallback' => '
                 <h2 class="text-2xl font-bold mb-4">Waarom onze blogs de moeite waard zijn</h2>
-                <p>Onze artikelen zijn geschreven met één doel: jou helpen betere keuzes te maken. Van achtergrondinformatie tot praktische tips – je vindt het hier allemaal.</p>
+                <p>Unsere Artikel sind mit einem Ziel geschrieben: Ihnen zu helfen, bessere Entscheidungen zu treffen. Von Hintergrundinformationen bis hin zu praktischen Tipps – Sie finden hier alles.</p>
             ']) !!}
         </div>
     @endif

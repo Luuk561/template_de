@@ -1,7 +1,7 @@
 @extends('layouts.app')
 
 @php
-    \Carbon\Carbon::setLocale('nl');
+    \Carbon\Carbon::setLocale('de');
     $siteName = getSetting('site_name', config('app.name'));
     $year     = \Carbon\Carbon::now('Europe/Amsterdam')->format('Y');
     $title    = "Black Friday {$year} — Angebots & Rabatt | {$siteName}";
@@ -253,7 +253,7 @@ body.bf-page {
 
             <!-- Subtitle - Compact -->
             <p class="text-sm text-gray-400 max-w-xl mx-auto">
-                De beste deals, scherp gePreisd
+                Die besten Angebote zum schärfsten Preis
             </p>
         </div>
     </section>
@@ -267,13 +267,13 @@ body.bf-page {
                     Top <span style="color: #FFD700;">Angebots</span>
                 </h2>
                 <p class="bf-section-subtitle">
-                    Rabatten die écht het verschil maken. Vergleichen prijzen, ontdek premium Produkte en betaal nooit te veel.
+                    Rabatte, die wirklich den Unterschied machen. Preise vergleichen, Premium-Produkte entdecken und nie zu viel bezahlen.
                 </p>
             </div>
 
-            @if($Produkte->count())
+            @if($producten->count())
                 <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-8">
-                    @foreach($Produkte as $product)
+                    @foreach($producten as $product)
                         @php
                             $affiliateLink = getProductAffiliateLink($product);
                             $hasDiscount = $product->strikethrough_price && $product->price < $product->strikethrough_price;
@@ -360,16 +360,16 @@ body.bf-page {
                             <div class="mb-6">
                                 @if($hasDiscount && $savings > 0)
                                     <div class="bf-savings-badge text-sm mb-3">
-                                        Sparen €{{ number_format($savings, 2, ',', '.') }}
+                                        Sparen {{ formatPrice($savings) }}
                                     </div>
                                 @endif
                                 <div class="flex items-baseline gap-2 mb-1">
                                     <div class="bf-price text-2xl md:text-3xl font-black">
-                                        €{{ number_format($product->price ?? 0, 2, ',', '.') }}
+                                        {{ formatPrice($product->price) }}
                                     </div>
                                     @if($product->strikethrough_price)
                                         <div class="bf-original-price text-base line-through">
-                                            €{{ number_format($product->strikethrough_price, 2, ',', '.') }}
+                                            {{ formatPrice($product->strikethrough_price) }}
                                         </div>
                                     @endif
                                 </div>
@@ -389,7 +389,7 @@ body.bf-page {
                                     </a>
                                 @else
                                     <div class="w-full inline-flex items-center justify-center px-4 py-3 rounded-xl text-sm font-semibold text-gray-400 bg-gray-100 cursor-not-allowed">
-                                        Link niet beschikbaar
+                                        Link nicht verfügbar
                                     </div>
                                 @endif
 
@@ -408,14 +408,14 @@ body.bf-page {
                 <!-- Pagination -->
                 <div class="mt-16 flex justify-center">
                     <div class="bf-pagination">
-                        {{ $Produkte->withQueryString()->links() }}
+                        {{ $producten->withQueryString()->links() }}
                     </div>
                 </div>
             @else
                 <div class="bf-no-deals">
                     <div class="text-6xl mb-6">🔍</div>
-                    <h3 class="text-2xl font-bold mb-4">Geen deals gevonden</h3>
-                    <p class="text-lg">Op dit moment zijn er nog geen Black Friday deals actief. Kom snel terug – onze aanbiedingen worden Tagelijks aangevuld.</p>
+                    <h3 class="text-2xl font-bold mb-4">Keine Angebote gefunden</h3>
+                    <p class="text-lg">Derzeit sind noch keine Black Friday Angebote aktiv. Schauen Sie bald wieder vorbei – unsere Angebote werden täglich ergänzt.</p>
                 </div>
             @endif
         </div>
@@ -428,7 +428,7 @@ body.bf-page {
                 Mis geen enkele <span class="text-yellow-400">deal</span>
             </h3>
             <p class="text-xl text-gray-400 mb-8 max-w-2xl mx-auto">
-                Entdecken nu de laagste prijzen van het jaar. Met onze slimme filters vind je razendsnel het product dat écht bij jou past. Wacht niet te lang, want de beste deals verdwijnen als eerste.
+                Entdecken Sie jetzt die niedrigsten Preise des Jahres. Mit unseren intelligenten Filtern finden Sie blitzschnell das Produkt, das wirklich zu Ihnen passt. Warten Sie nicht zu lange, denn die besten Angebote sind schnell vergriffen.
             </p>
             <a href="{{ route('produkte.index') }}" 
                class="bf-btn-primary inline-flex items-center gap-3 px-8 py-4 rounded-xl text-lg font-bold transition-all duration-300">
@@ -446,13 +446,13 @@ body.bf-page {
             <div class="flex-1 min-w-0">
                 <div class="text-yellow-400 font-bold text-xs">
                     @if($bfEndIso)
-                        <span id="sticky-countdown">Eindigt binnenkort</span>
+                        <span id="sticky-countdown">Endet bald</span>
                     @else
-                        Black Friday Angebots
+                        Black Friday Angebote
                     @endif
                 </div>
                 <div class="text-white text-xs opacity-80">
-                    {{ $Produkte->total() }} deals
+                    {{ $producten->total() }} deals
                 </div>
             </div>
             <a href="#deals" class="bf-btn-primary px-4 py-2 rounded-lg text-xs font-bold whitespace-nowrap">
@@ -476,10 +476,10 @@ body.bf-page {
     var end = Date.parse(endAttr); 
     if(isNaN(end)){ el.textContent='—'; return; }
     var d = Math.max(0, end - Date.now());
-    if (d <= 0) { 
-      el.textContent = 'Einde actie'; 
+    if (d <= 0) {
+      el.textContent = 'Aktion beendet';
       el.style.color = '#ff4444';
-      return; 
+      return;
     }
     var days=Math.floor(d/86400000),
         hh=Math.floor((d%86400000)/3600000),
@@ -546,7 +546,7 @@ document.addEventListener('DOMContentLoaded', function() {
                 const diff = Math.max(0, end - now);
 
                 if (diff <= 0) {
-                    stickyCountdown.textContent = 'Actie beëindigd';
+                    stickyCountdown.textContent = 'Aktion beendet';
                     return;
                 }
 
@@ -555,11 +555,11 @@ document.addEventListener('DOMContentLoaded', function() {
 
                 if (hours > 24) {
                     const days = Math.floor(hours / 24);
-                    stickyCountdown.textContent = 'Nog ' + days + ' Tag' + (days !== 1 ? 'en' : '');
+                    stickyCountdown.textContent = 'Noch ' + days + ' Tag' + (days !== 1 ? 'e' : '');
                 } else if (hours > 0) {
-                    stickyCountdown.textContent = 'Nog ' + hours + 'u ' + minutes + 'm';
+                    stickyCountdown.textContent = 'Noch ' + hours + 'h ' + minutes + 'm';
                 } else {
-                    stickyCountdown.textContent = 'Laatste ' + minutes + ' Minuten!';
+                    stickyCountdown.textContent = 'Letzte ' + minutes + ' Minuten!';
                 }
             }
 

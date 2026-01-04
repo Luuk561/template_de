@@ -67,9 +67,9 @@ class ContentJson
     public static function mapInternalUrl(string $urlKey): string
     {
         return match($urlKey) {
-            'producten.index' => route('producten.index'),
-            'blogs.index' => route('blogs.index'),
-            'reviews.index' => route('reviews.index'),
+            'producten.index', 'produkte.index' => route('produkte.index'),
+            'blogs.index', 'ratgeber.index' => route('ratgeber.index'),
+            'reviews.index', 'testberichte.index' => route('testberichte.index'),
             'top5' => url('/top-5'),
             default => '#'
         };

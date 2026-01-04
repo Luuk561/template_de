@@ -459,7 +459,7 @@ class ForgeService
             "",
             "APP_LOCALE={$defaultEnv['APP_LOCALE']}",
             "APP_FALLBACK_LOCALE={$defaultEnv['APP_FALLBACK_LOCALE']}",
-            "APP_FAKER_LOCALE=nl_NL",
+            "APP_FAKER_LOCALE=de_DE",
             "",
             "APP_MAINTENANCE_DRIVER={$defaultEnv['APP_MAINTENANCE_DRIVER']}",
             "# APP_MAINTENANCE_STORE=database",

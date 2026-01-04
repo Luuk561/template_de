@@ -696,8 +696,8 @@ Titel: {$instantiated['title']}
 JSON STRUCTURE (volg exact):
 {
   "version": "blog.v3",
-  "locale": "nl-NL",
-  "author": "airfryertest.nl",
+  "locale": "de-DE",
+  "author": "airfryertest.de",
   "title": "{$instantiated['title']}",
   "standfirst": "Informatieve opening ZONDER generieke zinnen (2-3 zinnen met concrete hook)",
   "sections": [

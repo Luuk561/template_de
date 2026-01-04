@@ -271,8 +271,8 @@ KENMERKEN:
 VERPLICHTE JSON STRUCTUUR (blog.v3):
 {
   "version": "blog.v3",
-  "locale": "nl-NL",
-  "author": "loopbandentest.nl",
+  "locale": "de-DE",
+  "author": "laufbandtest.de",
   "title": "Pakkende titel afgestemd op de INVALSHOEK",
   "standfirst": "Korte, pakkende opening (2-3 zinnen) die de INVALSHOEK introduceert",
   "sections": [

@@ -90,9 +90,15 @@ if (! function_exists('getProductAffiliateLink')) {
 }
 
 if (! function_exists('formatPrice')) {
+    /**
+     * Format price in German style: € 1.234,56 (with space after €)
+     *
+     * @param float|null $price
+     * @return string Formatted price with German number format
+     */
     function formatPrice(?float $price): string
     {
-        return '€' . number_format($price ?? 0, 2, ',', '.');
+        return '€ ' . number_format($price ?? 0, 2, ',', '.');
     }
 }
 

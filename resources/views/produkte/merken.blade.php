@@ -72,7 +72,7 @@
                     {!! getContent('merken_index_hero_titel', ['fallback' => 'Beste Merken']) !!}
                 </h1>
                 <p class="text-lg sm:text-xl text-gray-600">
-                    Van premium tot budget - ontdek welke merken wij vergelijken
+                    Von Premium bis Budget - entdecken Sie, welche Marken wir vergleichen
                 </p>
             @endif
         </div>

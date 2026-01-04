@@ -64,7 +64,7 @@
             </h1>
 
             <p class="text-lg sm:text-xl text-gray-600">
-                Door experts geselecteerd op basis van Preis-kwaliteit en Testberichte
+                Von Experten ausgewählt auf Basis von Preis-Leistung und Testberichten
             </p>
         </div>
     </div>
@@ -74,12 +74,24 @@
 <!-- TOP 5 LIST -->
 <section id="top5-products" class="w-full py-8 bg-white">
     <div class="max-w-7xl mx-auto px-6 sm:px-8">
+
+        {{-- Affiliate Disclaimer --}}
+        <div class="max-w-4xl mx-auto mb-8 px-4 py-3 bg-blue-50 border border-blue-200 rounded-lg">
+            <p class="text-sm text-gray-700 text-center">
+                <svg class="w-4 h-4 inline mr-1 text-blue-600" fill="currentColor" viewBox="0 0 20 20">
+                    <path fill-rule="evenodd" d="M18 10a8 8 0 11-16 0 8 8 0 0116 0zm-7-4a1 1 0 11-2 0 1 1 0 012 0zM9 9a1 1 0 000 2v3a1 1 0 001 1h1a1 1 0 100-2v-3a1 1 0 00-1-1H9z" clip-rule="evenodd"/>
+                </svg>
+                <strong>Hinweis:</strong> Wir finanzieren uns über Partnerlinks. Auswahl & Bewertung bleiben davon unberührt.
+                <a href="{{ route('methodik') }}" class="underline font-medium text-blue-700 hover:text-blue-800 ml-1">Mehr zur Methodik →</a>
+            </p>
+        </div>
+
         <div class="text-center mb-10">
             <div class="inline-flex items-center gap-2 px-4 py-2 bg-gray-100 rounded-full border border-gray-200 mb-4">
                 <svg class="w-4 h-4 text-green-600" fill="currentColor" viewBox="0 0 20 20">
                     <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clip-rule="evenodd"/>
                 </svg>
-                <span class="text-sm font-medium text-gray-700">Dagelijks bijgewerkt</span>
+                <span class="text-sm font-medium text-gray-700">Regelmäßig aktualisiert</span>
             </div>
         </div>
 
@@ -233,6 +245,11 @@
                 </div>
             @endforeach
         </div>
+
+        <!-- Subtle Affiliate Disclaimer -->
+        <p class="text-center text-xs text-gray-400 mt-8">
+            Wir finanzieren uns über Partnerlinks. Auswahl & Bewertung bleiben davon unberührt. <a href="{{ route('methodik') }}" class="underline hover:text-gray-600">Mehr erfahren</a>
+        </p>
 
     </div>
 </section>

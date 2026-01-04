@@ -96,7 +96,7 @@ PROMPT;
     private function OLD_generateContentBlocks_DEPRECATED(string $niche, string $siteName, ?string $uniqueFocus = null, string $format = 'hybrid'): array
     {
         $currentYear = date('Y');
-        $currentMonth = \Carbon\Carbon::now('Europe/Amsterdam')->locale('nl')->translatedFormat('F');
+        $currentMonth = \Carbon\Carbon::now('Europe/Berlin')->locale('de')->translatedFormat('F');
 
         // Build unique focus instruction
         $uniqueFocusInstruction = '';

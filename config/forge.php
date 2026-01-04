@@ -101,8 +101,8 @@ return [
     'default_env' => [
         'APP_ENV' => 'production',
         'APP_DEBUG' => 'false',
-        'APP_LOCALE' => 'nl',
-        'APP_FALLBACK_LOCALE' => 'nl',
+        'APP_LOCALE' => 'de',
+        'APP_FALLBACK_LOCALE' => 'de',
         'APP_MAINTENANCE_DRIVER' => 'file',
         'BCRYPT_ROUNDS' => '12',
         'LOG_CHANNEL' => 'stack',

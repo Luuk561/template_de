@@ -75,7 +75,7 @@
             <a href="{{ route('produkte.index') }}"
                class="inline-block text-white px-6 py-3 rounded-lg font-semibold transition hover:opacity-90"
                style="background-color: {{ $primaryColor }}">
-                Produkte bekijken
+                Produkte ansehen
             </a>
         </div>
     @endif    

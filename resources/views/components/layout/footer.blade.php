@@ -3,7 +3,7 @@
         <div>
             <div class="font-bold text-gray-900 mb-4 text-base">Über {{ $siteName }}</div>
             <p class="text-gray-600 leading-relaxed">
-                {{ $siteName }} hilft Ihnen bei der Auswahl der besten Produkte auf Basis unabhängiger Tests, Testberichte und Vergleiche.
+                {{ $siteName }} hilft Ihnen bei der Auswahl der besten Produkte auf Basis objektiver Vergleiche, Testberichte und Kundenbewertungen.
             </p>
         </div>
 
@@ -23,6 +23,7 @@
             <div class="font-bold text-gray-900 mb-4 text-base">Information</div>
             <ul class="space-y-2">
                 <li><a href="/team" class="hover:underline">Unser Team</a></li>
+                <li><a href="{{ route('methodik') }}" class="hover:underline">So bewerten wir</a></li>
                 <li><a href="/impressum" class="hover:underline">Impressum</a></li>
                 <li><a href="/datenschutz" class="hover:underline">Datenschutzerklärung</a></li>
                 <li><a href="/haftungsausschluss" class="hover:underline">Haftungsausschluss</a></li>

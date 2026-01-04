@@ -11,7 +11,7 @@ class BlackFridayController extends Controller
     public function show(Request $request)
     {
         // Locale en tijdzone
-        Carbon::setLocale('nl');
+        Carbon::setLocale('de');
         $tz = config('blackfriday.timezone', 'Europe/Amsterdam');
 
         // Config-gestuurde waarden (geen DB)

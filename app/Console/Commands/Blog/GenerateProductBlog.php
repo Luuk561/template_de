@@ -393,7 +393,7 @@ KRITISCH: Volg EXACT deze JSON structuur. Elk section object moet op hetzelfde n
 CORRECTE STRUCTURE (LET OP: quote is APART section, niet binnen text!):
 {
   "version": "blog.v3",
-  "locale": "nl-NL",
+  "locale": "de-DE",
   "author": "{$siteName}",
   "title": "{$instantiated['title']}",
   "standfirst": "Een pakkende opening (2-3 zinnen)",
