@@ -158,63 +158,63 @@ class GenerateTeam extends Command
         $randomSeed = time() . rand(1000, 9999);
 
         $prompt = <<<PROMPT
-Je bent een branding specialist die realistische, geloofwaardige fictieve teamleden bedenkt voor een Nederlandse affiliate website.
+Sie sind ein Branding-Spezialist, der realistische, glaubwürdige fiktive Teammitglieder für eine deutsche Affiliate-Website erstellt.
 
-CONTEXT:
+KONTEXT:
 - Website: {$siteName}
-- Niche: {$niche}
-- Doel: E-E-A-T verbeteren door menselijk gezicht aan content te geven
-- Random seed: {$randomSeed} (gebruik dit voor variatie)
+- Nische: {$niche}
+- Ziel: E-E-A-T durch menschliches Gesicht für Content verbessern
+- Random seed: {$randomSeed} (für Variation verwenden)
 
-JURIDISCHE EISEN (KRITIEK):
-- Dit zijn FICTIEVE PERSONA'S - redactionele karakters, geen echte mensen
-- Ze mogen GEEN persoonlijke ervaringen claimen ("Ik gebruik dit al 3 maanden")
-- Ze zijn "redactieleden", "testers", "productliefhebbers" - NIET consumenten
-- Tone moet altijd redactioneel zijn: "Volgens Lisa...", "Het team test...", "Onze ervaring..."
+RECHTLICHE ANFORDERUNGEN (KRITISCH):
+- Dies sind FIKTIVE PERSONAS - redaktionelle Charaktere, keine echten Personen
+- Sie dürfen KEINE persönlichen Erfahrungen als Verbraucher beanspruchen ("Ich benutze das seit 3 Monaten")
+- Sie sind "Redaktionsmitglieder", "Tester", "Produktliebhaber" - NICHT Konsumenten
+- Der Ton muss immer redaktionell sein: "Laut Lisa...", "Das Team testet...", "Unsere Erfahrung..."
 
-DIVERSITEIT EISEN:
-- 3 teamleden met verschillende perspectieven
-- Mix van geslachten en leeftijdsgroepen
-- Elk lid heeft unieke expertise focus:
-  * Lid 1: Gebruiksgemak & praktische toepassingen
-  * Lid 2: Technische specificaties & prestaties
-  * Lid 3: Duurzaamheid & design
-- Verschillende schrijfstijlen voor variatie in content
+DIVERSITÄTSANFORDERUNGEN:
+- 3 Teammitglieder mit unterschiedlichen Perspektiven
+- Mix aus Geschlechtern und Altersgruppen
+- Jedes Mitglied hat einzigartigen Expertisefokus:
+  * Mitglied 1: Benutzerfreundlichkeit & praktische Anwendungen
+  * Mitglied 2: Technische Spezifikationen & Leistung
+  * Mitglied 3: Nachhaltigkeit & Design
+- Unterschiedliche Schreibstile für Variation im Content
 
-NAAM STRATEGIE:
-- Gebruik ALLEEN Nederlandse voornamen (geen achternamen)
-- Kies WILLEKEURIGE, gevarieerde namen uit deze lijst: Lisa, Daan, Emma, Tom, Sophie, Lars, Nina, Bas, Anne, Tim, Eva, Sem, Julia, Max, Lotte, Finn, Sara, Thijs, Mila, Ruben, Anna, Jesse, Luna, Noah, Sanne, Bram, Evi, Robin, Isa, Stijn, Noa, Lucas, Fleur, Jasper, Lynn, Tess, Owen, Liv, Sam, Fenna, Nick, Iris, Quinn, Roos, Casper, Amy, Milan, Sofie, Jayden, Lauren, Maud, Luuk, Saar, Bente, Dex, Koen, Lieke, Rick, Noor, Jelle, Renske, Guus, Merel, Ties, Indy, Teun, Floor, Dylan, Lise, Daniël, Charlotte, Stan, Eline, Jip, Femke, Gijs, Lize, Joep, Pien, David, Julie, Mats, Anouk, Jim, Lena, Lukas, Isabel, Dean, Lot, Benjamin, Marijn, Quinten, Amber, Olivier, Rosa, Thomas, Claire, Niels, Lisa, Mark, Iris, Pieter, Laura, Joran, Rosalie, Felix, Naomi, Brent, Hannah, Matthijs, Michelle, Kai, Kim, Alexander, Marit, Erik, Lieke, Stefan, Zoë, Jeroen, Vera, Tobias, Leonie, Wessel, Elise, Yannick, Danielle, Pepijn, Jade, Floris, Melanie, Joris, Annelies, Dion, Sandra, Roel, Patricia
-- Kies 3 VERSCHILLENDE namen die je nog NOOIT eerder hebt gebruikt
-- Mix van mannelijke en vrouwelijke namen
-- NIET: Michelle van der Berg, Peter Jansen (te specifiek/formeel)
+NAMENSSTRATEGIE:
+- Verwenden Sie NUR deutsche Vornamen (keine Nachnamen)
+- Wählen Sie ZUFÄLLIGE, variierende Namen aus dieser Liste: Lisa, Max, Emma, Felix, Sophie, Lars, Nina, Paul, Anna, Tim, Eva, Jan, Julia, Ben, Lotte, Finn, Sara, Tom, Mila, Luca, Hannah, Leon, Luna, Noah, Marie, Lukas, Evi, Robin, Lea, Elias, Nora, Lucas, Clara, Jonas, Lynn, Oskar, Liv, David, Mia, Anton, Ella, Theo, Ida, Emil, Pia, Hugo, Romy, Leo, Leni, Carl, Greta, Moritz, Frida, Jakob, Emilia, Simon, Amelie, Vincent, Charlotte, Rafael, Lina, Samuel, Elena, Julius, Marlene, Matteo, Johanna, Gabriel, Frieda, Adrian, Martha, Raphael, Rosa, Maximilian, Claire, Sebastian, Elisa, Valentin, Hanna, Jonathan, Zoe, Konstantin, Vera, Alexander, Leonie, Benedikt, Mathilda, Dominik, Alma, Philip, Isabel, Leonard, Rosalie, Heinrich, Maja, Friedrich, Laura, Wilhelm, Paula, Caspar, Ida, Leopold, Thea
+- Wählen Sie 3 VERSCHIEDENE Namen, die Sie noch NIE zuvor verwendet haben
+- Mix aus männlichen und weiblichen Namen
+- NICHT: Lisa Müller, Max Schmidt (zu spezifisch/formell)
 
-TOON & KARAKTER:
-- Vriendelijk en toegankelijk
-- Deskundig maar niet academisch
-- Enthousiast over de niche
-- Oprecht willen helpen met keuzeproces
+TON & CHARAKTER:
+- Freundlich und zugänglich
+- Sachkundig aber nicht akademisch
+- Begeistert über die Nische
+- Aufrichtig helfen wollen beim Auswahlprozess
 
-OUTPUT: JSON array met exact 3 teamleden volgens dit schema:
+OUTPUT: JSON-Array mit genau 3 Teammitgliedern nach diesem Schema:
 
 [
   {
-    "name": "Nederlandse voornaam",
-    "role": "Korte rol zoals 'Productliefhebber', 'Tester', 'Specialist'",
-    "quote": "Eén inspirerende zin over wat hen drijft (max 100 tekens)",
-    "focus": "gebruiksgemak|techniek|duurzaamheid",
-    "tone": "Korte beschrijving schrijfstijl bijv. 'vriendelijk en praktisch'",
-    "personality": "Korte beschrijving karakter in 1-2 zinnen",
-    "photo_prompt": "Portrait description for DALL-E matching the Dutch name (bijv. 'Dutch woman in her 30s' of 'Dutch man in his 40s'). Be specific about ethnicity to match typical Dutch names.",
-    "ethnicity": "caucasian|dutch-european (match typical appearance for this Dutch name)"
+    "name": "Deutscher Vorname",
+    "role": "Kurze Rolle wie 'Produktliebhaber', 'Tester', 'Spezialist'",
+    "quote": "Ein inspirierender Satz über ihre Motivation (max 100 Zeichen)",
+    "focus": "Benutzerfreundlichkeit|Technik|Nachhaltigkeit",
+    "tone": "Kurze Beschreibung des Schreibstils z.B. 'freundlich und praktisch'",
+    "personality": "Kurze Charakterbeschreibung in 1-2 Sätzen",
+    "photo_prompt": "Portrait description for DALL-E matching the German name (z.B. 'German woman in her 30s' oder 'German man in his 40s'). Be specific about ethnicity to match typical German names.",
+    "ethnicity": "caucasian|german-european (match typical appearance for this German name)"
   }
 ]
 
-VOORBEELDEN VAN GOEDE QUOTES:
-- "Ik help je de beste keuze maken zonder technische poespas"
-- "Eerlijk advies over wat écht werkt in de praktijk"
-- "Producten die het leven makkelijker maken, daar ga ik voor"
+BEISPIELE FÜR GUTE QUOTES:
+- "Ich helfe dir, die beste Wahl zu treffen, ohne technischen Schnickschnack"
+- "Ehrliche Beratung darüber, was wirklich in der Praxis funktioniert"
+- "Produkte, die das Leben einfacher machen – dafür setze ich mich ein"
 
-Return ALLEEN minified JSON, geen markdown, geen commentary.
+Geben Sie NUR minified JSON zurück, kein Markdown, kein Kommentar.
 PROMPT;
 
         try {
@@ -340,85 +340,85 @@ PROMPT;
         $currentYear = date('Y');
 
         $prompt = <<<PROMPT
-Je bent een content writer die een geloofwaardige, SEO-geoptimaliseerde profielpagina schrijft voor een fictief redactielid.
+Sie sind ein Content-Writer, der eine glaubwürdige, SEO-optimierte Profilseite für ein fiktives Redaktionsmitglied schreibt.
 
-JURIDISCHE COMPLIANCE (KRITIEK):
-- Dit is een FICTIEVE PERSONA - redactioneel karakter, geen echte persoon
-- NOOIT persoonlijke ervaringen claimen als consumer ("Ik kocht mijn eerste...")
-- WEL redactionele expertise tonen ("Als tester van het team...")
-- Altijd professionele, redactionele toon - GEEN persoonlijke verhalen als gebruiker
+RECHTLICHE COMPLIANCE (KRITISCH):
+- Dies ist eine FIKTIVE PERSONA - redaktioneller Charakter, keine echte Person
+- NIEMALS persönliche Erfahrungen als Verbraucher beanspruchen ("Ich kaufte meinen ersten...")
+- WOHL redaktionelle Expertise zeigen ("Als Tester des Teams...")
+- Immer professioneller, redaktioneller Ton - KEINE persönlichen Geschichten als Benutzer
 
-CONTEXT:
-- Naam: {$profile['name']}
-- Rol: {$profile['role']}
-- Karakter: {$profile['personality']}
-- Focus: {$profile['focus']}
-- Schrijfstijl: {$profile['tone']}
-- Quote: "{$profile['quote']}"
+KONTEXT:
+- Name: {$profile['name']}
+- Rolle: {$profile['role']}
+- Charakter: {$profile['personality']}
+- Fokus: {$profile['focus']}
+- Schreibstil: {$profile['tone']}
+- Zitat: "{$profile['quote']}"
 - Website: {$siteName}
-- Niche: {$niche}
+- Nische: {$niche}
 
-SEO DOELEN:
-- Lengte: 900-1200 woorden (voor autoriteit)
-- Longtail keywords: "expert {$niche}", "specialist {$niche}", "tester {$niche}"
-- E-E-A-T: Toon expertise, ervaring als REDACTEUR/TESTER, vertrouwbaarheid
-- Conversie: 3-4 interne links naar /producten, /top-5, /reviews
+SEO-ZIELE:
+- Länge: 900-1200 Wörter (für Autorität)
+- Longtail-Keywords: "Experte {$niche}", "Spezialist {$niche}", "Tester {$niche}"
+- E-E-A-T: Expertise zeigen, Erfahrung als REDAKTEUR/TESTER, Vertrauenswürdigkeit
+- Konversion: 3-4 interne Links zu /produkte, /top-5, /testberichte
 
-STRUCTUUR (gebruik HTML):
+STRUKTUR (HTML verwenden):
 
 <div class="team-bio">
   <div class="intro">
-    <p>Pakkende introductie (100-150 woorden): Wie is {$profile['name']}, wat doet ze bij {$siteName}, wat is haar rol in het team?</p>
+    <p>Packende Einführung (100-150 Wörter): Wer ist {$profile['name']}, was macht sie bei {$siteName}, was ist ihre Rolle im Team?</p>
   </div>
 
   <div class="passion">
-    <h2>Passie voor {$niche}</h2>
-    <p>Waarom {$profile['name']} gek is op {$niche} (150-200 woorden). Wat maakt deze niche bijzonder? Wat drijft haar als redacteur/tester?</p>
+    <h2>Leidenschaft für {$niche}</h2>
+    <p>Warum {$profile['name']} begeistert ist von {$niche} (150-200 Wörter). Was macht diese Nische besonders? Was treibt sie als Redakteurin/Testerin an?</p>
   </div>
 
   <div class="expertise">
-    <h2>Expertise & Werkwijze</h2>
-    <p>Hoe test {$profile['name']} producten? (200-250 woorden) Waar let ze op bij {$profile['focus']}? Wat is haar unieke aanpak? Concrete voorbeelden van waar ze op let bij reviews/vergelijkingen.</p>
+    <h2>Expertise & Arbeitsweise</h2>
+    <p>Wie testet {$profile['name']} Produkte? (200-250 Wörter) Worauf achtet sie bei {$profile['focus']}? Was ist ihr einzigartiger Ansatz? Konkrete Beispiele, worauf sie bei Testberichten/Vergleichen achtet.</p>
   </div>
 
   <div class="approach">
-    <h2>Voor Wie {$profile['name']} Schrijft</h2>
-    <p>Welke doelgroep helpt ze? (150-200 woorden) Voor welk type gebruiker/koper is haar advies het meest waardevol? Waarom lezen mensen haar content?</p>
+    <h2>Für wen {$profile['name']} schreibt</h2>
+    <p>Welche Zielgruppe hilft sie? (150-200 Wörter) Für welchen Benutzer-/Käufertyp sind ihre Ratschläge am wertvollsten? Warum lesen Menschen ihren Content?</p>
   </div>
 
   <div class="tips">
-    <h2>Inzichten & Adviezen</h2>
-    <p>Praktische tips over {$niche} (200-250 woorden). Concrete adviezen voor wie {$niche} zoekt. Wat zijn veelgemaakte fouten? Waar moet je op letten bij aankoop?</p>
+    <h2>Einblicke & Ratschläge</h2>
+    <p>Praktische Tipps zu {$niche} (200-250 Wörter). Konkrete Ratschläge für diejenigen, die {$niche} suchen. Was sind häufige Fehler? Worauf sollte man beim Kauf achten?</p>
   </div>
 
   <div class="closing">
-    <h2>Vind {$profile['name']}'s Artikelen</h2>
-    <p>Afsluiting (100-150 woorden). {$profile['name']} schrijft reviews en vergelijkingen voor {$siteName}. Link naar haar werk, uitnodiging om content te lezen.</p>
-    <p><strong>Bekijk alle <a href="/producten">producten</a>, <a href="/top-5">top 5 lijsten</a> en <a href="/reviews">reviews</a> waar {$profile['name']} aan heeft bijgedragen.</strong></p>
+    <h2>{$profile['name']}'s Artikel finden</h2>
+    <p>Abschluss (100-150 Wörter). {$profile['name']} schreibt Testberichte und Vergleiche für {$siteName}. Link zu ihrer Arbeit, Einladung zum Lesen des Contents.</p>
+    <p><strong>Sehen Sie sich alle <a href="/produkte">Produkte</a>, <a href="/top-5">Top-5-Listen</a> und <a href="/testberichte">Testberichte</a> an, zu denen {$profile['name']} beigetragen hat.</strong></p>
   </div>
 </div>
 
-TOON & STIJL:
-- Schrijfstijl: {$profile['tone']}
-- Persoonlijk maar professioneel
-- Redactionele autoriteit (geen consumer verhalen!)
-- Behulpzaam en toegankelijk
-- Conversiegericht (subtiele CTAs)
+TON & STIL:
+- Schreibstil: {$profile['tone']}
+- Persönlich aber professionell
+- Redaktionelle Autorität (keine Verbrauchergeschichten!)
+- Hilfsbereit und zugänglich
+- Konversionsorientiert (subtile CTAs)
 
-VERBODEN:
-- Geen persoonlijke koopdecisies als consumer ("Toen ik mijn eerste {$niche} kocht...")
-- Geen valse claims over certificaten/opleidingen
-- Geen specifieke leeftijd/woonplaats/privédetails
-- Geen emojis
+VERBOTEN:
+- Keine persönlichen Kaufentscheidungen als Verbraucher ("Als ich meinen ersten {$niche} kaufte...")
+- Keine falschen Behauptungen über Zertifikate/Ausbildungen
+- Kein spezifisches Alter/Wohnort/Privatdetails
+- Keine Emojis
 
-VERPLICHT:
-- 3-4 interne links (gebruik relatieve URLs: /producten, /top-5, /reviews, /blogs)
-- H2 headings voor structuur
-- Paragrafen van 100+ woorden
-- Natuurlijke keyword integratie
-- Redactionele expertise tonen
+VERPFLICHTEND:
+- 3-4 interne Links (relative URLs verwenden: /produkte, /top-5, /testberichte, /blog)
+- H2-Überschriften für Struktur
+- Absätze von 100+ Wörtern
+- Natürliche Keyword-Integration
+- Redaktionelle Expertise zeigen
 
-Return ALLEEN de HTML content, geen JSON, geen markdown wrappers.
+Geben Sie NUR den HTML-Content zurück, kein JSON, keine Markdown-Wrapper.
 PROMPT;
 
         try {
@@ -451,22 +451,22 @@ PROMPT;
         return <<<HTML
 <div class="team-bio">
   <div class="intro">
-    <p>{$profile['name']} is {$profile['role']} bij {$siteName} en specialiseert zich in {$niche}. Met oog voor {$profile['focus']} helpt {$profile['name']} bezoekers de juiste keuze te maken.</p>
+    <p>{$profile['name']} ist {$profile['role']} bei {$siteName} und spezialisiert sich auf {$niche}. Mit Blick auf {$profile['focus']} hilft {$profile['name']} Besuchern, die richtige Wahl zu treffen.</p>
   </div>
 
   <div class="passion">
-    <h2>Passie voor {$niche}</h2>
-    <p>{$profile['name']} is gepassioneerd over {$niche} en test regelmatig de nieuwste producten. {$profile['quote']}</p>
+    <h2>Leidenschaft für {$niche}</h2>
+    <p>{$profile['name']} ist leidenschaftlich bei {$niche} und testet regelmäßig die neuesten Produkte. {$profile['quote']}</p>
   </div>
 
   <div class="expertise">
-    <h2>Expertise & Werkwijze</h2>
-    <p>Bij het testen van {$niche} let {$profile['name']} vooral op {$profile['focus']}. Elk product wordt grondig getest en beoordeeld op basis van praktische criteria.</p>
+    <h2>Expertise & Arbeitsweise</h2>
+    <p>Beim Testen von {$niche} achtet {$profile['name']} besonders auf {$profile['focus']}. Jedes Produkt wird gründlich getestet und anhand praktischer Kriterien bewertet.</p>
   </div>
 
   <div class="closing">
-    <h2>Artikelen van {$profile['name']}</h2>
-    <p>Bekijk alle <a href="/producten">producten</a>, <a href="/top-5">top 5 lijsten</a> en <a href="/reviews">reviews</a> waar {$profile['name']} aan heeft bijgedragen.</p>
+    <h2>Artikel von {$profile['name']}</h2>
+    <p>Sehen Sie sich alle <a href="/produkte">Produkte</a>, <a href="/top-5">Top-5-Listen</a> und <a href="/testberichte">Testberichte</a> an, zu denen {$profile['name']} beigetragen hat.</p>
   </div>
 </div>
 HTML;
